@@ -1,0 +1,99 @@
+Elite Agri – Phase 1 Recap
+✅ 1. Project Foundation
+    Installed Python, pipx, Django
+    Created a clean Django project with core app
+    Structured models into folders: models/farm.py, models/user.py, etc.
+    Designed everything to support multi-tenancy (many farms)
+
+✅ 2. Custom User & Team Architecture
+    Model	Purpose
+    User	Central login identity
+    Farm	Represents a company/farm (multi-tenant base)
+    Role	Job or access level in the farm (e.g. Manager)
+    TeamMember	Links a User to a Farm with a Role
+💡 Allows:
+    1   user in multiple farms (future-proof)
+    Role-based access control
+    is_admin flag for farm-level admins
+
+✅ 3. Admin Panel
+    Registered all models professionally
+    Added filters, search, verbose names
+    Handled read-only fields like created_at
+
+✅ 4. Django REST Framework (DRF) Setup
+    Installed and configured djangorestframework
+    Installed and configured JWT with djangorestframework-simplejwt
+    Enabled:
+        access and refresh tokens
+        Secure API access with Bearer <token>
+
+✅ 5. User Auth APIs
+    Endpoint	Description
+    POST /api/auth/login/	Custom login with tokens + user info
+    GET /api/auth/me/	Return current user's farm/role info
+✅ 6. Role API
+    Endpoint	Description
+    GET /api/roles/	List all available roles
+✅ 7. Team Management Module
+    Feature	Status
+    View team members	✅
+    Assign existing user to farm	✅
+    Invite user by email	✅
+    Update role or admin flag	✅
+    Remove team member	✅
+    - All with security checks:
+        Must be is_admin=True
+        Scoped to current farm
+
+Uses real permission logic
+
+What Makes This Professional
+    ✅ Clean architecture
+    ✅ Role-based access
+    ✅ Multi-tenant farm logic
+    ✅ Real authentication
+    ✅ Enterprise-grade team control
+    ✅ Ready for frontend + scaling
+
+
+ What does "Move to Animal" mean?
+When a new animal is born, you:
+
+Track the birth info in AnimalBirth (✅ already done)
+
+After some time (e.g. 9 months), the baby becomes part of the active herd
+
+So you move its data into the Animal model (the real list of animals you manage daily)
+
+💼 In Enterprise Terms
+This is like promoting a newborn from the delivery room → to the main livestock system
+
+You:
+
+Copy the fields (number, species, parents, gender, birth date)
+
+Set moved_to_animals = True in the birth record
+
+Avoid double data entry
+
+Build full lifecycle traceability 🔄
+
+🔁 When do we trigger the move?
+Two ways:
+
+✅ Manually → via POST /api/animal/births/<id>/move-to-animal/
+
+✅ Automatically → after 9 months (in background script or scheduled job)
+
+👀 Real World Example
+Let’s say:
+
+You created a goat birth NB-0925
+
+9 months passed
+
+You now want it in the main animal list to track its future vaccinations, death, breeding, etc.
+
+💥 You call move-to-animal/, and it appears in /animals/
+
