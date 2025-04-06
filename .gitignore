@@ -1,0 +1,38 @@
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Virtual environment
+venv/
+.env
+
+# OS/System files
+.DS_Store
+Thumbs.db
+
+# IDEs
+.idea/
+.vscode/
+
+
+
+# Compiled files
+*.pyo
+*.pyd
+*.so
+
+# Django migrations – allow `.py`, ignore `.pyc` and caches
+**/migrations/__pycache__/
+**/migrations/*.pyc
+
+# Media / temp uploads (optional)
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.log
+
+# Node / Frontend
+node_modules/
+dist/
+build/

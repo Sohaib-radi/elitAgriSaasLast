@@ -15,12 +15,23 @@ PERMISSION_CODES = {
     "lands": ["view", "manage"],
     "land_purchases": ["view", "manage"],
     "wilayas": ["view", "manage"],
-    "warehouses":["view","manage"],
+    "warehouses": ["view", "manage"],
     "warehouse_entries": ["view", "manage"],
     "warehouse_quantity_schedules": ["view", "manage"],
     "warehouse_reminders": ["view", "manage"],
-    "crop":["view","manage"]
+    "crop": ["view", "manage"],
+
+    # ✅ Finance module
+    "expenses": ["view", "manage"],
+    "receipts": ["view", "manage"],
+    "payments": ["view", "manage"],
+    "revenues": ["view", "manage"],
+    "debts": ["view", "manage"],
+    "invoices": ["view", "manage"],
+    "subscriptions": ["view", "manage"],
+    "finance_reports": ["view"],
 }
+
 #python manage.py sync_permissions
 class Command(BaseCommand):
     help = "Sync permission codes to the database"

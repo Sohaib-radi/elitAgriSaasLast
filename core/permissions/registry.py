@@ -75,5 +75,40 @@ PERMISSION_MAP = {
     "crop": {
         "read": [HasRolePermission("crop.view")],
         "write": [IsFarmOwnerOrReadOnly(), IsFarmAdmin(), HasRolePermission("crop.manage")],
-    }
+    },
+
+    "expenses": {
+    "read": [HasRolePermission("finance.view_expenses")],
+    "write": [IsFarmOwnerOrReadOnly(), HasRolePermission("finance.manage_expenses")],
+    },
+    "receipts": {
+        "read": [HasRolePermission("finance.view_receipts")],
+        "write": [IsFarmOwnerOrReadOnly(), HasRolePermission("finance.manage_receipts")],
+    },
+    "payments": {
+        "read": [HasRolePermission("finance.view_payments")],
+        "write": [IsFarmOwnerOrReadOnly(), HasRolePermission("finance.manage_payments")],
+    },
+    "revenues": {
+        "read": [HasRolePermission("finance.view_revenues")],
+        "write": [IsFarmOwnerOrReadOnly(), HasRolePermission("finance.manage_revenues")],
+    },
+    "debts": {
+        "read": [HasRolePermission("finance.view_debts")],
+        "write": [IsFarmOwnerOrReadOnly(), HasRolePermission("finance.manage_debts")],
+    },
+    "invoices": {
+        "read": [HasRolePermission("finance.view_invoices")],
+        "write": [IsFarmOwnerOrReadOnly(), HasRolePermission("finance.manage_invoices")],
+    },
+    "subscriptions": {
+        "read": [HasRolePermission("finance.view_subscriptions")],
+        "write": [IsFarmOwnerOrReadOnly(), HasRolePermission("finance.manage_subscriptions")],
+    },
+    "finance_reports": {
+        "read": [HasRolePermission("finance.view_statistics")],
+        "write": [IsFarmAdmin()],  # Optional if write is ever needed
+    },
+
+
 }

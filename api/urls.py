@@ -48,4 +48,5 @@ urlpatterns +=[
     path('products/', include('product_catalogue.urls')),
     path("warehouse/", include("warehouse.urls")),
     path("crop/", include("crop.urls")),
+    path("finance/", include("finance.urls")),
 ]

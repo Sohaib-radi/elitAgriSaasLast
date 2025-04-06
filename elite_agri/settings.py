@@ -30,15 +30,16 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     "corsheaders",
-    'animal',
-    'core',
     'rest_framework',
     'rest_framework.authtoken',
+    'animal',
+    'core',
     'farm_settings',
     'land',
     'product_catalogue',
     'warehouse',
-    'crop'
+    'crop',
+    'finance'
 
 ]
 
