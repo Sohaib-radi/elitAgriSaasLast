@@ -17,9 +17,12 @@ class ExpenseCategorySerializer(serializers.ModelSerializer):
             "image",
             "created_at",
             "updated_at",
-            "farm",
         ]
         read_only_fields = ["id", "created_at", "updated_at"]
+
+    def create(self, validated_data):
+        validated_data["farm"] = self.context["request"].user.active_farm
+        return super().create(validated_data)
 
 class ExpenseItemAttachmentSerializer(serializers.ModelSerializer):
     class Meta:
@@ -43,9 +46,12 @@ class ExpenseItemSerializer(serializers.ModelSerializer):
             "description",
             "status",
             "date",
-            "attachments", 
+            "attachments",
             "created_at",
             "updated_at",
-            "farm",
         ]
         read_only_fields = ["id", "created_at", "updated_at", "category_name", "attachments"]
+
+    def create(self, validated_data):
+        validated_data["farm"] = self.context["request"].user.active_farm
+        return super().create(validated_data)

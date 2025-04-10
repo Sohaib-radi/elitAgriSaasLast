@@ -3,6 +3,10 @@ from core.permissions.permissions import IsFarmAdmin, HasRolePermission, IsFarmO
 
 
 PERMISSION_MAP = {
+    "people": {
+        "read": [HasRolePermission("people.view")],
+        "write": [HasRolePermission("people.manage")],
+    },
     "suppliers": {
         "read": [HasRolePermission("suppliers.view")],
         "write": [IsFarmOwnerOrReadOnly(), HasRolePermission("suppliers.manage")],
@@ -78,35 +82,35 @@ PERMISSION_MAP = {
     },
 
     "expenses": {
-    "read": [HasRolePermission("finance.view_expenses")],
-    "write": [IsFarmOwnerOrReadOnly(), HasRolePermission("finance.manage_expenses")],
-    },
+        "read": [HasRolePermission("finance.view_expenses")],
+        "write": [IsFarmOwnerOrReadOnly(), HasRolePermission("finance.manage")],
+        },
     "receipts": {
-        "read": [HasRolePermission("finance.view_receipts")],
-        "write": [IsFarmOwnerOrReadOnly(), HasRolePermission("finance.manage_receipts")],
-    },
+        "read": [HasRolePermission("receipts.view")],
+        "write": [IsFarmOwnerOrReadOnly(), HasRolePermission("receipts.manage")],
+     },
     "payments": {
-        "read": [HasRolePermission("finance.view_payments")],
-        "write": [IsFarmOwnerOrReadOnly(), HasRolePermission("finance.manage_payments")],
+        "read": [HasRolePermission("payments.manage")],
+        "write": [IsFarmOwnerOrReadOnly(), HasRolePermission("payments.manage")],
     },
     "revenues": {
         "read": [HasRolePermission("finance.view_revenues")],
-        "write": [IsFarmOwnerOrReadOnly(), HasRolePermission("finance.manage_revenues")],
+        "write": [IsFarmOwnerOrReadOnly(), HasRolePermission("finance.manage")],
     },
     "debts": {
-        "read": [HasRolePermission("finance.view_debts")],
-        "write": [IsFarmOwnerOrReadOnly(), HasRolePermission("finance.manage_debts")],
+        "read": [HasRolePermission("debts.manage")],
+        "write": [IsFarmOwnerOrReadOnly(), HasRolePermission("debts.view")],
     },
     "invoices": {
-        "read": [HasRolePermission("finance.view_invoices")],
-        "write": [IsFarmOwnerOrReadOnly(), HasRolePermission("finance.manage_invoices")],
+        "read": [HasRolePermission("invoices.view")],
+        "write": [IsFarmOwnerOrReadOnly(), HasRolePermission("invoices.manage")],
     },
     "subscriptions": {
-        "read": [HasRolePermission("finance.view_subscriptions")],
-        "write": [IsFarmOwnerOrReadOnly(), HasRolePermission("finance.manage_subscriptions")],
+        "read": [HasRolePermission("finance.view")],
+        "write": [IsFarmOwnerOrReadOnly(), HasRolePermission("finance.manage")],
     },
     "finance_reports": {
-        "read": [HasRolePermission("finance.view_statistics")],
+        "read": [HasRolePermission("finance.view")],
         "write": [IsFarmAdmin()],  # Optional if write is ever needed
     },
 

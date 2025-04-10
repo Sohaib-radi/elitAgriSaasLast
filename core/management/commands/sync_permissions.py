@@ -20,7 +20,7 @@ PERMISSION_CODES = {
     "warehouse_quantity_schedules": ["view", "manage"],
     "warehouse_reminders": ["view", "manage"],
     "crop": ["view", "manage"],
-
+    "people": ["view", "manage"],
     # ✅ Finance module
     "expenses": ["view", "manage"],
     "receipts": ["view", "manage"],

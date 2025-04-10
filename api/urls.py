@@ -39,6 +39,7 @@ urlpatterns += [
     path("auth/my-permissions/", MyPermissionsView.as_view(), name="my_permissions"),
     path("auth/my-farms/", MyFarmsView.as_view(), name="my-farms"),
     path("settings/farm/", include("farm_settings.urls")),
+    
 ]
 
 urlpatterns +=[
@@ -49,4 +50,5 @@ urlpatterns +=[
     path("warehouse/", include("warehouse.urls")),
     path("crop/", include("crop.urls")),
     path("finance/", include("finance.urls")),
+    path("core/", include("core.urls")),
 ]
