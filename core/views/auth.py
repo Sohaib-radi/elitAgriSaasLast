@@ -20,7 +20,7 @@ class MeView(APIView):
 
     def get(self, request):
         serializer = UserMeSerializer(request.user, context={'request': request})
-        return Response(serializer.data)
+        return Response({"user": serializer.data})
     
 
 class CustomLoginView(APIView):

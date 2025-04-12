@@ -45,28 +45,45 @@ class FarmAdmin(admin.ModelAdmin):
 @admin.register(User)
 class UserAdmin(BaseUserAdmin):
     model = User
-    list_display = ("email", "full_name", "is_active", "is_staff", "created_at")
-    list_filter = ("is_staff", "is_active", "created_at")
+    list_display = (
+        "email", "full_name", "phone", "is_verified", "city", "state",
+        "status", "country", "zip_code", "company", "is_active", "is_staff", "created_at"
+    )
+    list_filter = ("is_staff", "is_active", "is_verified", "country", "created_at")
     ordering = ("-created_at",)
-    search_fields = ("email", "full_name")
+    search_fields = ("email", "full_name", "phone", "company", "country")
 
     readonly_fields = ("created_at", "updated_at", "last_login")
 
     fieldsets = (
         (None, {"fields": ("email", "password")}),
-        (_("Personal Info"), {"fields": ("full_name", "phone")}),
-        (_("Permissions"), {"fields": ("is_active", "is_staff", "is_superuser", "groups", "user_permissions")}),
+        (_("Personal Info"), {
+            "fields": (
+                "full_name", "phone", "city", "state", "status",
+                "address", "country", "zip_code", "company", "avatar_url"
+            )
+        }),
+        (_("Permissions"), {
+            "fields": (
+                "is_active", "is_verified", "is_staff", "is_superuser",
+                "groups", "user_permissions"
+            )
+        }),
+        (_("Farm Info"), {
+            "fields": ("active_farm",)
+        }),
         (_("Dates"), {"fields": ("last_login", "created_at", "updated_at")}),
     )
 
     add_fieldsets = (
         (None, {
             "classes": ("wide",),
-            "fields": ("email", "full_name", "password1", "password2", "is_staff", "is_active"),
+            "fields": (
+                "email", "full_name", "password1", "password2",
+                "phone", "is_staff", "is_active", "is_verified"
+            ),
         }),
     )
-
-
 @admin.register(TeamMember)
 class TeamMemberAdmin(admin.ModelAdmin):
     list_display = ("user", "farm", "role", "is_admin", "created_at")

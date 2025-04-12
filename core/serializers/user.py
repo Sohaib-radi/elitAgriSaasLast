@@ -28,9 +28,18 @@ class UserMeSerializer(serializers.ModelSerializer):
     role = serializers.SerializerMethodField()
     is_admin = serializers.SerializerMethodField()
 
+    # ➕ Additional mappings for frontend
+    name = serializers.CharField(source='full_name')
+    phoneNumber = serializers.CharField(source='phone')
+    isVerified = serializers.BooleanField(source='is_active')
+
     class Meta:
         model = User
-        fields = ['id', 'email', 'full_name', 'farm', 'role', 'is_admin']
+        fields = [
+            'id', 'email', 'name', 'phoneNumber', 'isVerified',
+            'city', 'state', 'status', 'address', 'country', 'zip_code',
+            'company', 'avatar_url', 'farm', 'role', 'is_admin'
+        ]
 
     def get_farm(self, user):
         if not user.active_farm:

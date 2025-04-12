@@ -129,15 +129,16 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # SOAHIB CONFIGURATION
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",  # your Next.js app
+    "http://localhost:3000",  
+    "http://localhost:8082",
 ]
-
+CORS_ALLOW_CREDENTIALS = True
 # Development
-FRONTEND_URL = "http://localhost:3000"
+FRONTEND_URL = "http://localhost:8082"
 
 
 # Or Production
-FRONTEND_URL = "http://localhost:3000"
+FRONTEND_URL = "http://localhost:8082"
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
@@ -152,7 +153,7 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(days=50000),  
+    'ACCESS_TOKEN_LIFETIME': timedelta(hours=2),  
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),     
     'ROTATE_REFRESH_TOKENS': False,
     'BLACKLIST_AFTER_ROTATION': True,
