@@ -159,3 +159,8 @@ SIMPLE_JWT = {
     'BLACKLIST_AFTER_ROTATION': True,
     'AUTH_HEADER_TYPES': ('Bearer',),
 }
+
+# MEDIAL CONFIGURATION
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'

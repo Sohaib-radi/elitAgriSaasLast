@@ -1,7 +1,8 @@
+from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from core.serializers.user import UserMeSerializer
+from core.serializers.user import UserCreateUpdateSerializer, UserMeSerializer
 from core.serializers.auth import LoginSerializer, SwitchFarmSerializer
 from rest_framework import status
 from core.serializers.auth import SignupSerializer
@@ -9,12 +10,15 @@ from core.models.farm import Farm
 from core.models.team import TeamMember
 from core.utils.audit import log_user_action
 from core.serializers.auth import AcceptInviteSerializer
-from core.permissions.permissions import IsNotExpired
+from core.permissions.permissions import IsFarmAdmin, IsNotExpired
 from rest_framework.permissions import AllowAny
 from farm_settings.models import FarmSettings
 from core.constants.log_actions import LogActions
 from django.utils.translation import gettext_lazy as _
+from django.contrib.auth import get_user_model
 
+
+User = get_user_model()
 class MeView(APIView):
     permission_classes = [IsAuthenticated,IsNotExpired]
 
@@ -22,7 +26,14 @@ class MeView(APIView):
         serializer = UserMeSerializer(request.user, context={'request': request})
         return Response({"user": serializer.data})
     
+class UserUpdateView(APIView):
+    permission_classes = [IsAuthenticated]
 
+    def put(self, request):
+        serializer = UserUpdateSerializer(request.user, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({'success': True, 'message': 'User info updated'})
 class CustomLoginView(APIView):
     permission_classes = [AllowAny]
     """
@@ -109,6 +120,55 @@ class AcceptInviteView(APIView):
         return Response({"detail": _("Account activated successfully.")}, status=status.HTTP_200_OK)
 
 
+class CreateUserView(APIView):
+    permission_classes = [IsAuthenticated, IsFarmAdmin]
+
+    def post(self, request):
+        serializer = UserCreateUpdateSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+        return Response({
+            "message": _("User created successfully"),
+            "user": serializer.data
+        }, status=201)
+
+
+class UpdateCurrentUserView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def put(self, request):
+        serializer = UserCreateUpdateSerializer(request.user, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({
+            "message": _("User updated successfully"),
+            "user": serializer.data
+            })
+
+class AdminUpdateTeamMemberView(APIView):
+    permission_classes = [IsAuthenticated, IsFarmAdmin]
+
+    def put(self, request, team_member_id):
+        team_member = get_object_or_404(TeamMember, id=team_member_id)
+        user = team_member.user
+
+        print('✅ Admin is updating team member:', team_member.id)
+        print('👤 Linked user ID:', user.id)
+
+        serializer = UserCreateUpdateSerializer(
+            user,
+            data=request.data,
+            context={"team_member": team_member},
+            partial=True
+        )
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response({
+            "message": _("User updated successfully"),
+            "user": serializer.data
+        })
+    
 
 class MyFarmsView(APIView):
     permission_classes = [IsAuthenticated]

@@ -21,6 +21,7 @@ PERMISSION_CODES = {
     "warehouse_reminders": ["view", "manage"],
     "crop": ["view", "manage"],
     "people": ["view", "manage"],
+    "users": ["view", "manage"],
     # ✅ Finance module
     "expenses": ["view", "manage"],
     "receipts": ["view", "manage"],

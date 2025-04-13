@@ -25,13 +25,47 @@ class TeamMemberCreateSerializer(serializers.ModelSerializer):
 
 
 class TeamMemberListSerializer(serializers.ModelSerializer):
-    user_email = serializers.EmailField(source='user.email', read_only=True)
-    full_name = serializers.CharField(source='user.full_name', read_only=True)
-    role_name = serializers.CharField(source='role.name', read_only=True)
+    email = serializers.EmailField(source='user.email', read_only=True)
+    name = serializers.CharField(source='user.full_name', read_only=True)
+    phoneNumber = serializers.CharField(source='user.phone', read_only=True)
+    isVerified = serializers.BooleanField(source='user.is_active', read_only=True)
+    city = serializers.CharField(source='user.city', read_only=True)
+    state = serializers.CharField(source='user.state', read_only=True)
+    status = serializers.SerializerMethodField() 
+    address = serializers.CharField(source='user.address', read_only=True)
+    country = serializers.CharField(source='user.country', read_only=True)
+    zipCode = serializers.CharField(source='user.zip_code', read_only=True)
+    company = serializers.CharField(source='user.company', read_only=True)
+    avatarUrl = serializers.CharField(source='user.avatar_url', read_only=True)
+    avatar = serializers.ImageField(source='user.avatar', read_only=True)
+    role = serializers.SerializerMethodField()
+    farm = serializers.SerializerMethodField()
 
     class Meta:
         model = TeamMember
-        fields = ['id', 'user_email', 'full_name', 'role_name', 'is_admin', 'created_at']
+        fields = [
+            'id', 'email', 'name', 'phoneNumber', 'isVerified', 'city', 'state', 'status',
+            'address', 'country', 'zipCode', 'company', 'avatarUrl','avatar', 'role', 'is_admin', 'farm'
+        ]
+
+    def get_status(self, obj):
+        return obj.user.status  # ✅ safely calls the @property from the User model
+
+    def get_role(self, obj):
+        if obj.role:
+            return {
+                "id": obj.role.id,
+                "name": obj.role.name,
+            }
+        return ""
+
+    def get_farm(self, obj):
+        if obj.farm:
+            return {
+                "id": obj.farm.id,
+                "name": obj.farm.name,
+            }
+        return None
 
 
 class TeamMemberInviteSerializer(serializers.Serializer):
@@ -69,6 +103,7 @@ class TeamMemberInviteSerializer(serializers.Serializer):
             role=role,
             is_admin=is_admin
         )
+
 
 
 class TeamMemberUpdateSerializer(serializers.ModelSerializer):

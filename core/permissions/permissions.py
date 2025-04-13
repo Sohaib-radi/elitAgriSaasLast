@@ -19,7 +19,9 @@ class IsFarmAdmin(BasePermission):
     def has_permission(self, request, view):
         user = request.user
         farm = user.active_farm
-
+        print('User form is farm admin')
+        print(user.id)
+        print(farm.id)
         if not farm:
             return False
 

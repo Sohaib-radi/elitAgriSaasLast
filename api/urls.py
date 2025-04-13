@@ -1,5 +1,5 @@
 from django.urls import path, include
-from core.views.auth import MeView, MyFarmsView
+from core.views.auth import CreateUserView, MeView, MyFarmsView, UpdateCurrentUserView,AdminUpdateTeamMemberView
 from core.views.role import RoleListView
 from core.views.team import TeamMemberView
 from core.views.team import TeamMemberInviteView
@@ -39,7 +39,9 @@ urlpatterns += [
     path("auth/my-permissions/", MyPermissionsView.as_view(), name="my_permissions"),
     path("auth/my-farms/", MyFarmsView.as_view(), name="my-farms"),
     path("settings/farm/", include("farm_settings.urls")),
-    
+    path('auth/user/create/', CreateUserView.as_view(), name='user-create'),
+    path('auth/user/update/', UpdateCurrentUserView.as_view(), name='user-update'),
+    path('team-member/<int:team_member_id>/edit/', AdminUpdateTeamMemberView.as_view(), name='team-member-update')
 ]
 
 urlpatterns +=[

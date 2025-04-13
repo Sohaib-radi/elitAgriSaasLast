@@ -51,6 +51,12 @@ class TeamMemberInviteView(AutoPermissionAPIView):
 class TeamMemberDetailView(AutoPermissionAPIView):
     permission_module = "team"
 
+    def get(self, request, pk):
+        farm = request.user.active_farm
+        member = get_object_or_404(TeamMember, pk=pk, farm=farm)
+        serializer = TeamMemberListSerializer(member)
+        return Response(serializer.data)
+    
     def patch(self, request, pk):
         farm = request.user.active_farm
         member = get_object_or_404(TeamMember, pk=pk, farm=farm)

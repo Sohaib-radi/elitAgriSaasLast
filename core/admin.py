@@ -46,7 +46,7 @@ class FarmAdmin(admin.ModelAdmin):
 class UserAdmin(BaseUserAdmin):
     model = User
     list_display = (
-        "email", "full_name", "phone", "is_verified", "city", "state",
+        "email","uuid", "full_name", "phone", "is_verified", "city", "state",
         "status", "country", "zip_code", "company", "is_active", "is_staff", "created_at"
     )
     list_filter = ("is_staff", "is_active", "is_verified", "country", "created_at")
@@ -59,7 +59,7 @@ class UserAdmin(BaseUserAdmin):
         (None, {"fields": ("email", "password")}),
         (_("Personal Info"), {
             "fields": (
-                "full_name", "phone", "city", "state", "status",
+                "full_name", "phone", "city", "state",
                 "address", "country", "zip_code", "company", "avatar_url"
             )
         }),

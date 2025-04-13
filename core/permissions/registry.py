@@ -3,6 +3,10 @@ from core.permissions.permissions import IsFarmAdmin, HasRolePermission, IsFarmO
 
 
 PERMISSION_MAP = {
+    "users": {
+        "read": [HasRolePermission("users.view")],
+        "write": [HasRolePermission("users.manage")],
+    },
     "people": {
         "read": [HasRolePermission("people.view")],
         "write": [HasRolePermission("people.manage")],
