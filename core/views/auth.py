@@ -152,9 +152,6 @@ class AdminUpdateTeamMemberView(APIView):
         team_member = get_object_or_404(TeamMember, id=team_member_id)
         user = team_member.user
 
-        print('✅ Admin is updating team member:', team_member.id)
-        print('👤 Linked user ID:', user.id)
-
         serializer = UserCreateUpdateSerializer(
             user,
             data=request.data,
