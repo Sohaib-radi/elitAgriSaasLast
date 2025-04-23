@@ -7,6 +7,10 @@ PERMISSION_MAP = {
         "read": [HasRolePermission("users.view")],
         "write": [HasRolePermission("users.manage")],
     },
+    "farm_settings": {
+        "read": [HasRolePermission("farm_settings.view")],
+        "write": [HasRolePermission("farm_settings.manage")],
+    },
     "people": {
         "read": [HasRolePermission("people.view")],
         "write": [HasRolePermission("people.manage")],

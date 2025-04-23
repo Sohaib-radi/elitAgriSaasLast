@@ -31,6 +31,7 @@ PERMISSION_CODES = {
     "invoices": ["view", "manage"],
     "subscriptions": ["view", "manage"],
     "finance_reports": ["view"],
+    "farm_settings":["view","manage"]
 }
 
 #python manage.py sync_permissions

@@ -2,11 +2,13 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework import viewsets, status
+from rest_framework.parsers import MultiPartParser, FormParser
 from core.permissions.permissions import IsFarmAdmin
 from farm_settings.models import FarmSettings
 from farm_settings.serializers import FarmSettingsSerializer
 from core.models.farm import Farm
 from django.utils.translation import gettext_lazy as _
+from core.viewsets.base import AutoPermissionAPIView 
 
 class FarmSettingsAdminViewSet(viewsets.ModelViewSet):
     """
@@ -16,37 +18,53 @@ class FarmSettingsAdminViewSet(viewsets.ModelViewSet):
     serializer_class = FarmSettingsSerializer
     permission_classes = [IsAdminUser]
 
-
-class MyFarmSettingsView(APIView):
+class MyFarmSettingsView(AutoPermissionAPIView):
     """
     Get or update settings for the current farm of the authenticated user
     """
-    permission_classes = [IsAuthenticated, IsFarmAdmin]
+    permission_module = "farm"
+    parser_classes = [MultiPartParser, FormParser]
 
-    def get(self, request):
+    def get_farm_settings(self, request):
         farm = getattr(request.user, "active_farm", None)
         if not farm or not hasattr(farm, "settings"):
+            return None
+        return farm.settings
+
+    def get(self, request):
+        settings = self.get_farm_settings(request)
+        if not settings:
             return Response({"detail": _("Settings not found.")}, status=404)
 
-        serializer = FarmSettingsSerializer(farm.settings)
+        serializer = FarmSettingsSerializer(settings)
         return Response(serializer.data)
 
     def put(self, request):
-        farm = getattr(request.user, "active_farm", None)
-        if not farm or not hasattr(farm, "settings"):
+        settings = self.get_farm_settings(request)
+        if not settings:
             return Response({"detail": _("Settings not found.")}, status=404)
 
-        serializer = FarmSettingsSerializer(farm.settings, data=request.data)
+        serializer = FarmSettingsSerializer(settings, data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        return Response(serializer.data)
+        return Response({"detail": _("Farm settings updated successfully."), "data": serializer.data})
+
+    def patch(self, request):
+        settings = self.get_farm_settings(request)
+        if not settings:
+            return Response({"detail": _("Settings not found.")}, status=404)
+
+        serializer = FarmSettingsSerializer(settings, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({"detail": _("Farm settings partially updated."), "data": serializer.data})
 
 
-class FarmSettingsListView(APIView):
+class FarmSettingsListView(AutoPermissionAPIView):
     """
     Get settings of a specific farm (admin only)
     """
-    permission_classes = [IsAdminUser]
+    permission_module = "farm"
 
     def get(self, request, farm_id=None):
         if not farm_id:
