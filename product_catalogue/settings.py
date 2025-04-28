@@ -133,8 +133,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:8082",
     "http://63.250.41.35:8000",
     "http://63.250.41.35",
-    "https://elit-agri-front.vercel.app",
-    "http://63.250.41.35:8082"
+    "https://elit-agri-front.vercel.app"
 ]
 CORS_ALLOW_CREDENTIALS = True
 # Development
