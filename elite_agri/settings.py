@@ -132,15 +132,16 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",  
     "http://localhost:8082",
     "http://63.250.41.35:8000",
-    "http://63.250.41.35"
+    "http://63.250.41.35",
+    "https://elit-agri-front.vercel.app"
 ]
 CORS_ALLOW_CREDENTIALS = True
 # Development
-FRONTEND_URL = "http://localhost:8082"
+FRONTEND_URL = "https://elit-agri-front.vercel.app"
 
 
 # Or Production
-FRONTEND_URL = "http://localhost:8082"
+FRONTEND_URL = "https://elit-agri-front.vercel.app"
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
