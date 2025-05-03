@@ -1,27 +1,19 @@
-
 from pathlib import Path
 from datetime import timedelta
-
-
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+from corsheaders.defaults import default_headers, default_methods
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-AUTH_USER_MODEL = 'core.User'
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-*e&dv+z()by@dysof_-n4q)*g3u!1xao9f9#471hh*j8)+(kf+'
 
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+# AUTH USER
+AUTH_USER_MODEL = 'core.User'
 
-# Application definition
-
+# APPLICATIONS
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -29,9 +21,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    "corsheaders",
+
+    'corsheaders',
     'rest_framework',
     'rest_framework.authtoken',
+
     'animal',
     'core',
     'farm_settings',
@@ -39,12 +33,13 @@ INSTALLED_APPS = [
     'product_catalogue',
     'warehouse',
     'crop',
-    'finance'
-
+    'finance',
 ]
 
+# MIDDLEWARE
 MIDDLEWARE = [
-    "corsheaders.middleware.CorsMiddleware", 
+    "corsheaders.middleware.CorsMiddleware",  # ✅ Must be first
+    "core.middleware.cors_fix.CustomCorsMiddleware",  # ✅ Custom CORS for error responses
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -74,10 +69,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'elite_agri.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-
+# DATABASE
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -85,65 +77,29 @@ DATABASES = {
     }
 }
 
-# Password validation
-# https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
-
+# PASSWORD VALIDATION
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
-
-# Internationalization
-# https://docs.djangoproject.com/en/5.1/topics/i18n/
-
+# INTERNATIONALIZATION
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.1/howto/static-files/
-
-STATIC_URL = 'static/'
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
+# STATIC & MEDIA
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'static'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# SOAHIB CONFIGURATION
-
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",  
-    "http://localhost:8082",
-    "http://63.250.41.35:8000",
-    "http://63.250.41.35",
-    "https://elit-agri-front.vercel.app",
-    "http://63.250.41.35:8082"
-]
-CORS_ALLOW_CREDENTIALS = True
-# Development
-FRONTEND_URL = "https://elit-agri-front.vercel.app"
-
-
-# Or Production
-FRONTEND_URL = "https://elit-agri-front.vercel.app"
-
+# 🔐 JWT & REST Framework
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
@@ -151,23 +107,31 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
     ],
-    "DEFAULT_FILTER_BACKENDS": [
-        "django_filters.rest_framework.DjangoFilterBackend"
-    ]
+    'DEFAULT_FILTER_BACKENDS': [
+        'django_filters.rest_framework.DjangoFilterBackend'
+    ],
 }
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(hours=2),  
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),     
+    'ACCESS_TOKEN_LIFETIME': timedelta(hours=2),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
     'ROTATE_REFRESH_TOKENS': False,
     'BLACKLIST_AFTER_ROTATION': True,
     'AUTH_HEADER_TYPES': ('Bearer',),
 }
 
-# MEDIAL CONFIGURATION
+# 🌐 CORS CONFIGURATION
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://localhost:8082",
+    "http://63.250.41.35:8000",
+    "http://63.250.41.35",
+    "http://63.250.41.35:8082",
+    "https://agri-front-sooty.vercel.app",
+    "https://eliteagri.online",
+]
 
-STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'static'  
-
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_HEADERS = list(default_headers)
+CORS_ALLOW_METHODS = list(default_methods)
+CORS_EXPOSE_HEADERS = ["Content-Type", "Authorization"]
