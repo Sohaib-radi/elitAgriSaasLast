@@ -39,7 +39,7 @@ INSTALLED_APPS = [
 # MIDDLEWARE
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",  # ✅ Must be first
-    "core.middleware.cors_fix.CustomCorsMiddleware",  # ✅ Custom CORS for error responses
+    "core.middleware.cors_fix.CustomCorsMiddleware",  # ✅ For CORS on errors
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -121,17 +121,19 @@ SIMPLE_JWT = {
 }
 
 # 🌐 CORS CONFIGURATION
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    "http://localhost:8082",
-    "http://63.250.41.35:8000",
-    "http://63.250.41.35",
-    "http://63.250.41.35:8082",
-    "https://agri-front-sooty.vercel.app",
-    "https://eliteagri.online",
-]
-
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_HEADERS = list(default_headers)
 CORS_ALLOW_METHODS = list(default_methods)
 CORS_EXPOSE_HEADERS = ["Content-Type", "Authorization"]
+
+CORS_ALLOWED_ORIGINS = [
+    "https://agri-front-sooty.vercel.app",
+    "https://eliteagri.online",
+    "http://localhost:3000",
+    "http://localhost:8082",
+]
+
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    r"^https://.*\.vercel\.app$",      
+    r"^https://eliteagri\.online$",   
+]
