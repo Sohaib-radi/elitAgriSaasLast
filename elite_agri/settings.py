@@ -39,7 +39,7 @@ INSTALLED_APPS = [
 # MIDDLEWARE
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",  # ✅ Must be first
-    "core.middleware.cors_fix.CustomCorsMiddleware",  # ✅ For CORS on errors
+    #"core.middleware.cors_fix.CustomCorsMiddleware",  # ✅ For CORS on errors
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',

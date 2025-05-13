@@ -1,9 +1,11 @@
 # core/middleware/cors_fix.py
 
 from corsheaders.middleware import CorsMiddleware
-from django.utils.deprecation import MiddlewareMixin
 
-class CustomCorsMiddleware(MiddlewareMixin):
-    def process_response(self, request, response):
-        response = CorsMiddleware().process_response(request, response)
-        return response
+class CustomCorsMiddleware(CorsMiddleware):
+    def __init__(self, get_response):
+        super().__init__(get_response)
+
+    def __call__(self, request):
+        response = self.get_response(request)
+        return super().process_response(request, response)

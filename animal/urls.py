@@ -1,6 +1,6 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from animal.views.animal import AnimalViewSet
+from animal.views.animal import AnimalDeleteView, AnimalDetailView, AnimalStatusListView, AnimalViewSet
 from animal.views.list import AnimalListViewSet
 from animal.views.image import AnimalImageUploadView
 from animal.views.birth import AnimalBirthViewSet
@@ -22,10 +22,13 @@ router.register("vaccine-recommendations", VaccineRecommendationViewSet, basenam
 router.register("custom-fields", CustomListFieldViewSet, basename="custom-fields")
 
 
+
 urlpatterns = [
     path("", include(router.urls)),
     path("animals/<int:pk>/upload-image/", AnimalImageUploadView.as_view(), name="animal-upload-image"),
     path("births/<int:pk>/move-to-animal/", MoveBirthToAnimalView.as_view(), name="move-birth-to-animal"),
     path("deaths/<int:pk>/upload-images/", UploadDeathImageView.as_view(), name="upload-death-images"),
-    
+    path("status-options/", AnimalStatusListView.as_view(), name="animal-status-options"),
+    path("animals/<int:pk>/delete/", AnimalDeleteView.as_view(), name="animal-delete"),
+   
 ]

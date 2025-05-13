@@ -11,21 +11,26 @@ class AnimalDeathImageSerializer(serializers.ModelSerializer):
         read_only_fields = ["id", "uploaded_at"]
 
 
+from animal.serializers.animal import AnimalSerializer  # ✅ ADD THIS
+
 class AnimalDeathSerializer(serializers.ModelSerializer):
+    animal = AnimalSerializer(read_only=True)  # ✅ Replaces the default FK ID
     images = AnimalDeathImageSerializer(many=True, read_only=True)
+    
     uploaded_images = serializers.ListField(
         child=serializers.ImageField(),
         write_only=True,
         required=False,
         help_text=_("One or more images showing the animal death"),
     )
+
     animal_number = serializers.CharField(source="animal.animal_number", read_only=True, help_text=_("Display animal number"))
 
     class Meta:
         model = AnimalDeath
         fields = [
             "id",
-            "animal",
+            "animal",               # ✅ full object
             "animal_number",
             "death_datetime",
             "reason",
@@ -39,7 +44,6 @@ class AnimalDeathSerializer(serializers.ModelSerializer):
         read_only_fields = ["id", "created_by", "created_at", "animal_number"]
 
     def validate_animal(self, animal):
-        """Ensure the animal belongs to the user's active farm"""
         request = self.context["request"]
         if animal.farm != request.user.active_farm:
             raise serializers.ValidationError(_("This animal does not belong to your active farm."))
@@ -53,3 +57,4 @@ class AnimalDeathSerializer(serializers.ModelSerializer):
             AnimalDeathImage.objects.create(death=death, image=image)
 
         return death
+
