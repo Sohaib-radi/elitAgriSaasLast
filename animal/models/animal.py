@@ -59,7 +59,7 @@ class Animal(TimeStampedModel, CreatedByMixin,FarmLinkedModel):
         help_text=_("Official registration number (e.g., RFID tag)."),
         db_index=True,
     )
-
+    
     name = models.CharField(
         max_length=100,
         blank=True,

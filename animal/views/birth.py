@@ -39,11 +39,7 @@ class MoveBirthToAnimalView(APIView):
     """
     Moves a birth record to Animal after validation
     """
-    permission_classes = [
-        IsAuthenticated,
-        IsNotExpired,
-        HasRolePermission("animals.manage"),
-    ]
+    permission_module = "animal_births"
 
     def post(self, request, pk):
         birth = get_object_or_404(AnimalBirth, pk=pk, farm=request.user.active_farm)
