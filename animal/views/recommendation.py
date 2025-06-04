@@ -14,4 +14,17 @@ class VaccineRecommendationViewSet(AutoPermissionViewSet):
     permission_module = "animals"
 
     def get_queryset(self):
-        return VaccineRecommendation.objects.all().order_by("species", "recommended_age_days")
+        queryset = VaccineRecommendation.objects.all().order_by("species", "recommended_age_days")
+        
+        species = self.request.query_params.get("species")
+        applies_to_purchased = self.request.query_params.get("applies_to_purchased")
+
+        if species:
+            queryset = queryset.filter(species=species)
+
+        if applies_to_purchased is not None:
+            # Converts "true"/"false" string to proper boolean
+            applies_to_purchased = applies_to_purchased.lower() == "true"
+            queryset = queryset.filter(applies_to_purchased=applies_to_purchased)
+
+        return queryset

@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from core.models import Farm
+from core.models.base import FarmLinkedModel
 
 class FarmSettings(models.Model):
     """
@@ -99,3 +100,22 @@ class FarmSettings(models.Model):
 
     def get_role_mode(self):
         return self.role_mode
+
+
+class DefaultFarmImage(FarmLinkedModel):
+    class DefaultImageType(models.TextChoices):
+        ANIMAL = "animal", _("Animal")
+        CROP = "crop", _("Crop")
+        LAND = "land", _("Land")
+        PRODUCT = "product", _("Product")
+
+    type = models.CharField(max_length=50, choices=DefaultImageType.choices)
+    image = models.ImageField(upload_to="defaults/", verbose_name=_("Image"))
+
+    class Meta:
+        unique_together = ("farm", "type")
+        verbose_name = _("Default Farm Image")
+        verbose_name_plural = _("Default Farm Images")
+
+    def __str__(self):
+        return f"{self.farm.name} - {self.type}"

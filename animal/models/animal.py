@@ -136,7 +136,11 @@ class Animal(TimeStampedModel, CreatedByMixin,FarmLinkedModel):
         verbose_name=_("Active"),
         help_text=_("Soft-delete flag for animal records."),
     )
-
+    is_purchased = models.BooleanField(
+        default=False,
+        verbose_name=_("Is Purchased"),
+        help_text=_("Indicates whether this animal was purchased from outside."),
+    )
     class Meta:
         verbose_name = _("Animal")
         verbose_name_plural = _("Animals")

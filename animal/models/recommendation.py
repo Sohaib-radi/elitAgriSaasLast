@@ -38,6 +38,11 @@ class VaccineRecommendation(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     
+    applies_to_purchased = models.BooleanField(
+        default=False,
+        verbose_name=_("Applies to Purchased Animals"),
+        help_text=_("Whether this vaccine should be applied to purchased animals."),
+    )
     class Meta:
         verbose_name = _("Vaccine Recommendation")
         verbose_name_plural = _("Vaccine Recommendations")

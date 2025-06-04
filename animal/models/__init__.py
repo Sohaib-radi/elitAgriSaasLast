@@ -7,3 +7,4 @@ from .vaccine import *
 from .recommendation import VaccineRecommendation
 from .field import *
 from .field_value import *
+from .birth_vaccine import *

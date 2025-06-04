@@ -9,6 +9,7 @@ class VaccineStatus(models.TextChoices):
     GIVEN = "given", _("Given")
     EXPIRED = "expired", _("Expired")
     VALID = "valid", _("Valid")
+    MISSED = "missed", _("Missed")  
 
 
 class AnimalVaccine(TimeStampedModel, CreatedByMixin, models.Model):
@@ -58,7 +59,14 @@ class AnimalVaccine(TimeStampedModel, CreatedByMixin, models.Model):
         verbose_name=_("Image"),
         help_text=_("Optional image proof of vaccination."),
     )
-
+    applies_to_purchased = models.BooleanField(
+        default=False,
+        blank=True,
+        null=True,
+        verbose_name=_("Applies to Purchased Animals"),
+        help_text=_("If true, this vaccine is recommended for animals added from outside the farm."),
+    )
+    
     class Meta:
         verbose_name = _("Animal Vaccine")
         verbose_name_plural = _("Animal Vaccines")
