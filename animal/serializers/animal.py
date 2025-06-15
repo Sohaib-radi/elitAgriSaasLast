@@ -202,6 +202,7 @@ class AnimalDetailSerializer(serializers.ModelSerializer):
             "status",
             "description",
             "is_active",
+            "is_purchased",
             "list",
             "list_name",
             "images",

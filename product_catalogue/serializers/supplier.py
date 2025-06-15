@@ -1,7 +1,8 @@
 # product_catalogue/serializers/supplier.py
 
 from rest_framework import serializers
-from product_catalogue.models.supplier import SupplierList, Supplier
+from product_catalogue.models.supplier_list import SupplierList
+from product_catalogue.models.supplier import Supplier
 from product_catalogue.serializers.product import ProductSerializer
 
 class SupplierListSerializer(serializers.ModelSerializer):

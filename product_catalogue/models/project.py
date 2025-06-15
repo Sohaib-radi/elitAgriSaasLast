@@ -5,6 +5,7 @@ from django.utils.translation import gettext_lazy as _
 from core.models.base import BaseModel
 from core.models.base import FarmLinkedModel  
 
+
 class Project(BaseModel, FarmLinkedModel):
     """
     Represents a project within a farm context (e.g., seasonal activity, production goal).

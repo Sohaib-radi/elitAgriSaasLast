@@ -1,6 +1,7 @@
 from rest_framework import viewsets
 from core.viewsets.base import AutoPermissionViewSet
-from product_catalogue.models.supplier import SupplierList, Supplier
+from product_catalogue.models.supplier_list import SupplierList
+from product_catalogue.models.supplier import Supplier
 from product_catalogue.serializers.supplier import SupplierListSerializer, SupplierSerializer
 
 class SupplierListViewSet(AutoPermissionViewSet, viewsets.ModelViewSet):

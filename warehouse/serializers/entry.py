@@ -9,7 +9,11 @@ class WarehouseEntrySerializer(serializers.ModelSerializer):
     )
     object_id = serializers.IntegerField()
     content_object = serializers.SerializerMethodField(read_only=True)
+    def get_reference_name(self, obj):
+        return obj.reference_name()
 
+    def get_model_type(self, obj):
+        return obj.model_type
     class Meta:
         model = WarehouseEntry
         fields = [
@@ -18,6 +22,8 @@ class WarehouseEntrySerializer(serializers.ModelSerializer):
             "content_type",
             "object_id",
             "content_object",
+            "reference_name", 
+            "model_type",
             "quantity",
             "weight",
             "space_taken",
