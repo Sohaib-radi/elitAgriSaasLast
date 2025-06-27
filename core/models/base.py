@@ -14,7 +14,8 @@ class FarmLinkedModel(models.Model):
     farm = models.ForeignKey(
         "core.Farm",
         on_delete=models.CASCADE,
-        related_name="%(class)ss",
+        related_name="%(app_label)s_%(class)ss",
+        related_query_name="%(app_label)s_%(class)s",
         verbose_name=_("Farm")
     )
 

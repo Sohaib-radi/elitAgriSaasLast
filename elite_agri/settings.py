@@ -25,7 +25,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'rest_framework.authtoken',
-
+    'import_export',
     'animal',
     'core',
     'farm_settings',
@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'warehouse',
     'crop',
     'finance',
+    'assets_projects'
 ]
 
 # MIDDLEWARE
@@ -110,6 +111,9 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': [
         'django_filters.rest_framework.DjangoFilterBackend'
     ],
+    'DEFAULT_THROTTLE_RATES': {
+        'personal_product_create': '10/min',  
+    },
 }
 
 SIMPLE_JWT = {

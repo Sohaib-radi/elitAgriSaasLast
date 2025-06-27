@@ -1,5 +1,7 @@
 from django.contrib import admin
 from product_catalogue.models import Product, ProductCategory, ProductImage, ProductVariant
+from product_catalogue.models.personal_product import PersonalProduct
+from product_catalogue.models.project import Project
 
 class ProductImageInline(admin.TabularInline):
     model = ProductImage
@@ -22,3 +24,15 @@ class ProductVariantAdmin(admin.ModelAdmin):
     list_display = ['name', 'code', 'product', 'weight']
     search_fields = ['name', 'code']
     list_filter = ['product']
+
+@admin.register(PersonalProduct)
+class PersonalProductAdmin(admin.ModelAdmin):
+    list_display = ['quantity', 'notes', 'project', 'product']
+    search_fields = ['product']
+    list_filter = ['quantity','product']
+
+@admin.register(Project)
+class ProjectAdmin(admin.ModelAdmin):
+    list_display = ['name', 'description', 'start_date', 'end_date','is_active']
+    search_fields = ['name', 'is_active']
+    list_filter = ['name']

@@ -57,6 +57,7 @@ class Product(FarmLinkedModel):
         verbose_name=_("Category")
     )
     type = models.CharField(max_length=20, choices=PRODUCT_TYPE_CHOICES, verbose_name=_("Type"))
+   
     price = models.DecimalField(
         max_digits=12,
         decimal_places=2,

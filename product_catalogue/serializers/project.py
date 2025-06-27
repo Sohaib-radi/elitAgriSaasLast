@@ -10,7 +10,7 @@ class ProjectSerializer(serializers.ModelSerializer):
             "description",
             "start_date",
             "end_date",
-            "created_at",
-            "created_by",
+           
+            
         ]
-        read_only_fields = ["id", "created_at", "created_by"]
+        read_only_fields = ["id", "created_at"]
