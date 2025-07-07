@@ -2,7 +2,7 @@
 
 import warehouse.models.entry
 from django.db import migrations, models
-
+from warehouse.models.entry import default_today
 
 class Migration(migrations.Migration):
 
@@ -14,6 +14,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='warehouseentry',
             name='date_added',
-            field=models.DateField(default=warehouse.models.entry.WarehouseEntry.default_today, verbose_name='Date Added'),
+            field=models.DateField(default=default_today, verbose_name='Date Added'),
+
         ),
     ]

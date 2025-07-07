@@ -13,6 +13,7 @@ class ExpenseCategory(FarmLinkedModel):
         AGRICULTURE = 'agriculture', _("Agriculture")
         ANIMAL = 'animal', _("Animal")
         WAREHOUSE = 'warehouse', _("Warehouse")
+        SERVICE = 'service',_("Service")
         OTHER = 'other', _("Other")
 
     name = models.CharField(

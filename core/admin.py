@@ -3,6 +3,7 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.utils.translation import gettext_lazy as _
 
 from core.models.farm import Farm
+from core.models.person import Person
 from core.models.user import User
 from core.models.role import Role
 from core.models.team import TeamMember
@@ -101,3 +102,10 @@ class InviteTokenAdmin(admin.ModelAdmin):
     list_display = ['email', 'farm','token', 'role', 'is_admin', 'used', 'expires_at']
     list_filter = ['farm', 'used', 'expires_at']
     search_fields = ['email']
+
+
+@admin.register(Person)
+class PersonAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'type', 'created_at')
+    search_fields = ('name', 'type')
+    list_filter = ('type',)

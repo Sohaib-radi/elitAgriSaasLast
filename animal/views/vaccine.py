@@ -13,6 +13,7 @@ class AnimalVaccineViewSet(AutoPermissionViewSet):
     - animals.view
     - animals.manage
     """
+
     serializer_class = AnimalVaccineSerializer
     permission_module = "animals"
     filter_backends = [DjangoFilterBackend]
@@ -21,9 +22,14 @@ class AnimalVaccineViewSet(AutoPermissionViewSet):
     def get_queryset(self):
         return AnimalVaccine.objects.filter(animal__farm=self.request.user.active_farm)
 
+    def get_serializer_class(self):
+        if self.action == "retrieve":
+            from animal.serializers.vaccine import AnimalVaccineDetailSerializer
+            return AnimalVaccineDetailSerializer
+        return super().get_serializer_class()
+
     def perform_create(self, serializer):
         vaccine = serializer.save(created_by=self.request.user)
-
         UserLog.objects.create(
             user=self.request.user,
             action=LogActions.VACCINE_ADDED,

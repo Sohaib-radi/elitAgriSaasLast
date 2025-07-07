@@ -5,3 +5,9 @@ from .expense_item_attachment import *
 from .receipt import *
 from .receipt_attachment import *
 from .payment_attachment import *
+from .buyer import *
+from .debt import *
+from .purchase import *
+from .sales_invoice import *
+from .subscription import *
+from .service_company import *

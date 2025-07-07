@@ -6,38 +6,68 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 
 
+
 class PurchaseInvoice(FarmLinkedModel):
     """
-    🧾 Represents a purchase invoice (single transaction for a product or asset)
+    🧾 Represents a multi-item purchase invoice with structured financial data,
+    supporting advanced invoice management and multi-item handling.
     """
 
     class PaymentMethod(models.TextChoices):
         CASH = "cash", _("Cash")
-        BANK_TRANSFER = "bank_transfer", _("Bank Transfer")
+        CARD = "card", _("Credit Card")
+        TRANSFER = "transfer", _("Bank Transfer")
         INSTALLMENT = "installment", _("Installment")
         OTHER = "other", _("Other")
+
+    class Status(models.TextChoices):
+        PAID = "paid", _("Paid")
+        PENDING = "pending", _("Pending")
+        OVERDUE = "overdue", _("Overdue")
+        DRAFT = "draft", _("Draft")
 
     supplier = models.ForeignKey(
         Person,
         on_delete=models.CASCADE,
-        limit_choices_to={"type": "supplier"},
         related_name="purchase_invoices",
-        verbose_name=_("Supplier")
+        limit_choices_to={"type": "supplier"},
+        verbose_name=_("Supplier"),
     )
-    invoice_number = models.CharField(max_length=100, verbose_name=_("Invoice Number"))
-    
-    product_content_type = models.ForeignKey(ContentType, on_delete=models.SET_NULL, null=True)
-    product_object_id = models.PositiveIntegerField()
-    product = GenericForeignKey('product_content_type', 'product_object_id')
+    invoice_number = models.CharField(max_length=50, unique=True, verbose_name=_("Invoice Number"))
 
-    quantity = models.PositiveIntegerField(verbose_name=_("Quantity"))
-    total_amount = models.DecimalField(max_digits=12, decimal_places=2, verbose_name=_("Total Amount"))
-    unit_price = models.DecimalField(max_digits=12, decimal_places=2, verbose_name=_("Unit Price"))
+    # Optional: Generic relation for advanced linking (e.g., related project or product group)
+    content_type = models.ForeignKey(ContentType, on_delete=models.SET_NULL, null=True, blank=True)
+    object_id = models.PositiveIntegerField(null=True, blank=True)
+    linked_object = GenericForeignKey("content_type", "object_id")
 
-    payment_method = models.CharField(max_length=50, choices=PaymentMethod.choices, verbose_name=_("Payment Method"))
-    delivery_date = models.DateField(blank=True, null=True, verbose_name=_("Delivery Date"))
+    location = models.CharField(max_length=100,default="turkey", verbose_name=_("Transaction Location"))
     address = models.TextField(blank=True, null=True, verbose_name=_("Address"))
-    description = models.TextField(blank=True, null=True, verbose_name=_("Description"))
+    phone = models.CharField(max_length=20, blank=True, null=True, verbose_name=_("Phone"))
+
+    date = models.DateField(verbose_name=_("Invoice Date"))
+    delivery_date = models.DateField(blank=True, null=True, verbose_name=_("Delivery Date"))
+
+    payment_method = models.CharField(
+        max_length=20,
+        choices=PaymentMethod.choices,
+        verbose_name=_("Payment Method")
+    )
+    status = models.CharField(
+        max_length=20,
+        choices=Status.choices,
+        default=Status.DRAFT,
+        verbose_name=_("Status")
+    )
+
+    subtotal = models.DecimalField(max_digits=12, decimal_places=2, default=0, verbose_name=_("Subtotal"))
+    discount = models.DecimalField(max_digits=10, decimal_places=2, default=0, verbose_name=_("Discount"))
+    shipping = models.DecimalField(max_digits=10, decimal_places=2, default=0, verbose_name=_("Shipping"))
+    taxes = models.DecimalField(max_digits=10, decimal_places=2, default=0, verbose_name=_("Taxes"))
+    vat = models.DecimalField(max_digits=5, decimal_places=2, default=0, verbose_name=_("VAT (%)"))
+    total_amount = models.DecimalField(max_digits=12, decimal_places=2, default=0, verbose_name=_("Total Amount"))
+
+    invoice_from = models.TextField(verbose_name=_("Invoice From"),default="Farm", help_text=_("Seller details for the invoice header"))
+    invoice_to = models.TextField(verbose_name=_("Invoice To"),default="Farm", help_text=_("Buyer details for the invoice header"))
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -45,10 +75,19 @@ class PurchaseInvoice(FarmLinkedModel):
     class Meta:
         verbose_name = _("Purchase Invoice")
         verbose_name_plural = _("Purchase Invoices")
-        ordering = ["-created_at"]
+        ordering = ["-date"]
 
     def __str__(self):
-        return f"{self.invoice_number} - {self.supplier.name}"
+        return f"Purchase Invoice {self.invoice_number} - {self.supplier.name}"
+
+    def update_totals(self):
+        """
+        Automatically calculate subtotal, taxes, and total_amount based on linked items.
+        Should be called after adding/updating invoice items.
+        """
+        self.subtotal = sum(item.total for item in self.items.all())
+        self.total_amount = self.subtotal - self.discount + self.shipping + self.taxes
+        self.save(update_fields=["subtotal", "total_amount"])
 
     @property
     def paid_amount(self):
@@ -57,6 +96,41 @@ class PurchaseInvoice(FarmLinkedModel):
     @property
     def remaining_amount(self):
         return self.total_amount - self.paid_amount
+
+
+class PurchaseInvoiceItem(models.Model):
+    """
+    📦 Represents a line item within a PurchaseInvoice, supporting multi-item purchases.
+    """
+
+    invoice = models.ForeignKey(
+        PurchaseInvoice,
+        on_delete=models.CASCADE,
+        related_name="items",
+        verbose_name=_("Invoice"),
+    )
+    title = models.CharField(max_length=255, verbose_name=_("Title"))
+    description = models.TextField(blank=True, null=True, verbose_name=_("Description"))
+    quantity = models.PositiveIntegerField(verbose_name=_("Quantity"))
+    service = models.CharField(max_length=255, blank=True, null=True, verbose_name=_("Service"))
+    price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name=_("Unit Price"))
+    total = models.DecimalField(max_digits=12, decimal_places=2, verbose_name=_("Total"), editable=False)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = _("Purchase Invoice Item")
+        verbose_name_plural = _("Purchase Invoice Items")
+
+    def __str__(self):
+        return f"{self.title} ({self.quantity} x {self.price})"
+
+    def save(self, *args, **kwargs):
+        self.total = self.quantity * self.price
+        super().save(*args, **kwargs)
+        self.invoice.update_totals()
+
 
 class PurchasePayment(models.Model):
     """

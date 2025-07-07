@@ -6,9 +6,10 @@ from django.utils.translation import gettext_lazy as _
 from rest_framework import status
 
 ALLOWED_MODELS = ["product", "crop", "animal", "newbornanimal"]
+
 class WarehouseContentTypeListView(APIView):
     """
-    Return allowed content types for warehouse entries.
+    Returns allowed content types for warehouse entries for frontend dropdown selection.
     """
     permission_classes = [IsAuthenticated]
 
@@ -18,7 +19,8 @@ class WarehouseContentTypeListView(APIView):
             {
                 "id": ct.id,
                 "model": ct.model,
-                "app_label": ct.app_label
+                "app_label": ct.app_label,
+                "verbose_name": ct.model_class()._meta.verbose_name.title() if ct.model_class() else ct.model
             }
             for ct in content_types
         ]

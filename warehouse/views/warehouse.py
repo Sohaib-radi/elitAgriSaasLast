@@ -1,6 +1,4 @@
-
-
-from rest_framework import viewsets, status
+from rest_framework import status
 from rest_framework.response import Response
 from warehouse.models import Warehouse, WarehouseImage, WarehouseVideo
 from warehouse.serializers.warehouse import (
@@ -10,7 +8,6 @@ from warehouse.serializers.warehouse import (
 )
 from core.viewsets.base import AutoPermissionViewSet
 
-
 class WarehouseViewSet(AutoPermissionViewSet):
     """
     ViewSet to manage Warehouses for a farm.
@@ -19,7 +16,7 @@ class WarehouseViewSet(AutoPermissionViewSet):
     permission_module = "warehouses"
 
     def get_queryset(self):
-        return Warehouse.objects.filter(farm=self.request.user.active_farm)
+        return Warehouse.objects.filter(farm=self.request.user.active_farm).order_by("-created_at")
 
     def perform_create(self, serializer):
         serializer.save(
@@ -27,16 +24,15 @@ class WarehouseViewSet(AutoPermissionViewSet):
             created_by=self.request.user
         )
 
-
 class WarehouseImageViewSet(AutoPermissionViewSet):
     """
-    Manage warehouse image gallery
+    Manage warehouse image gallery.
     """
     serializer_class = WarehouseImageSerializer
     permission_module = "warehouses"
 
     def get_queryset(self):
-        return WarehouseImage.objects.filter(warehouse__farm=self.request.user.active_farm)
+        return WarehouseImage.objects.filter(warehouse__farm=self.request.user.active_farm).order_by("-uploaded_at")
 
     def create(self, request, *args, **kwargs):
         try:
@@ -44,16 +40,15 @@ class WarehouseImageViewSet(AutoPermissionViewSet):
         except Exception as e:
             return Response({"detail": "Failed to upload image.", "error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
-
 class WarehouseVideoViewSet(AutoPermissionViewSet):
     """
-    Manage warehouse video gallery
+    Manage warehouse video gallery.
     """
     serializer_class = WarehouseVideoSerializer
     permission_module = "warehouses"
 
     def get_queryset(self):
-        return WarehouseVideo.objects.filter(warehouse__farm=self.request.user.active_farm)
+        return WarehouseVideo.objects.filter(warehouse__farm=self.request.user.active_farm).order_by("-uploaded_at")
 
     def create(self, request, *args, **kwargs):
         try:

@@ -22,7 +22,9 @@ class DebtSerializer(serializers.ModelSerializer):
     attachments = DebtAttachmentSerializer(many=True, read_only=True)
 
     person_id = serializers.PrimaryKeyRelatedField(
-        queryset=Person.objects.none(), source="person", write_only=True
+        queryset=Person.objects.all(),  # ✅ allow valid Person selection
+        source="person",
+        write_only=True
     )
 
     def __init__(self, *args, **kwargs):

@@ -1,32 +1,39 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
 from django.shortcuts import get_object_or_404
 from django.utils.translation import gettext_lazy as _
 from warehouse.models.warehouse import Warehouse
 from warehouse.models.entry import WarehouseEntry
-from warehouse.serializers.statistics import WarehouseStatisticsSerializer
-from core.permissions.permissions import HasRolePermission
 from core.viewsets.base import AutoPermissionAPIView
+from decimal import Decimal, ROUND_HALF_UP
+
 class WarehouseStatisticsView(AutoPermissionAPIView):
+    """
+    Retrieve detailed statistics for a specific warehouse,
+    including quantities, space usage, breakdown by type, and recent entries.
+    """
     permission_module = "warehouse"
-    
+
     def get(self, request, pk):
         warehouse = get_object_or_404(Warehouse, id=pk, farm=request.user.active_farm)
 
-        entries = WarehouseEntry.objects.filter(warehouse=warehouse)
+        entries = WarehouseEntry.objects.filter(warehouse=warehouse).order_by("-date_added")
 
         total_quantity = sum(entry.quantity for entry in entries)
-        total_weight = sum(entry.weight for entry in entries)
-        total_space_used = sum(entry.space_taken for entry in entries)
-        used_percentage = round((total_space_used / warehouse.space) * 100, 2) if warehouse.space else 0
+        total_weight = sum(entry.weight or 0 for entry in entries)
+        total_space_used = sum(entry.space_taken or 0 for entry in entries)
+        used_percentage = (
+            (Decimal(total_space_used) / Decimal(warehouse.space) * Decimal(100))
+            .quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
+            if warehouse.space else Decimal("0.00")
+        )
 
         type_counts = {}
         for entry in entries:
             model_name = entry.content_type.model
             type_counts[model_name] = type_counts.get(model_name, 0) + 1
 
-        latest_entries = entries.order_by("-date_added")[:5]
+        latest_entries = entries[:5]
 
         data = {
             "warehouse_id": warehouse.id,

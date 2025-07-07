@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from core.models.base import TimeStampedModel, CreatedByMixin
+from core.models.base import FarmLinkedModel, TimeStampedModel, CreatedByMixin
 from animal.models.animal import Animal
 
 
@@ -12,7 +12,7 @@ class VaccineStatus(models.TextChoices):
     MISSED = "missed", _("Missed")  
 
 
-class AnimalVaccine(TimeStampedModel, CreatedByMixin, models.Model):
+class AnimalVaccine(TimeStampedModel, CreatedByMixin, FarmLinkedModel):
     animal = models.ForeignKey(
         Animal,
         on_delete=models.CASCADE,

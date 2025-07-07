@@ -54,4 +54,6 @@ urlpatterns +=[
     path("finance/", include("finance.urls")),
     path("core/", include("core.urls")),
     path("projects/",include("assets_projects.urls")),
+    path('dashboard/', include('dashboard.urls')),
+
 ]

@@ -7,6 +7,7 @@ from animal.filters.death import AnimalDeathFilter
 from core.constants.log_actions import LogActions
 from core.models.audit import UserLog
 
+
 class AnimalDeathViewSet(AutoPermissionViewSet):
     serializer_class = AnimalDeathSerializer
     permission_module = "animal_deaths"
@@ -19,11 +20,11 @@ class AnimalDeathViewSet(AutoPermissionViewSet):
     def perform_create(self, serializer):
         animal = serializer.validated_data["animal"]
 
-        # 1. Soft-delete the animal (mark as inactive)
+        # 1. Soft-delete the animal
         animal.is_active = False
         animal.save()
 
-        # 2. Log the death action
+        # 2. Log the action
         UserLog.objects.create(
             user=self.request.user,
             action=LogActions.ANIMAL_DEATH,

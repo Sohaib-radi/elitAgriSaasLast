@@ -9,11 +9,14 @@ class WarehouseEntrySerializer(serializers.ModelSerializer):
     )
     object_id = serializers.IntegerField()
     content_object = serializers.SerializerMethodField(read_only=True)
-    def get_reference_name(self, obj):
-        return obj.reference_name()
-
-    def get_model_type(self, obj):
-        return obj.model_type
+    reference_name = serializers.SerializerMethodField(read_only=True)
+    model_type = serializers.SerializerMethodField(read_only=True)
+    content_type_verbose = serializers.SerializerMethodField(read_only=True)
+    def get_content_type_verbose(self, obj):
+        try:
+            return obj.content_type.model_class()._meta.verbose_name.title()
+        except:
+            return obj.model_type.capitalize()
     class Meta:
         model = WarehouseEntry
         fields = [
@@ -22,15 +25,33 @@ class WarehouseEntrySerializer(serializers.ModelSerializer):
             "content_type",
             "object_id",
             "content_object",
-            "reference_name", 
+            "reference_name",
             "model_type",
+            "content_type_verbose",
             "quantity",
             "weight",
             "space_taken",
             "entry_presence",
+            "status",
+            "origin",
+            "notes",
+            "barcode",
             "date_added",
+            "is_active",
+            "created_by",
+            "created_at",
+            "updated_at",
         ]
-        read_only_fields = ["id", "date_added", "content_object"]
+        read_only_fields = [
+            "id",
+            "date_added",
+            "content_object",
+            "reference_name",
+            "model_type",
+            "created_at",
+            "updated_at",
+            "created_by",
+        ]
 
     def validate(self, data):
         model_class = data["content_type"].model_class()
@@ -45,6 +66,11 @@ class WarehouseEntrySerializer(serializers.ModelSerializer):
     def get_content_object(self, obj):
         try:
             return str(obj.content_object)
-        except:
+        except Exception:
             return None
 
+    def get_reference_name(self, obj):
+        return obj.reference_name()
+
+    def get_model_type(self, obj):
+        return obj.model_type

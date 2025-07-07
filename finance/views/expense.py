@@ -10,7 +10,7 @@ class ExpenseCategoryViewSet(AutoPermissionViewSet):
     """
     queryset = ExpenseCategory.objects.all()
     serializer_class = ExpenseCategorySerializer
-    permission_module = "expenses"
+    permission_module = "product"
    
 
     def get_queryset(self):
@@ -23,6 +23,6 @@ class ExpenseItemViewSet(AutoPermissionViewSet):
     """
     queryset = ExpenseItem.objects.all()
     serializer_class = ExpenseItemSerializer
-    permission_module = "expenses"
+    permission_module = "product"
     def get_queryset(self):
         return self.queryset.filter(farm=self.request.user.active_farm)

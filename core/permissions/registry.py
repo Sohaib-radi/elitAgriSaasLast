@@ -121,6 +121,10 @@ PERMISSION_MAP = {
         "read": [HasRolePermission("finance.view")],
         "write": [IsFarmAdmin()],  # Optional if write is ever needed
     },
+     "warehouse": {
+        "read": [HasRolePermission("warehouses.view")],
+        "write": [IsFarmOwnerOrReadOnly(), IsFarmAdmin(), HasRolePermission("warehouses.manage")],
+    },
 
 
 }
