@@ -132,10 +132,12 @@ CORS_ALLOW_METHODS = list(default_methods)
 CORS_EXPOSE_HEADERS = ["Content-Type", "Authorization"]
 
 CORS_ALLOWED_ORIGINS = [
-    "https://agri-front-sooty.vercel.app",
     "https://eliteagri.online",
     "http://localhost:3000",
     "http://localhost:8082",
+    "https://agri-front-c7jb.vercel.app",
+    "https://farmpazari.com"
+
 ]
 
 CORS_ALLOWED_ORIGIN_REGEXES = [
