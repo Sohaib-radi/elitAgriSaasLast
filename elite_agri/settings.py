@@ -125,22 +125,26 @@ SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('Bearer',),
 }
 
-# 🌐 CORS CONFIGURATION
+# # 🌐 CORS CONFIGURATION
+# CORS_ALLOW_CREDENTIALS = True
+# CORS_ALLOW_HEADERS = list(default_headers)
+# CORS_ALLOW_METHODS = list(default_methods)
+# CORS_EXPOSE_HEADERS = ["Content-Type", "Authorization"]
+
+# CORS_ALLOWED_ORIGINS = [
+#     "https://eliteagri.online",
+#     "http://localhost:3000",
+#     "http://localhost:8082",
+#     "https://agri-front-c7jb.vercel.app",
+#     "https://farmpazari.com"
+
+# ]
+
+# CORS_ALLOWED_ORIGIN_REGEXES = [
+#     r"^https://.*\.vercel\.app$",      
+#     r"^https://eliteagri\.online$",   
+# ]
+
+# 🌐 CORS CONFIGURATION (TEMPORARY FOR DEBUGGING)
+CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOW_HEADERS = list(default_headers)
-CORS_ALLOW_METHODS = list(default_methods)
-CORS_EXPOSE_HEADERS = ["Content-Type", "Authorization"]
-
-CORS_ALLOWED_ORIGINS = [
-    "https://eliteagri.online",
-    "http://localhost:3000",
-    "http://localhost:8082",
-    "https://agri-front-c7jb.vercel.app",
-    "https://farmpazari.com"
-
-]
-
-CORS_ALLOWED_ORIGIN_REGEXES = [
-    r"^https://.*\.vercel\.app$",      
-    r"^https://eliteagri\.online$",   
-]
