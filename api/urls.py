@@ -55,5 +55,20 @@ urlpatterns +=[
     path("core/", include("core.urls")),
     path("projects/",include("assets_projects.urls")),
     path('dashboard/', include('dashboard.urls')),
+    # Banking API routes
+    path("banking/", include("banking.urls.bank_urls")),
+    path("banking/", include("banking.urls.loan_urls")),
+    path("banking/", include("banking.urls.loan_payment_urls")),
+    path("banking/", include("banking.urls.bank_transaction_urls")),
+    path("banking/", include("banking.urls.bank_card_urls")),
+    path("banking/", include("banking.urls.checkbook_urls")),
+    path("banking/", include("banking.urls.check_urls")),
+    path("banking/", include("banking.urls.reconciliation_urls")),
+    path("banking/", include("banking.urls.bank_dashboard_urls")),
+
+
+
+
+
 
 ]
