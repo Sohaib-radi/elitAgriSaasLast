@@ -15,7 +15,7 @@ class CheckViewSet(AutoPermissionViewSet, viewsets.ModelViewSet):
 
     queryset = Check.objects.all().select_related("checkbook", "transaction").order_by("-due_date")
     serializer_class = CheckSerializer
-    permission_module = "banking"
+    permission_module = "checks"
 
     filter_backends = [DjangoFilterBackend, OrderingFilter, SearchFilter]
     filterset_fields = ["checkbook", "status", "payment_status", "direction", "due_date", "issue_date"]

@@ -15,7 +15,7 @@ class LoanPaymentViewSet(AutoPermissionViewSet, viewsets.ModelViewSet):
 
     queryset = LoanPayment.objects.all().select_related("loan").order_by("-payment_date")
     serializer_class = LoanPaymentSerializer
-    permission_module = "banking"
+    permission_module = "loan_payments"
 
     filter_backends = [DjangoFilterBackend, OrderingFilter, SearchFilter]
     filterset_fields = ["loan", "status", "payment_method", "payment_date"]

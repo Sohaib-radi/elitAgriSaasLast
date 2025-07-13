@@ -17,7 +17,7 @@ class ReconciliationViewSet(AutoPermissionViewSet, viewsets.ModelViewSet):
         "bank_transaction", "loan_payment", "linked_check"
     ).order_by("-reconciliation_date")
     serializer_class = ReconciliationSerializer
-    permission_module = "banking"
+    permission_module = "reconciliations"
 
     filter_backends = [DjangoFilterBackend, OrderingFilter, SearchFilter]
     filterset_fields = ["bank_transaction", "loan_payment", "linked_check", "status", "reconciliation_date"]

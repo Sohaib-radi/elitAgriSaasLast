@@ -15,7 +15,7 @@ class BankCardViewSet(AutoPermissionViewSet, viewsets.ModelViewSet):
 
     queryset = BankCard.objects.all().select_related("bank").order_by("-issue_date")
     serializer_class = BankCardSerializer
-    permission_module = "banking"
+    permission_module = "bank_cards"
 
     filter_backends = [DjangoFilterBackend, OrderingFilter, SearchFilter]
     filterset_fields = ["bank", "card_type", "status", "issue_date"]

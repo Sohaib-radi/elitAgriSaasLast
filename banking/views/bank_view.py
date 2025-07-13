@@ -15,7 +15,7 @@ class BankViewSet(AutoPermissionViewSet, viewsets.ModelViewSet):
 
     queryset = Bank.objects.all().select_related("main_currency").order_by("name")
     serializer_class = BankSerializer
-    permission_module = "banking"
+    permission_module = "banks"
 
     # Add filtering, ordering, searching
     filter_backends = [DjangoFilterBackend, OrderingFilter, SearchFilter]

@@ -125,6 +125,38 @@ PERMISSION_MAP = {
         "read": [HasRolePermission("warehouses.view")],
         "write": [IsFarmOwnerOrReadOnly(), IsFarmAdmin(), HasRolePermission("warehouses.manage")],
     },
+    "loans": {
+        "read": [HasRolePermission("loans.view")],
+        "write": [IsFarmOwnerOrReadOnly(), HasRolePermission("loans.manage")],
+    },
+    "banks": {
+        "read": [HasRolePermission("banks.view")],
+        "write": [IsFarmOwnerOrReadOnly(), HasRolePermission("banks.manage")],
+    },
+    "loan_payments": {
+        "read": [HasRolePermission("loans.view")],
+        "write": [IsFarmOwnerOrReadOnly(), HasRolePermission("loans.manage")],
+    },
+    "reconciliations": {
+        "read": [HasRolePermission("reconciliations.view")],
+        "write": [IsFarmOwnerOrReadOnly(), HasRolePermission("reconciliations.manage")],
+    },
+    "checks": {
+        "read": [HasRolePermission("checks.view")],
+        "write": [IsFarmOwnerOrReadOnly(), HasRolePermission("checks.manage")],
+    },
+    "checkbooks": {
+        "read": [HasRolePermission("checkbooks.view")],
+        "write": [IsFarmOwnerOrReadOnly(), HasRolePermission("checkbooks.manage")],
+    },
+    "bank_cards": {
+        "read": [HasRolePermission("bank_cards.view")],
+        "write": [IsFarmOwnerOrReadOnly(), HasRolePermission("bank_cards.manage")],
+    },
+    "bank_transactions": {
+        "read": [HasRolePermission("bank_transactions.view")],
+        "write": [IsFarmOwnerOrReadOnly(), HasRolePermission("bank_transactions.manage")],
+    },
 
 
 }

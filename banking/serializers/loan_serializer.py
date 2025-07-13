@@ -5,12 +5,14 @@ class LoanSerializer(serializers.ModelSerializer):
     """
     Serializer for the Loan model, providing clean validation and scalability.
     """
+    bank_name = serializers.CharField(source="bank.name", read_only=True)
 
     class Meta:
         model = Loan
         fields = [
             "id",
             "bank",
+            "bank_name",
             "loan_number",
             "loan_name",
             "amount",
@@ -28,7 +30,14 @@ class LoanSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = ["id", "farm", "created_by", "created_at", "updated_at"]
 
-
+    def validate_loan_duration(self, value):
+        if value < 2:
+            raise serializers.ValidationError("Loan duration must be at least 2 months.")
+        return value
+    def validate_interest_rate(self, value):
+        if not (0 <= value <= 100):
+            raise serializers.ValidationError("Interest rate must be between 0% and 100%.")
+        return value
     def validate(self, attrs):
         """
         Cross-field validation for business rules.

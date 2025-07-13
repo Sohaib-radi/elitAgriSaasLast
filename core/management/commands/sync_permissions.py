@@ -1,6 +1,5 @@
 from django.core.management.base import BaseCommand
 from core.models.permissions import Permission
-
 PERMISSION_CODES = {
     "products": ["view", "manage"],
     "personal_products": ["view", "manage"],
@@ -22,7 +21,9 @@ PERMISSION_CODES = {
     "crop": ["view", "manage"],
     "people": ["view", "manage"],
     "users": ["view", "manage"],
-    # ✅ Finance module
+    "farm_settings": ["view", "manage"],
+
+    # ✅ Finance
     "expenses": ["view", "manage"],
     "receipts": ["view", "manage"],
     "payments": ["view", "manage"],
@@ -31,7 +32,16 @@ PERMISSION_CODES = {
     "invoices": ["view", "manage"],
     "subscriptions": ["view", "manage"],
     "finance_reports": ["view"],
-    "farm_settings":["view","manage"]
+
+    # ✅ Banking modules
+    "banks": ["view", "manage"],
+    "loans": ["view", "manage"],
+    "loan_payments": ["view", "manage"],
+    "reconciliations": ["view", "manage"],
+    "checks": ["view", "manage"],
+    "checkbooks": ["view", "manage"],
+    "bank_cards": ["view", "manage"],
+    "bank_transactions": ["view", "manage"],
 }
 
 #python manage.py sync_permissions

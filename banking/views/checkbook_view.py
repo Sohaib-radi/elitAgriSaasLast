@@ -15,7 +15,7 @@ class CheckbookViewSet(AutoPermissionViewSet, viewsets.ModelViewSet):
 
     queryset = Checkbook.objects.all().select_related("bank").order_by("-issue_date")
     serializer_class = CheckbookSerializer
-    permission_module = "banking"
+    permission_module = "checkbooks"
 
     filter_backends = [DjangoFilterBackend, OrderingFilter, SearchFilter]
     filterset_fields = ["bank", "status", "issue_date"]

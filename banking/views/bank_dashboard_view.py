@@ -14,7 +14,7 @@ class BankDashboardViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     """
 
     queryset = Bank.objects.all().select_related("main_currency").order_by("name")
-    permission_module = "banking"
+    permission_module = "banks"
 
     def list(self, request, *args, **kwargs):
         data = []

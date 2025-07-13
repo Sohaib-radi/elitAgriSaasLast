@@ -15,7 +15,7 @@ class BankTransactionViewSet(AutoPermissionViewSet, viewsets.ModelViewSet):
 
     queryset = BankTransaction.objects.all().select_related("bank", "loan").order_by("-transaction_date")
     serializer_class = BankTransactionSerializer
-    permission_module = "banking"
+    permission_module = "bank_transactions"
 
     filter_backends = [DjangoFilterBackend, OrderingFilter, SearchFilter]
     filterset_fields = ["bank", "transaction_type", "payment_method", "loan", "status", "transaction_date"]

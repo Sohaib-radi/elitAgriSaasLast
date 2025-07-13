@@ -5,6 +5,7 @@ class LoanPaymentSerializer(serializers.ModelSerializer):
     """
     Serializer for LoanPayment with clear structure and validation.
     """
+    payment_method_display = serializers.CharField(source='get_payment_method_display', read_only=True)
 
     class Meta:
         model = LoanPayment
@@ -18,6 +19,7 @@ class LoanPaymentSerializer(serializers.ModelSerializer):
             "interest_paid",
             "remaining_balance",
             "payment_method",
+            "payment_method_display",
             "payment_reference",
             "status",
             "note",

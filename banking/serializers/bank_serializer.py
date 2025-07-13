@@ -5,7 +5,7 @@ class BankSerializer(serializers.ModelSerializer):
     """
     Serializer for Bank model, providing clean validation, scalability, and clarity for Elit Agri.
     """
-
+    main_currency_name = serializers.SerializerMethodField()
     class Meta:
         model = Bank
         fields = [
@@ -20,12 +20,16 @@ class BankSerializer(serializers.ModelSerializer):
             "phone_number",
             "email",
             "main_currency",
+            "main_currency_name",
             "description",
             "created_at",
             "updated_at",
         ]
         read_only_fields = ["id", "created_at", "updated_at"]
 
+    def get_main_currency_name(self, obj):
+        return obj.main_currency.code if obj.main_currency else None
+    
     def validate_account_number(self, value):
         """
         Ensure account number uniqueness within the same bank number context.
