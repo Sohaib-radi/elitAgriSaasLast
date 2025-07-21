@@ -65,10 +65,7 @@ urlpatterns +=[
     path("banking/", include("banking.urls.check_urls")),
     path("banking/", include("banking.urls.reconciliation_urls")),
     path("banking/", include("banking.urls.bank_dashboard_urls")),
-
-
-
-
-
+    # Reporting API routes
+    path("reports/", include("reporting.urls")), 
 
 ]

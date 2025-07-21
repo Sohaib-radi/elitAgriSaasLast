@@ -36,7 +36,8 @@ INSTALLED_APPS = [
     'finance',
     'assets_projects',
     'dashboard',
-    'banking'
+    'banking',
+    'reporting'
 ]
 
 # MIDDLEWARE

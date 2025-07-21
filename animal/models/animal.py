@@ -25,7 +25,7 @@ class AnimalStatus(models.TextChoices):
     HEALTHY = "healthy", _("Healthy")
     SICK = "sick", _("Sick")
     DECEASED = "deceased", _("Deceased")
-
+    LOST = "lost", _("Lost")
 
 class Animal(TimeStampedModel, CreatedByMixin,FarmLinkedModel):
     """ farm = models.ForeignKey(
@@ -128,7 +128,7 @@ class Animal(TimeStampedModel, CreatedByMixin,FarmLinkedModel):
         blank=True,
         null=True,
         verbose_name=_("Description"),
-        help_text=_("Additional notes or remarks."),
+        help_text=_("Additional notes or remarks, or Circumstances of animal loss in case of lost"),
     )
 
     is_active = models.BooleanField(

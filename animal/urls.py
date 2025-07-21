@@ -10,7 +10,7 @@ from animal.views.death_image import UploadDeathImageView
 from animal.views.vaccine import AnimalVaccineViewSet
 from animal.views.recommendation import VaccineRecommendationViewSet
 from animal.views.field import CustomListFieldViewSet
-
+from animal.views.dashboard import AnimalDashboardView
 
 router = DefaultRouter()
 router.register("animals", AnimalViewSet, basename="animal")
@@ -30,5 +30,6 @@ urlpatterns = [
     path("deaths/<int:pk>/upload-images/", UploadDeathImageView.as_view(), name="upload-death-images"),
     path("status-options/", AnimalStatusListView.as_view(), name="animal-status-options"),
     path("animals/<int:pk>/delete/", AnimalDeleteView.as_view(), name="animal-delete"),
+    path("dashboard/", AnimalDashboardView.as_view(), name="animal-dashboard"),
    
 ]
