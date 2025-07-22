@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Animal Birth Report</title>
+  <style>
+    body {
+      font-family: "Arial", sans-serif;
+      font-size: 12px;
+      color: #000;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th,
+    td {
+      border: 1px solid #444;
+      padding: 6px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f5f5f5;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Animal Birth Report</h1>
+  <p>Farm: {{ farm.name }}</p>
+  <p>Filters:
+    {% if filters.start %} Start Date: {{ filters.start }} {% endif %}
+    {% if filters.end %} – End Date: {{ filters.end }} {% endif %}
+    {% if filters.species %} – Species: {{ filters.species }} {% endif %}
+  </p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Animal Number</th>
+        <th>International Number</th>
+        <th>Species</th>
+        <th>Gender</th>
+        <th>Birth Date</th>
+        <th>Status</th>
+        <th>Moved</th>
+        <th>Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for birth in births %}
+      <tr>
+        <td>{{ forloop.counter }}</td>
+        <td>{{ birth.animal_number }}</td>
+        <td>{{ birth.international_number }}</td>
+        <td>{{ birth.species }}</td>
+        <td>{{ birth.gender }}</td>
+        <td>{{ birth.birth_date }}</td>
+        <td>{{ birth.status }}</td>
+        <td>{{ birth.moved_to_animals }}</td>
+        <td>{{ birth.description|striptags }}</td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="9">No birth records found.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  
+  
+</body>
+
+</html>

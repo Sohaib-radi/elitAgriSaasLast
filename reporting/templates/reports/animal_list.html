@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Animal Death Report</title>
+  <title>Animal List Report</title>
   <style>
     body {
       font-family: "Arial", sans-serif;
@@ -31,39 +31,44 @@
 </head>
 
 <body>
-  <h1>Animal Death Report</h1>
+  <h1>Animal List Report</h1>
   <p>Farm: {{ farm.name }}</p>
   <p>Filters:
     {% if filters.start %} Start Date: {{ filters.start }} {% endif %}
-    {% if filters.end %} – End Date: {{ filters.end}} {% endif %}
-    {% if filters.status %} – Species: {{ filters.status }} {% endif %}
+    {% if filters.end %} – End Date: {{ filters.end }} {% endif %}
+    {% if filters.status %} – Status: {{ filters.status }} {% endif %}
+    {% if filters.species %} – Species: {{ filters.species }} {% endif %}
   </p>
 
   <table>
     <thead>
       <tr>
-        <th>#</th>
-        <th>Animal</th>
+        <th>Code</th>
+        <th>International Number</th>
         <th>Species</th>
+       
+        <th>Gender</th>
+        <th>Birth Date</th>
         <th>Status</th>
-        <th>Date</th>
-        <th>Reason</th>
+        <th>Purchased</th>
       </tr>
     </thead>
     <tbody>
-      {% for death in deaths %}
+      {% for animal in animals %}
       <tr>
-        <td></td>
-        <td>{{ death.animal_number }}</td>
-        <td>{{ death.species }}</td>
-        <td>{{ death.status }}</td>
-        <td>{{ death.death_datetime }}</td>
-        <td>{{ death.reason|default:"—" }}</td>
+        <td>{{ animal.animal_number }}</td>
+        <td>{{ animal.international_number }}</td>
+        <td>{{ animal.species }}</td>
+       
+        <td>{{ animal.gender }}</td>
+        <td>{{ animal.birth_date }}</td>
+        <td>{{ animal.status }}</td>
+        <td>{{ animal.is_purchased }}</td>
 
       </tr>
       {% empty %}
       <tr>
-        <td colspan="5">No data found.</td>
+        <td colspan="6">No animals found.</td>
       </tr>
       {% endfor %}
     </tbody>

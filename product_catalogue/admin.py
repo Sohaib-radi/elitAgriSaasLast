@@ -1,7 +1,14 @@
+from typing import __all__
 from django.contrib import admin
 from product_catalogue.models import Product, ProductCategory, ProductImage, ProductVariant
 from product_catalogue.models.personal_product import PersonalProduct
 from product_catalogue.models.project import Project
+from product_catalogue.models.supplier import Supplier
+
+
+
+def all_fields(model):
+    return [field.name for field in model._meta.fields]
 
 class ProductImageInline(admin.TabularInline):
     model = ProductImage
@@ -36,3 +43,8 @@ class ProjectAdmin(admin.ModelAdmin):
     list_display = ['name', 'description', 'start_date', 'end_date','is_active']
     search_fields = ['name', 'is_active']
     list_filter = ['name']
+
+
+@admin.register(Supplier)
+class SupplierAdmin(admin.ModelAdmin):
+     list_display = all_fields(Supplier)

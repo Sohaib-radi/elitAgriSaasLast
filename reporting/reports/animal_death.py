@@ -14,14 +14,14 @@ class AnimalDeathReport(AbstractReport):
     def fetch(self):
         queryset = AnimalDeath.objects.filter(farm=self.user.active_farm)
 
-        start_date = self.filters.get("start_date")
-        end_date = self.filters.get("end_date")
-        species = self.filters.get("species")
+        start_date = self.filters.get("start") 
+        end_date = self.filters.get("end")
+        status = self.filters.get("status")
 
         if start_date and end_date:
             queryset = queryset.filter(death_datetime__date__range=[start_date, end_date])
-        if species:
-            queryset = queryset.filter(animal__species=species)
+        if status:
+            queryset = queryset.filter(animal__status=status)
 
         queryset = queryset.select_related("animal")
         print(f"[DEBUG] Queryset count: {queryset.count()}")  # ✅ Print number of matched records

@@ -9,8 +9,8 @@ from finance.models.buyer import Buyer
 def create_person_for_supplier(sender, instance, created, **kwargs):
     if created and not Person.objects.filter(supplier=instance).exists():
         Person.objects.create(
-            name=instance.name,
-            phone=instance.phone,
+            name=instance.supplier_name,
+            phone=instance.phone_number,
             address=instance.address,
             type="supplier",
             supplier=instance,

@@ -31,12 +31,20 @@ class SupplierSerializer(serializers.ModelSerializer):
         allow_null=True,
         required=False,
     )
+    list = SupplierListSerializer(read_only=True)
+    list_id = serializers.PrimaryKeyRelatedField(
+        queryset=SupplierList.objects.all(),
+        source="list",
+        write_only=True,
+        allow_null=True,
+        required=False,
+    )
 
     class Meta:
         model = Supplier
         fields = [
             "id", "supplier_name", "company_name", "phone_number", "address",
             "product", "product_id", "product_type", "price", "payment_method",
-            "notes", "image", "list", "farm", "created_by", "created_at"
+            "notes", "image", "list", "list_id", "farm", "created_by", "created_at"
         ]
         read_only_fields = ["id", "created_by", "created_at", "farm"]
