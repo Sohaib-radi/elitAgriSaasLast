@@ -50,36 +50,38 @@ class AssetViewSet(AutoPermissionViewSet):
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop('partial', False)
         instance = self.get_object()
-        
+
         if instance.farm != request.user.active_farm:
             return Response(
                 {'detail': 'Asset not found or not accessible'},
                 status=status.HTTP_404_NOT_FOUND
             )
-        
+
         serializer = self.get_serializer(
-            instance, 
-            data=request.data, 
+            instance,
+            data=request.data,
             partial=partial
         )
         serializer.is_valid(raise_exception=True)
-        
-        # Prevent farm modification
+
+        # ✅ REMOVE 'farm' manually before the check
+        serializer.validated_data.pop('farm', None)
+
         if 'farm' in serializer.validated_data:
             return Response(
                 {'detail': 'Cannot change farm association'},
                 status=status.HTTP_403_FORBIDDEN
             )
-        
+
         updated_asset = AssetService.update_asset(
             instance.pk,
             serializer.validated_data
         )
-        
+
         return Response(
             AssetSerializer(updated_asset, context={'request': request}).data
         )
-    
+
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
         if instance.farm != request.user.active_farm:

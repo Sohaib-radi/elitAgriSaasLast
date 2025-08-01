@@ -140,3 +140,9 @@ class ProjectViewSet(AutoPermissionViewSet):
     
 
 
+class SimpleProjectViewSet(AutoPermissionViewSet):
+    queryset = Project.objects.all()
+    serializer_class = ProjectSerializer
+
+    def get_queryset(self):
+        return super().get_queryset().filter(farm=self.request.user.active_farm)

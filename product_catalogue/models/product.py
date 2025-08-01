@@ -26,8 +26,10 @@ class ProductPurpose(models.TextChoices):
 # --- PRODUCT MODEL ---
 class Product(FarmLinkedModel):
     PRODUCT_TYPE_CHOICES = [
+        ("medicine", _("Medicine")),
         ("animal", _("Animal")),
         ("agricultural", _("Agricultural")),
+        ("raw_material", _("Raw Material")),
         ("other", _("Other")),
     ]
     UNIT_CHOICES = [
@@ -104,6 +106,12 @@ class Product(FarmLinkedModel):
     storage_instructions = models.TextField(
         blank=True,
         verbose_name=_("Storage Instructions")
+    )
+    efficiency_time = models.PositiveIntegerField(
+        null=True,
+        blank=True,
+        verbose_name=_("Efficiency Time"),
+        help_text=_("How many days until this agricultural product becomes effective")
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

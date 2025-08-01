@@ -1,0 +1,143 @@
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{% trans "Project Detail Report" %}</title>
+  <style>
+    body {
+      font-family: "DejaVu Sans", sans-serif;
+      font-size: 12px;
+      direction: ltr;
+    }
+    h1, h2, h3 {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    .section {
+      margin-top: 30px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 11px;
+      margin-top: 10px;
+    }
+    th, td {
+      border: 1px solid #444;
+      padding: 6px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    .summary p {
+      margin: 2px 0;
+    }
+    .chart {
+      text-align: center;
+      margin-top: 10px;
+    }
+    .chart img {
+      max-width: 300px;
+      height: auto;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>{% trans "Project Detail Report" %}</h1>
+  <h2>{{ project.name }}</h2>
+
+  <div class="section">
+    <h3>{% trans "Project Overview" %}</h3>
+    <table>
+      <tr><th>{% trans "Project Code" %}</th><td>{{ project.project_code }}</td></tr>
+      <tr><th>{% trans "Project Number" %}</th><td>{{ project.project_number }}</td></tr>
+      <tr><th>{% trans "Parent Project" %}</th><td>{{ project.parent_project.name|default:"—" }}</td></tr>
+      <tr><th>{% trans "Start Date" %}</th><td>{{ project.start_date|date:"Y-m-d" }}</td></tr>
+      <tr><th>{% trans "End Date" %}</th><td>{{ project.end_date|date:"Y-m-d" }}</td></tr>
+      <tr><th>{% trans "Is Active" %}</th><td>{{ project.is_active|yesno:_("Yes,No") }}</td></tr>
+      <tr><th>{% trans "Address" %}</th><td>{{ project.address }}</td></tr>
+      <tr><th>{% trans "Description" %}</th><td>{{ project.description|safe }}</td></tr>
+    </table>
+  </div>
+
+  <div class="section summary">
+    <h3>{% trans "Summary" %}</h3>
+    <p><strong>{% trans "Total Assets" %}:</strong> {{ summary.total_assets }}</p>
+    <p><strong>{% trans "Total Asset Value" %}:</strong> {{ summary.total_asset_value }}</p>
+    <p><strong>{% trans "Total Costs" %}:</strong> {{ summary.total_costs }}</p>
+    <p><strong>{% trans "Suppliers Involved" %}:</strong> {{ summary.supplier_count }}</p>
+  </div>
+
+  {% if cost_chart %}
+    <div class="section chart">
+      <h3>{% trans "Cost Breakdown" %}</h3>
+      <img src="data:image/png;base64,{{ cost_chart }}" alt="Cost Chart">
+    </div>
+  {% endif %}
+
+  <div class="section">
+    <h3>{% trans "Assets Used in Project" %}</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>{% trans "Name" %}</th>
+          <th>{% trans "Type" %}</th>
+          <th>{% trans "Purchase Date" %}</th>
+          <th>{% trans "Price" %}</th>
+          <th>{% trans "Lifespan (days)" %}</th>
+          <th>{% trans "Supplier" %}</th>
+          <th>{% trans "Description" %}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for asset in asset_data %}
+          <tr>
+            <td>{{ asset.name }}</td>
+            <td>{{ asset.type }}</td>
+            <td>{{ asset.purchase_date }}</td>
+            <td>{{ asset.price }}</td>
+            <td>{{ asset.lifespan }}</td>
+            <td>{{ asset.supplier }}</td>
+            <td>{{ asset.description }}</td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="7" style="text-align: center;">{% trans "No assets linked to this project." %}</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <h3>{% trans "Project Costs" %}</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>{% trans "Name" %}</th>
+          <th>{% trans "Type" %}</th>
+          <th>{% trans "Amount" %}</th>
+          <th>{% trans "Linked Asset" %}</th>
+          <th>{% trans "Description" %}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for cost in cost_data %}
+          <tr>
+            <td>{{ cost.name }}</td>
+            <td>{{ cost.type }}</td>
+            <td>{{ cost.amount }}</td>
+            <td>{{ cost.asset }}</td>
+            <td>{{ cost.description }}</td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="5" style="text-align: center;">{% trans "No cost entries found." %}</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+</body>
+</html>

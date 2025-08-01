@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Report Template</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f9f9f9;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .report-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            padding: 0;
+        }
+        
+        /* Header Styles */
+        .report-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px 40px;
+            position: relative;
+        }
+        
+        .report-header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .report-header .subtitle {
+            font-size: 16px;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+        
+        .report-header .metadata {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            margin-top: 20px;
+        }
+        
+        .logo {
+            position: absolute;
+            top: 20px;
+            right: 40px;
+            width: 120px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        /* Report Type Selector */
+        .report-type-selector {
+            background-color: #f8f9fa;
+            padding: 20px 40px;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .report-type-selector select {
+            padding: 8px 12px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            font-size: 14px;
+            margin-left: 10px;
+        }
+        
+        /* Content Styles */
+        .report-content {
+            padding: 40px;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+        }
+        
+        .section.hidden {
+            display: none;
+        }
+        
+        h2 {
+            color: #2c3e50;
+            font-size: 24px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+        }
+        
+        h3 {
+            color: #34495e;
+            font-size: 20px;
+            margin: 25px 0 15px;
+        }
+        
+        p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+        
+        /* Chart Containers */
+        .chart-container {
+            margin: 30px 0;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+        
+        .chart-row {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0 -15px;
+        }
+        
+        .chart-column {
+            flex: 1;
+            min-width: 300px;
+            padding: 0 15px;
+            margin-bottom: 30px;
+        }
+        
+        .chart-title {
+            font-size: 18px;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            text-align: center;
+            font-weight: 600;
+        }
+        
+        /* Table Styles */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .data-table th, .data-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .data-table th {
+            background-color: #667eea;
+            color: white;
+            font-weight: 600;
+        }
+        
+        .data-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        .data-table tr:hover {
+            background-color: #f1f1f1;
+        }
+        
+        /* Key Metrics */
+        .key-metrics {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0 -10px 30px;
+        }
+        
+        .metric-card {
+            flex: 1;
+            min-width: 200px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 10px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .metric-value {
+            font-size: 32px;
+            font-weight: 700;
+            margin: 10px 0;
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            opacity: 0.9;
+            text-transform: uppercase;
+        }
+        
+        .metric-change {
+            font-size: 12px;
+            margin-top: 5px;
+        }
+        
+        .metric-change.positive {
+            color: #2ecc71;
+        }
+        
+        .metric-change.negative {
+            color: #e74c3c;
+        }
+        
+        /* Status Indicators */
+        .status-indicator {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .status-active { background-color: #d4edda; color: #155724; }
+        .status-inactive { background-color: #f8d7da; color: #721c24; }
+        .status-pending { background-color: #fff3cd; color: #856404; }
+        .status-completed { background-color: #d1ecf1; color: #0c5460; }
+        
+        /* Summary Cards */
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .summary-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid #667eea;
+        }
+        
+        .summary-card h4 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        /* Filter Controls */
+        .filter-controls {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: center;
+        }
+        
+        .filter-controls label {
+            font-weight: 600;
+            margin-right: 5px;
+        }
+        
+        .filter-controls select,
+        .filter-controls input {
+            padding: 6px 10px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        /* Footer */
+        .report-footer {
+            background-color: #34495e;
+            color: white;
+            padding: 30px 40px;
+            font-size: 14px;
+            text-align: center;
+        }
+        
+        /* Print Styles */
+        @media print {
+            body { background-color: white; }
+            .report-container { box-shadow: none; max-width: 100%; }
+            .report-type-selector { display: none; }
+            .filter-controls { display: none; }
+            .chart-container { break-inside: avoid; }
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .report-header, .report-content { padding: 20px; }
+            .chart-column { flex: 100%; }
+            .metric-card { flex: 100%; margin-bottom: 15px; }
+            .logo { position: relative; top: 0; right: 0; margin: 20px auto 0; }
+            .filter-controls { flex-direction: column; align-items: stretch; }
+        }
+    </style>
+</head>
+<body>
+    <div class="report-container">
+        <!-- Report Header -->
+        <header class="report-header">
+            <div class="logo">YOUR LOGO</div>
+            <h1 id="reportTitle">Professional Report</h1>
+            <p class="subtitle" id="reportSubtitle">Comprehensive data analysis and insights</p>
+            <div class="metadata">
+                <div>
+                    <strong>Generated by:</strong> <span id="generatedBy">System Admin</span><br>
+                    <strong>Date:</strong> <span id="reportDate"></span>
+                </div>
+                <div>
+                    <strong>Report ID:</strong> <span id="reportId"></span><br>
+                    <strong>Period:</strong> <span id="reportPeriod"></span>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Report Type Selector -->
+        <div class="report-type-selector">
+            <label for="reportType"><strong>Report Type:</strong></label>
+            <select id="reportType" onchange="changeReportType()">
+                <option value="animals">Animal Management Report</option>
+                <option value="transactions">Bank Transaction Report</option>
+                <option value="receipts">Receipt Analysis Report</option>
+                <option value="general">General Business Report</option>
+            </select>
+        </div>
+        
+        <!-- Report Content -->
+        <main class="report-content">
+            <!-- Filter Controls -->
+            <div class="filter-controls" id="filterControls">
+                <label for="dateFrom">From:</label>
+                <input type="date" id="dateFrom" onchange="applyFilters()">
+                
+                <label for="dateTo">To:</label>
+                <input type="date" id="dateTo" onchange="applyFilters()">
+                
+                <label for="categoryFilter">Category:</label>
+                <select id="categoryFilter" onchange="applyFilters()">
+                    <option value="all">All Categories</option>
+                </select>
+                
+                <label for="statusFilter">Status:</label>
+                <select id="statusFilter" onchange="applyFilters()">
+                    <option value="all">All Status</option>
+                </select>
+            </div>
+            
+            <!-- Key Metrics -->
+            <section class="section">
+                <h2>Key Metrics</h2>
+                <div class="key-metrics" id="keyMetrics">
+                    <!-- Metrics will be populated by JavaScript -->
+                </div>
+            </section>
+            
+            <!-- Summary Cards -->
+            <section class="section">
+                <h2 id="summaryTitle">Summary Overview</h2>
+                <div class="summary-cards" id="summaryCards">
+                    <!-- Summary cards will be populated by JavaScript -->
+                </div>
+            </section>
+            
+            <!-- Data Visualization -->
+            <section class="section">
+                <h2>Data Analysis</h2>
+                
+                <!-- Main Chart -->
+                <div class="chart-container">
+                    <div class="chart-title" id="mainChartTitle">Primary Data Analysis</div>
+                    <canvas id="mainChart"></canvas>
+                </div>
+                
+                <!-- Secondary Charts -->
+                <div class="chart-row">
+                    <div class="chart-column">
+                        <div class="chart-container">
+                            <div class="chart-title" id="secondaryChart1Title">Distribution Analysis</div>
+                            <canvas id="secondaryChart1"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-column">
+                        <div class="chart-container">
+                            <div class="chart-title" id="secondaryChart2Title">Trend Analysis</div>
+                            <canvas id="secondaryChart2"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Detailed Data Table -->
+            <section class="section">
+                <h2 id="dataTableTitle">Detailed Records</h2>
+                <table class="data-table" id="dataTable">
+                    <thead id="tableHeader">
+                        <!-- Table headers will be populated by JavaScript -->
+                    </thead>
+                    <tbody id="tableBody">
+                        <!-- Table data will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </section>
+            
+            <!-- Insights Section -->
+            <section class="section">
+                <h2>Key Insights</h2>
+                <div id="insightsContent">
+                    <!-- Insights will be populated by JavaScript -->
+                </div>
+            </section>
+            
+            <!-- Recommendations Section -->
+            <section class="section">
+                <h2>Recommendations</h2>
+                <div id="recommendationsContent">
+                    <!-- Recommendations will be populated by JavaScript -->
+                </div>
+            </section>
+        </main>
+        
+        <!-- Report Footer -->
+        <footer class="report-footer">
+            <p>&copy; 2025 Your Company Name. All rights reserved.</p>
+            <p>This report is generated automatically and contains confidential information.</p>
+        </footer>
+    </div>
+    
+    <script>
+        // Sample data for different report types
+        const reportData = {
+            animals: {
+                title: "Animal Management Report",
+                subtitle: "Comprehensive analysis of animal health, population, and care metrics",
+                metrics: [
+                    { label: "Total Animals", value: "1,247", change: "+23 this month", positive: true },
+                    { label: "Health Score", value: "94.2%", change: "+2.1% improvement", positive: true },
+                    { label: "Vaccination Rate", value: "98.7%", change: "Maintained", positive: true },
+                    { label: "Active Treatments", value: "34", change: "-8 from last month", positive: true }
+                ],
+                summaryCards: [
+                    { title: "Species Distribution", content: "Dogs: 45%, Cats: 32%, Birds: 12%, Others: 11%" },
+                    { title: "Health Status", content: "Healthy: 89%, Under Treatment: 8%, Critical: 3%" },
+                    { title: "Age Distribution", content: "Young: 35%, Adult: 45%, Senior: 20%" },
+                    { title: "Recent Activities", content: "156 checkups, 89 vaccinations, 23 treatments this month" }
+                ],
+                tableHeaders: ["ID", "Name", "Species", "Age", "Health Status", "Last Checkup", "Next Appointment"],
+                tableData: [
+                    ["A001", "Buddy", "Dog", "3 years", '<span class="status-indicator status-active">Healthy</span>', "2025-07-15", "2025-08-15"],
+                    ["A002", "Whiskers", "Cat", "5 years", '<span class="status-indicator status-pending">Treatment</span>', "2025-07-20", "2025-07-27"],
+                    ["A003", "Charlie", "Bird", "2 years", '<span class="status-indicator status-active">Healthy</span>', "2025-07-10", "2025-08-10"],
+                    ["A004", "Luna", "Dog", "7 years", '<span class="status-indicator status-inactive">Critical</span>', "2025-07-25", "2025-07-28"],
+                    ["A005", "Mittens", "Cat", "1 year", '<span class="status-indicator status-active">Healthy</span>', "2025-07-18", "2025-08-18"]
+                ],
+                insights: [
+                    "Overall animal health has improved by 2.1% compared to last month",
+                    "Vaccination compliance remains excellent at 98.7%",
+                    "Senior animals (7+ years) require more frequent monitoring",
+                    "Preventive care has reduced emergency treatments by 15%"
+                ],
+                recommendations: [
+                    "Implement quarterly health screenings for senior animals",
+                    "Expand vaccination program to include new arrivals within 48 hours",
+                    "Consider additional staff for the growing animal population",
+                    "Develop specialized care protocols for critical cases"
+                ]
+            },
+            transactions: {
+                title: "Bank Transaction Report",
+                subtitle: "Financial transaction analysis and account activity summary",
+                metrics: [
+                    { label: "Total Transactions", value: "15,847", change: "+12% from last month", positive: true },
+                    { label: "Total Volume", value: "$2.4M", change: "+8.5% increase", positive: true },
+                    { label: "Average Transaction", value: "$152", change: "-3.2% decrease", positive: false },
+                    { label: "Failed Transactions", value: "23", change: "-45% reduction", positive: true }
+                ],
+                summaryCards: [
+                    { title: "Transaction Types", content: "Deposits: 45%, Withdrawals: 32%, Transfers: 18%, Payments: 5%" },
+                    { title: "Channel Distribution", content: "Online: 67%, ATM: 21%, Branch: 8%, Mobile: 4%" },
+                    { title: "Peak Hours", content: "9-11 AM: 28%, 2-4 PM: 24%, 6-8 PM: 19%" },
+                    { title: "Account Types", content: "Checking: 58%, Savings: 32%, Business: 10%" }
+                ],
+                tableHeaders: ["Transaction ID", "Date", "Type", "Amount", "Account", "Status", "Channel"],
+                tableData: [
+                    ["TXN001", "2025-07-31", "Deposit", "$1,250.00", "****1234", '<span class="status-indicator status-completed">Completed</span>', "Online"],
+                    ["TXN002", "2025-07-31", "Withdrawal", "$500.00", "****5678", '<span class="status-indicator status-completed">Completed</span>', "ATM"],
+                    ["TXN003", "2025-07-30", "Transfer", "$2,000.00", "****9012", '<span class="status-indicator status-pending">Pending</span>', "Mobile"],
+                    ["TXN004", "2025-07-30", "Payment", "$89.99", "****3456", '<span class="status-indicator status-completed">Completed</span>', "Online"],
+                    ["TXN005", "2025-07-29", "Deposit", "$750.00", "****7890", '<span class="status-indicator status-completed">Completed</span>', "Branch"]
+                ],
+                insights: [
+                    "Online transactions have increased by 15% this month",
+                    "Failed transaction rate has decreased significantly to 0.14%",
+                    "Peak transaction times align with business hours",
+                    "Mobile banking adoption is growing at 8% monthly"
+                ],
+                recommendations: [
+                    "Optimize mobile app performance during peak hours",
+                    "Implement real-time fraud detection for high-value transactions",
+                    "Expand ATM network in high-traffic areas",
+                    "Develop targeted promotions for underutilized services"
+                ]
+            },
+            receipts: {
+                title: "Receipt Analysis Report",
+                subtitle: "Sales receipt data analysis and customer purchase patterns",
+                metrics: [
+                    { label: "Total Receipts", value: "8,934", change: "+18% from last month", positive: true },
+                    { label: "Total Revenue", value: "$145,678", change: "+22% increase", positive: true },
+                    { label: "Average Receipt", value: "$16.31", change: "+3.4% increase", positive: true },
+                    { label: "Return Rate", value: "2.1%", change: "-0.8% improvement", positive: true }
+                ],
+                summaryCards: [
+                    { title: "Top Categories", content: "Electronics: 28%, Clothing: 24%, Food: 19%, Books: 15%" },
+                    { title: "Payment Methods", content: "Card: 72%, Cash: 18%, Digital: 8%, Check: 2%" },
+                    { title: "Customer Types", content: "Regular: 65%, New: 25%, VIP: 10%" },
+                    { title: "Peak Sales", content: "Weekend: 45%, Weekday Evening: 32%, Lunch: 23%" }
+                ],
+                tableHeaders: ["Receipt ID", "Date", "Customer", "Items", "Total", "Payment", "Status"],
+                tableData: [
+                    ["RCP001", "2025-07-31", "John Smith", "3", "$45.67", "Card", '<span class="status-indicator status-completed">Paid</span>'],
+                    ["RCP002", "2025-07-31", "Jane Doe", "1", "$129.99", "Cash", '<span class="status-indicator status-completed">Paid</span>'],
+                    ["RCP003", "2025-07-30", "Bob Johnson", "5", "$23.45", "Digital", '<span class="status-indicator status-completed">Paid</span>'],
+                    ["RCP004", "2025-07-30", "Alice Brown", "2", "$67.89", "Card", '<span class="status-indicator status-pending">Processing</span>'],
+                    ["RCP005", "2025-07-29", "Mike Wilson", "4", "$89.12", "Card", '<span class="status-indicator status-completed">Paid</span>']
+                ],
+                insights: [
+                    "Electronics category shows strongest growth at 28% of total sales",
+                    "Card payments dominate with 72% of all transactions",
+                    "Weekend sales account for nearly half of total revenue",
+                    "Customer retention rate has improved to 65%"
+                ],
+                recommendations: [
+                    "Expand electronics inventory based on high demand",
+                    "Implement loyalty program for regular customers",
+                    "Optimize staffing for weekend peak periods",
+                    "Promote digital payment options with incentives"
+                ]
+            }
+        };
+        
+        let currentReportType = 'animals';
+        let mainChart, secondaryChart1, secondaryChart2;
+        
+        // Initialize report
+        document.addEventListener('DOMContentLoaded', function() {
+            setCurrentDate();
+            changeReportType();
+        });
+        
+        function setCurrentDate() {
+            const now = new Date();
+            document.getElementById('reportDate').textContent = now.toLocaleDateString();
+            document.getElementById('reportId').textContent = 'RPT-' + now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' + String(now.getDate()).padStart(2, '0');
+            document.getElementById('reportPeriod').textContent = now.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+        }
+        
+        function changeReportType() {
+            currentReportType = document.getElementById('reportType').value;
+            const data = reportData[currentReportType];
+            
+            // Update header
+            document.getElementById('reportTitle').textContent = data.title;
+            document.getElementById('reportSubtitle').textContent = data.subtitle;
+            
+            // Update metrics
+            updateMetrics(data.metrics);
+            
+            // Update summary cards
+            updateSummaryCards(data.summaryCards);
+            
+            // Update table
+            updateTable(data.tableHeaders, data.tableData);
+            
+            // Update insights and recommendations
+            updateInsights(data.insights);
+            updateRecommendations(data.recommendations);
+            
+            // Update charts
+            updateCharts();
+            
+            // Update filter options
+            updateFilters();
+        }
+        
+        function updateMetrics(metrics) {
+            const container = document.getElementById('keyMetrics');
+            container.innerHTML = '';
+            
+            metrics.forEach(metric => {
+                const card = document.createElement('div');
+                card.className = 'metric-card';
+                card.innerHTML = `
+                    <div class="metric-label">${metric.label}</div>
+                    <div class="metric-value">${metric.value}</div>
+                    <div class="metric-change ${metric.positive ? 'positive' : 'negative'}">${metric.change}</div>
+                `;
+                container.appendChild(card);
+            });
+        }
+        
+        function updateSummaryCards(cards) {
+            const container = document.getElementById('summaryCards');
+            container.innerHTML = '';
+            
+            cards.forEach(card => {
+                const cardElement = document.createElement('div');
+                cardElement.className = 'summary-card';
+                cardElement.innerHTML = `
+                    <h4>${card.title}</h4>
+                    <p>${card.content}</p>
+                `;
+                container.appendChild(cardElement);
+            });
+        }
+        
+        function updateTable(headers, data) {
+            const headerContainer = document.getElementById('tableHeader');
+            const bodyContainer = document.getElementById('tableBody');
+            
+            // Update headers
+            headerContainer.innerHTML = '<tr>' + headers.map(header => `<th>${header}</th>`).join('') + '</tr>';
+            
+            // Update data
+            bodyContainer.innerHTML = data.map(row => 
+                '<tr>' + row.map(cell => `<td>${cell}</td>`).join('') + '</tr>'
+            ).join('');
+        }
+        
+        function updateInsights(insights) {
+            const container = document.getElementById('insightsContent');
+            container.innerHTML = insights.map(insight => `<p>• ${insight}</p>`).join('');
+        }
+        
+        function updateRecommendations(recommendations) {
+            const container = document.getElementById('recommendationsContent');
+            container.innerHTML = recommendations.map(rec => `<p>→ ${rec}</p>`).join('');
+        }
+        
+        function updateCharts() {
+            // Destroy existing charts
+            if (mainChart) mainChart.destroy();
+            if (secondaryChart1) secondaryChart1.destroy();
+            if (secondaryChart2) secondaryChart2.destroy();
+            
+            // Create new charts based on report type
+            if (currentReportType === 'animals') {
+                createAnimalCharts();
+            } else if (currentReportType === 'transactions') {
+                createTransactionCharts();
+            } else if (currentReportType === 'receipts') {
+                createReceiptCharts();
+            }
+        }
+        
+        function createAnimalCharts() {
+            // Main chart - Species distribution
+            document.getElementById('mainChartTitle').textContent = 'Animal Species Distribution';
+            const mainCtx = document.getElementById('mainChart').getContext('2d');
+            mainChart = new Chart(mainCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Dogs', 'Cats', 'Birds', 'Rabbits', 'Others'],
+                    datasets: [{
+                        data: [45, 32, 12, 7, 4],
+                        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF']
+                    }]
+                },
+                options: { responsive: true }
+            });
+            
+            // Secondary chart 1 - Health status
+            document.getElementById('secondaryChart1Title').textContent = 'Health Status Distribution';
+            const secondary1Ctx = document.getElementById('secondaryChart1').getContext('2d');
+            secondaryChart1 = new Chart(secondary1Ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['Healthy', 'Under Treatment', 'Critical'],
+                    datasets: [{
+                        data: [89, 8, 3],
+                        backgroundColor: ['#4BC0C0', '#FFCE56', '#FF6384']
+                    }]
+                },
+                options: { responsive: true }
+            });
+            
+            // Secondary chart 2 - Monthly checkups
+            document.getElementById('secondaryChart2Title').textContent = 'Monthly Checkups Trend';
+            const secondary2Ctx = document.getElementById('secondaryChart2').getContext('2d');
+            secondaryChart2 = new Chart(secondary2Ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+                    datasets: [{
+                        label: 'Checkups',
+                        data: [120, 135, 145, 160, 155, 170, 156],
+                        borderColor: '#36A2EB',
+                        fill: false
+                    }]
+                },
+                options: { responsive: true }
+            });
+        }
+        
+        function createTransactionCharts() {
+            // Main chart - Transaction volume by day
+            document.getElementById('mainChartTitle').textContent = 'Daily Transaction Volume';
+            const mainCtx = document.getElementById('mainChart').getContext('2d');
+            mainChart = new Chart(mainCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                    datasets: [{
+                        label: 'Transactions',
+                        data: [2100, 2300, 2500, 2400, 2800, 1900, 1600],
+                        backgroundColor: '#36A2EB'
+                    }]
+                },
+                options: { responsive: true }
+            });
+            
+            // Secondary chart 1 - Transaction types
+            document.getElementById('secondaryChart1Title').textContent = 'Transaction Types';
+            const secondary1Ctx = document.getElementById('secondaryChart1').getContext('2d');
+            secondaryChart1 = new Chart(secondary1Ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Deposits', 'Withdrawals', 'Transfers', 'Payments'],
+                    datasets: [{
+                        data: [45, 32, 18, 5],
+                        backgroundColor: ['#4BC0C0', '#FF6384', '#FFCE56', '#9966FF']
+                    }]
+                },
+                options: { responsive: true }
+            });
+            
+            // Secondary chart 2 - Channel usage
+            document.getElementById('secondaryChart2Title').textContent = 'Channel Usage Trend';
+            const secondary2Ctx = document.getElementById('secondaryChart2').getContext('2d');
+            secondaryChart2 = new Chart(secondary2Ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+                    datasets: [{
+                        label: 'Online',
+                        data: [60, 62, 64, 65, 66, 67, 67],
+                        borderColor: '#36A2EB'
+                    }, {
+                        label: 'ATM',
+                        data: [25, 24, 23, 22, 21, 21, 21],
+                        borderColor: '#FF6384'
+                    }]
+                },
+                options: { responsive: true }
+            });
+        }
+        
+        function createReceiptCharts() {
+            // Main chart - Daily sales
+            document.getElementById('mainChartTitle').textContent = 'Daily Sales Revenue';
+            const mainCtx = document.getElementById('mainChart').getContext('2d');
+            mainChart = new Chart(mainCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                    datasets: [{
+                        label: 'Revenue ($)',
+                        data: [18000, 20000, 22000, 21000, 25000, 32000, 28000],
+                        backgroundColor: '#4BC0C0'
+                    }]
+                },
+                options: { responsive: true }
+            });
+            
+            // Secondary chart 1 - Category sales
+            document.getElementById('secondaryChart1Title').textContent = 'Sales by Category';
+            const secondary1Ctx = document.getElementById('secondaryChart1').getContext('2d');
+            secondaryChart1 = new Chart(secondary1Ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['Electronics', 'Clothing', 'Food', 'Books', 'Others'],
+                    datasets: [{
+                        data: [28, 24, 19, 15, 14],
+                        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF']
+                    }]
+                },
+                options: { responsive: true }
+            });
+            
+            // Secondary chart 2 - Payment methods trend
+            document.getElementById('secondaryChart2Title').textContent = 'Payment Methods Trend';
+            const secondary2Ctx = document.getElementById('secondaryChart2').getContext('2d');
+            secondaryChart2 = new Chart(secondary2Ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+                    datasets: [{
+                        label: 'Card',
+                        data: [68, 69, 70, 71, 71, 72, 72],
+                        borderColor: '#36A2EB'
+                    }, {
+                        label: 'Digital',
+                        data: [5, 6, 6, 7, 7, 8, 8],
+                        borderColor: '#4BC0C0'
+                    }]
+                },
+                options: { responsive: true }
+            });
+        }
+        
+        function updateFilters() {
+            const categoryFilter = document.getElementById('categoryFilter');
+            const statusFilter = document.getElementById('statusFilter');
+            
+            // Clear existing options
+            categoryFilter.innerHTML = '<option value="all">All Categories</option>';
+            statusFilter.innerHTML = '<option value="all">All Status</option>';
+            
+            // Add options based on report type
+            if (currentReportType === 'animals') {
+                ['Dogs', 'Cats', 'Birds', 'Rabbits', 'Others'].forEach(category => {
+                    categoryFilter.innerHTML += `<option value="${category.toLowerCase()}">${category}</option>`;
+                });
+                ['Healthy', 'Treatment', 'Critical'].forEach(status => {
+                    statusFilter.innerHTML += `<option value="${status.toLowerCase()}">${status}</option>`;
+                });
+            } else if (currentReportType === 'transactions') {
+                ['Deposits', 'Withdrawals', 'Transfers', 'Payments'].forEach(category => {
+                    categoryFilter.innerHTML += `<option value="${category.toLowerCase()}">${category}</option>`;
+                });
+                ['Completed', 'Pending', 'Failed'].forEach(status => {
+                    statusFilter.innerHTML += `<option value="${status.toLowerCase()}">${status}</option>`;
+                });
+            } else if (currentReportType === 'receipts') {
+                ['Electronics', 'Clothing', 'Food', 'Books', 'Others'].forEach(category => {
+                    categoryFilter.innerHTML += `<option value="${category.toLowerCase()}">${category}</option>`;
+                });
+                ['Paid', 'Processing', 'Refunded'].forEach(status => {
+                    statusFilter.innerHTML += `<option value="${status.toLowerCase()}">${status}</option>`;
+                });
+            }
+        }
+        
+        function applyFilters() {
+            // This function would typically filter the data and update the charts/tables
+            // For demo purposes, we'll just show an alert
+            const dateFrom = document.getElementById('dateFrom').value;
+            const dateTo = document.getElementById('dateTo').value;
+            const category = document.getElementById('categoryFilter').value;
+            const status = document.getElementById('statusFilter').value;
+            
+            console.log('Filters applied:', { dateFrom, dateTo, category, status });
+            // In a real implementation, you would filter your data here and update the visualizations
+        }
+    </script>
+</body>
+</html>

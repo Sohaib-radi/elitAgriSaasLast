@@ -53,7 +53,7 @@ urlpatterns +=[
     path("crop/", include("crop.urls")),
     path("finance/", include("finance.urls")),
     path("core/", include("core.urls")),
-    path("projects/",include("assets_projects.urls")),
+    path("farm_projects/",include("assets_projects.urls")),
     path('dashboard/', include('dashboard.urls')),
     # Banking API routes
     path("banking/", include("banking.urls.bank_urls")),

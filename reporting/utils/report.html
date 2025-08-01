@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Report</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f9f9f9;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .report-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            padding: 0;
+        }
+        
+        /* Header Styles */
+        .report-header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 30px 40px;
+            position: relative;
+        }
+        
+        .report-header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .report-header .metadata {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            margin-top: 20px;
+        }
+        
+        .logo {
+            position: absolute;
+            top: 20px;
+            right: 40px;
+            width: 120px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+        }
+        
+        /* Content Styles */
+        .report-content {
+            padding: 40px;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+        }
+        
+        h2 {
+            color: #2c3e50;
+            font-size: 24px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        h3 {
+            color: #34495e;
+            font-size: 20px;
+            margin: 25px 0 15px;
+        }
+        
+        p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+        
+        /* Chart Containers */
+        .chart-container {
+            margin: 30px 0;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+        
+        .chart-row {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0 -15px;
+        }
+        
+        .chart-column {
+            flex: 1;
+            min-width: 300px;
+            padding: 0 15px;
+            margin-bottom: 30px;
+        }
+        
+        .chart-title {
+            font-size: 18px;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        /* Table Styles */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        .data-table th, .data-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .data-table th {
+            background-color: #f2f2f2;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .data-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        .data-table tr:hover {
+            background-color: #f1f1f1;
+        }
+        
+        /* Key Metrics */
+        .key-metrics {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0 -10px 30px;
+        }
+        
+        .metric-card {
+            flex: 1;
+            min-width: 200px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin: 10px;
+            text-align: center;
+        }
+        
+        .metric-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: #3498db;
+            margin: 10px 0;
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #7f8c8d;
+            text-transform: uppercase;
+        }
+        
+        /* Executive Summary Box */
+        .executive-summary {
+            background-color: #f8f9fa;
+            border-left: 4px solid #3498db;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        
+        /* Recommendations */
+        .recommendations {
+            background-color: #f0f7fb;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 30px 0;
+        }
+        
+        .recommendation-item {
+            margin-bottom: 15px;
+            padding-left: 25px;
+            position: relative;
+        }
+        
+        .recommendation-item:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #3498db;
+            font-weight: bold;
+        }
+        
+        /* Footer */
+        .report-footer {
+            background-color: #34495e;
+            color: white;
+            padding: 30px 40px;
+            font-size: 14px;
+            text-align: center;
+        }
+        
+        .footer-links {
+            margin-top: 15px;
+        }
+        
+        .footer-links a {
+            color: #3498db;
+            margin: 0 10px;
+            text-decoration: none;
+        }
+        
+        /* Print Styles */
+        @media print {
+            body {
+                background-color: white;
+            }
+            
+            .report-container {
+                box-shadow: none;
+                max-width: 100%;
+            }
+            
+            .chart-container {
+                break-inside: avoid;
+            }
+            
+            .report-footer {
+                position: fixed;
+                bottom: 0;
+                width: 100%;
+            }
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .report-header {
+                padding: 20px;
+            }
+            
+            .report-content {
+                padding: 20px;
+            }
+            
+            .chart-column {
+                flex: 100%;
+            }
+            
+            .metric-card {
+                flex: 100%;
+                margin-bottom: 15px;
+            }
+            
+            .logo {
+                position: relative;
+                top: 0;
+                right: 0;
+                margin: 20px auto 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="report-container">
+        <!-- Report Header -->
+        <header class="report-header">
+            <div class="logo">COMPANY LOGO</div>
+            <h1>Quarterly Performance Report</h1>
+            <p>A comprehensive analysis of Q2 2025 performance metrics and strategic recommendations</p>
+            <div class="metadata">
+                <div>
+                    <strong>Prepared by:</strong> Analytics Team<br>
+                    <strong>Date:</strong> July 31, 2025
+                </div>
+                <div>
+                    <strong>Report ID:</strong> QPR-2025-Q2<br>
+                    <strong>Version:</strong> 1.0
+                </div>
+            </div>
+        </header>
+        
+        <!-- Report Content -->
+        <main class="report-content">
+            <!-- Executive Summary -->
+            <section class="section">
+                <h2>Executive Summary</h2>
+                <div class="executive-summary">
+                    <p>This report presents a comprehensive analysis of our company's performance during Q2 2025. Overall, we've seen a 15% increase in revenue compared to the previous quarter, with significant growth in our digital product line. Customer satisfaction scores have improved by 8%, while operational costs have decreased by 5%.</p>
+                    <p>Key challenges identified include supply chain disruptions in the APAC region and increasing competition in the North American market. Strategic recommendations focus on expanding our digital offerings, optimizing the supply chain, and implementing targeted marketing campaigns in emerging markets.</p>
+                </div>
+            </section>
+            
+            <!-- Key Metrics -->
+            <section class="section">
+                <h2>Key Performance Indicators</h2>
+                <div class="key-metrics">
+                    <div class="metric-card">
+                        <div class="metric-label">Revenue</div>
+                        <div class="metric-value">$8.4M</div>
+                        <div>↑ 15% from Q1</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Customer Satisfaction</div>
+                        <div class="metric-value">92%</div>
+                        <div>↑ 8% from Q1</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">New Customers</div>
+                        <div class="metric-value">1,243</div>
+                        <div>↑ 22% from Q1</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Operational Costs</div>
+                        <div class="metric-value">$3.2M</div>
+                        <div>↓ 5% from Q1</div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Introduction -->
+            <section class="section">
+                <h2>Introduction</h2>
+                <p>This quarterly performance report provides a detailed analysis of our company's operations, financial performance, and market position during Q2 2025. The report is structured to provide stakeholders with clear insights into our achievements, challenges, and strategic direction.</p>
+                <p>The analysis is based on data collected from our internal systems, market research, and customer feedback mechanisms. All financial figures are presented in USD and have been verified by our finance department.</p>
+            </section>
+            
+            <!-- Data Visualization Section -->
+            <section class="section">
+                <h2>Performance Analysis</h2>
+                
+                <!-- Revenue by Product Category -->
+                <h3>Revenue by Product Category</h3>
+                <div class="chart-container">
+                    <div class="chart-title">Quarterly Revenue by Product Category ($M)</div>
+                    <canvas id="revenueByCategory"></canvas>
+                </div>
+                
+                <!-- Charts Row -->
+                <div class="chart-row">
+                    <!-- Monthly Sales Trend -->
+                    <div class="chart-column">
+                        <div class="chart-container">
+                            <div class="chart-title">Monthly Sales Trend</div>
+                            <canvas id="salesTrend"></canvas>
+                        </div>
+                    </div>
+                    
+                    <!-- Market Share -->
+                    <div class="chart-column">
+                        <div class="chart-container">
+                            <div class="chart-title">Market Share Distribution</div>
+                            <canvas id="marketShare"></canvas>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Regional Performance -->
+                <h3>Regional Performance</h3>
+                <div class="chart-container">
+                    <div class="chart-title">Revenue by Region ($M)</div>
+                    <canvas id="regionalPerformance"></canvas>
+                </div>
+                
+                <!-- Customer Acquisition Cost -->
+                <h3>Customer Acquisition Metrics</h3>
+                <div class="chart-row">
+                    <div class="chart-column">
+                        <div class="chart-container">
+                            <div class="chart-title">Customer Acquisition Cost by Channel</div>
+                            <canvas id="acquisitionCost"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-column">
+                        <div class="chart-container">
+                            <div class="chart-title">Customer Lifetime Value by Segment</div>
+                            <canvas id="lifetimeValue"></canvas>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Detailed Data Table -->
+                <h3>Detailed Performance Data</h3>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Product Category</th>
+                            <th>Q1 Revenue ($K)</th>
+                            <th>Q2 Revenue ($K)</th>
+                            <th>Growth (%)</th>
+                            <th>Profit Margin (%)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Digital Products</td>
+                            <td>2,450</td>
+                            <td>3,120</td>
+                            <td>27.3%</td>
+                            <td>68%</td>
+                        </tr>
+                        <tr>
+                            <td>Hardware</td>
+                            <td>1,830</td>
+                            <td>2,050</td>
+                            <td>12.0%</td>
+                            <td>42%</td>
+                        </tr>
+                        <tr>
+                            <td>Services</td>
+                            <td>1,640</td>
+                            <td>1,980</td>
+                            <td>20.7%</td>
+                            <td>55%</td>
+                        </tr>
+                        <tr>
+                            <td>Consulting</td>
+                            <td>980</td>
+                            <td>1,250</td>
+                            <td>27.6%</td>
+                            <td>62%</td>
+                        </tr>
+                        <tr>
+                            <td>Support</td>
+                            <td>420</td>
+                            <td>380</td>
+                            <td>-9.5%</td>
+                            <td>72%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+            
+            <!-- Findings Section -->
+            <section class="section">
+                <h2>Key Findings</h2>
+                
+                <h3>Strengths</h3>
+                <p>Our digital product line has shown exceptional growth, with a 27.3% increase in revenue compared to Q1. This can be attributed to the successful launch of our new cloud-based solutions and the implementation of a more aggressive pricing strategy. Customer retention rates for digital products have also improved by 12%, indicating high satisfaction with our offerings.</p>
+                
+                <h3>Challenges</h3>
+                <p>Support services have seen a decline of 9.5% in revenue, primarily due to the automation of several support functions and the transition to a self-service model. While this has reduced operational costs, it has also impacted revenue in this category. Additionally, supply chain disruptions in the APAC region have affected our hardware delivery timelines, resulting in some customer dissatisfaction.</p>
+                
+                <h3>Market Trends</h3>
+                <p>The market is showing increased demand for integrated solutions that combine our hardware and digital offerings. Competitors are rapidly expanding their digital portfolios, which could pose a threat to our market share in the coming quarters. The North American market is becoming increasingly competitive, with new entrants offering lower-priced alternatives to our premium products.</p>
+            </section>
+            
+            <!-- Recommendations Section -->
+            <section class="section">
+                <h2>Strategic Recommendations</h2>
+                
+                <div class="recommendations">
+                    <div class="recommendation-item">
+                        <strong>Expand Digital Portfolio:</strong> Accelerate the development of our digital product line, with a focus on AI-powered solutions that integrate with our existing hardware offerings.
+                    </div>
+                    
+                    <div class="recommendation-item">
+                        <strong>Optimize Supply Chain:</strong> Implement a more resilient supply chain strategy for the APAC region, including diversification of suppliers and increased local inventory.
+                    </div>
+                    
+                    <div class="recommendation-item">
+                        <strong>Enhance Support Services:</strong> Revamp our support service offerings to include premium tiers with dedicated support specialists, targeting enterprise customers willing to pay for enhanced service levels.
+                    </div>
+                    
+                    <div class="recommendation-item">
+                        <strong>Target Emerging Markets:</strong> Develop market-specific strategies for emerging markets in Southeast Asia and Latin America, where our analysis shows significant growth potential.
+                    </div>
+                    
+                    <div class="recommendation-item">
+                        <strong>Bundle Products and Services:</strong> Create attractive bundles that combine hardware, digital products, and support services to increase average transaction value and improve customer retention.
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Conclusion -->
+            <section class="section">
+                <h2>Conclusion</h2>
+                <p>Q2 2025 has been a period of significant growth for our company, with strong performance across most product categories and regions. The strategic shift towards digital offerings is yielding positive results, as evidenced by the substantial increase in revenue and customer satisfaction in this segment.</p>
+                <p>While we face challenges in certain areas, particularly in support services and supply chain management, the overall trajectory is positive. By implementing the strategic recommendations outlined in this report, we can address these challenges and capitalize on emerging opportunities in the market.</p>
+                <p>Looking ahead to Q3 and Q4, we anticipate continued growth in our digital product line and improved performance in the hardware segment as supply chain issues are resolved. The focus will be on executing our strategic initiatives while maintaining operational efficiency and customer satisfaction.</p>
+            </section>
+            
+            <!-- Appendices -->
+            <section class="section">
+                <h2>Appendices</h2>
+                
+                <h3>Appendix A: Methodology</h3>
+                <p>This report was compiled using data from our internal ERP system, CRM platform, and financial management software. Market data was sourced from industry reports and our market intelligence team. Customer satisfaction metrics were derived from our quarterly customer survey, which had a response rate of 42%.</p>
+                
+                <h3>Appendix B: Definitions</h3>
+                <p>
+                    <strong>Customer Acquisition Cost (CAC):</strong> Total sales and marketing expenses divided by the number of new customers acquired.<br>
+                    <strong>Customer Lifetime Value (CLV):</strong> The projected revenue a customer will generate during their lifetime.<br>
+                    <strong>Profit Margin:</strong> Net profit divided by revenue, expressed as a percentage.
+                </p>
+                
+                <h3>Appendix C: Data Tables</h3>
+                <p>Detailed data tables supporting the analysis in this report are available in the attached Excel file.</p>
+            </section>
+        </main>
+        
+        <!-- Report Footer -->
+        <footer class="report-footer">
+            <p>&copy; 2025 Your Company Name. All rights reserved.</p>
+            <p>This report is confidential and intended for internal use only.</p>
+            <div class="footer-links">
+                <a href="#">Privacy Policy</a> | 
+                <a href="#">Terms of Use</a> | 
+                <a href="#">Contact Us</a>
+            </div>
+        </footer>
+    </div>
+    
+    <!-- Chart.js Implementation -->
+    <script>
+        // Wait for DOM to be fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Revenue by Category Chart
+            const revenueByCategoryCtx = document.getElementById('revenueByCategory').getContext('2d');
+            new Chart(revenueByCategoryCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Digital Products', 'Hardware', 'Services', 'Consulting', 'Support'],
+                    datasets: [{
+                        label: 'Q1 2025',
+                        data: [2.45, 1.83, 1.64, 0.98, 0.42],
+                        backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }, {
+                        label: 'Q2 2025',
+                        data: [3.12, 2.05, 1.98, 1.25, 0.38],
+                        backgroundColor: 'rgba(75, 192, 192, 0.5)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Revenue ($ Million)'
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Sales Trend Chart
+            const salesTrendCtx = document.getElementById('salesTrend').getContext('2d');
+            new Chart(salesTrendCtx, {
+                type: 'line',
+                data: {
+                    labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+                    datasets: [{
+                        label: 'Monthly Sales ($M)',
+                        data: [2.1, 2.3, 2.8, 2.6, 2.9, 3.2],
+                        fill: false,
+                        borderColor: 'rgb(75, 192, 192)',
+                        tension: 0.1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: false
+                        }
+                    }
+                }
+            });
+            
+            // Market Share Chart
+            const marketShareCtx = document.getElementById('marketShare').getContext('2d');
+            new Chart(marketShareCtx, {
+                type: 'pie',
+                data: {
+                    labels: ['Our Company', 'Competitor A', 'Competitor B', 'Competitor C', 'Others'],
+                    datasets: [{
+                        data: [28, 24, 18, 16, 14],
+                        backgroundColor: [
+                            'rgba(54, 162, 235, 0.7)',
+                            'rgba(255, 99, 132, 0.7)',
+                            'rgba(255, 206, 86, 0.7)',
+                            'rgba(75, 192, 192, 0.7)',
+                            'rgba(153, 102, 255, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'right'
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.label}: ${context.raw}%`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Regional Performance Chart
+            const regionalPerformanceCtx = document.getElementById('regionalPerformance').getContext('2d');
+            new Chart(regionalPerformanceCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['North America', 'Europe', 'Asia Pacific', 'Latin America', 'Middle East & Africa'],
+                    datasets: [{
+                        label: 'Q1 2025',
+                        data: [3.2, 2.1, 1.8, 0.6, 0.3],
+                        backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }, {
+                        label: 'Q2 2025',
+                        data: [3.5, 2.4, 1.7, 0.8, 0.4],
+                        backgroundColor: 'rgba(75, 192, 192, 0.5)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Revenue ($ Million)'
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Customer Acquisition Cost Chart
+            const acquisitionCostCtx = document.getElementById('acquisitionCost').getContext('2d');
+            new Chart(acquisitionCostCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Direct Sales', 'Online Marketing', 'Partner Referrals', 'Events', 'Content Marketing'],
+                    datasets: [{
+                        label: 'CAC ($)',
+                        data: [1200, 850, 650, 1500, 720],
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.7)',
+                            'rgba(54, 162, 235, 0.7)',
+                            'rgba(255, 206, 86, 0.7)',
+                            'rgba(75, 192, 192, 0.7)',
+                            'rgba(153, 102, 255, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+            
+            // Customer Lifetime Value Chart
+            const lifetimeValueCtx = document.getElementById('lifetimeValue').getContext('2d');
+            new Chart(lifetimeValueCtx, {
+                type: 'radar',
+                data: {
+                    labels: ['Enterprise', 'Mid-Market', 'SMB', 'Startup', 'Individual'],
+                    datasets: [{
+                        label: 'CLV ($K)',
+                        data: [120, 75, 45, 25, 8],
+                        fill: true,
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        borderColor: 'rgb(54, 162, 235)',
+                        pointBackgroundColor: 'rgb(54, 162, 235)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgb(54, 162, 235)'
+                    }]
+                },
+                options: {
+                    elements: {
+                        line: {
+                            borderWidth: 3
+                        }
+                    },
+                    scales: {
+                        r: {
+                            angleLines: {
+                                display: true
+                            },
+                            suggestedMin: 0
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

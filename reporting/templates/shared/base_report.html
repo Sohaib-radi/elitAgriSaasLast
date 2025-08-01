@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Report{% endblock %}</title>
+    <style>
+        /* Common CSS styles here (fonts, margins, layout, etc.) */
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            padding: 2cm;
+        }
+        header, footer {
+            text-align: center;
+            position: fixed;
+            width: 100%;
+        }
+        header {
+            top: 0;
+        }
+        footer {
+            bottom: 0;
+            font-size: 10px;
+        }
+        main {
+            margin-top: 3cm;
+            margin-bottom: 2cm;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h2>Elite Agri - Report</h2>
+    </header>
+
+    <footer>
+        Page {{ page_number }} of {{ total_pages }}
+    </footer>
+
+    <main>
+        {% block content %}
+        <!-- Page content will go here -->
+        {% endblock %}
+    </main>
+</body>
+</html>

@@ -13,7 +13,7 @@ class ProjectCostSerializer(FarmScopedSerializer):
         model = ProjectCost
         fields = [
             'id', 'name', 'project', 'project_name',
-            'asset', 'asset_details', 'amount', 'description',
+            'asset', 'asset_details', 'amount','cost_type', 'description',
             'created_at', 'updated_at', 'farm', 'farm_name'
         ]
         extra_kwargs = {
