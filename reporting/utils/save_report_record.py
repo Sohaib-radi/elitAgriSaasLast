@@ -3,7 +3,7 @@ import uuid
 from django.utils import timezone  
 from django.core.files.base import ContentFile
 from reporting.models.report import ReportRecord
-
+from django.utils.timezone import now
 
 def save_report_record(user, report_type, report_name, pdf_content, filters=None):
     """
@@ -19,7 +19,7 @@ def save_report_record(user, report_type, report_name, pdf_content, filters=None
             status=ReportRecord.Status.SUCCESS,
             created_by=user,
             filters=filters or {},
-            executed_at=timezone.now(),  # ✅ FIXED
+            executed_at=now(),  
         )
 
         record.file_path.save(filename, ContentFile(pdf_content))

@@ -1,0 +1,299 @@
+@page {
+    size: A4;
+    margin: 10mm;
+  
+   
+    @bottom-left {
+      content: "Elite Agri";
+      font-size: 10pt;
+      color: #555;
+    }
+    @bottom-center {
+        content: "www.elitagri.com";
+        font-size: 10pt;
+        color: #555;
+      }
+    @bottom-right {
+        content: "Page " counter(page) " of " counter(pages);
+        font-size: 10pt;
+        color: #555;
+      }
+    
+  }
+  
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+}
+
+main {
+    flex: 1 0 auto;
+}
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 12pt;
+    line-height: 1.5;
+    color: #333;
+
+}
+
+
+h1 {
+    font-size: 16pt;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+h2 {
+    font-size: 13pt;
+    font-weight: bold;
+    margin-top: 40px;
+    margin-bottom: 15px;
+}
+
+h3 {
+    font-size: 12pt;
+    font-weight: 600;
+    margin-top: 30px;
+    margin-bottom: 10px;
+}
+
+p {
+    font-size: 12pt;
+    margin-bottom: 12px;
+}
+
+/* Header Styles */
+
+.report-header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+  }
+  
+  .report-header-text {
+    flex: 1;
+    min-width: 0;
+  }
+  
+  .logo {
+    width: 100px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .logo img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    display: block;
+  }
+  
+
+.report-header {
+    background: transparent;
+    color: #333;
+    position: relative;
+    border-bottom: 1px solid #ccc;
+}
+
+
+
+.report-header .subtitle {
+    opacity: 0.9;
+    font-size: 10pt;
+    margin-bottom: 5px;
+    width:300px;
+}
+.report-header .phone {
+    opacity: 0.9;
+    margin-bottom: 0px;
+    font-size: 10pt;
+    width:200px;
+}
+.report-header .email {
+    opacity: 0.9;
+    margin-bottom: 20px;
+    font-size: 10pt;
+    width:200px;
+}
+
+.report-header .metadata {
+    display: flex;
+    justify-content: space-between;
+
+
+}
+
+
+
+/* Common Styles */
+
+
+
+.note {
+    font-size: 9pt;
+}
+
+.section {
+    margin-bottom: 40px;
+}
+
+.section.hidden {
+    display: none;
+}
+
+.report-container {
+    width: 100%;
+    max-width: 190mm;
+    margin: 0 auto;
+    
+    box-sizing: border-box;
+    background-color: white;
+    border-radius: 12px;
+  
+}
+
+/* Summary Cards */
+.summary-cards {
+    margin: 0px 0;
+}
+
+.summary-card {
+    display: inline-block;
+    vertical-align: top;
+    width: 225px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    margin: 0 10px 10px 0;
+    border-left: 5px solid #667eea;
+    border-right: 1px solid #667eea;
+    border-top: 1px solid #667eea;
+    border-bottom: 1px solid #667eea;
+    padding: 10px;
+    border-radius: 8px;
+    background-color: white;
+}
+
+.summary-card h4 {
+    color: #2c3e50;
+    margin-bottom: 10px;
+    font-size: 11pt;
+}
+.summary-card p {
+    font-size: 11pt;
+}
+/* Key Metrics */
+.key-metrics {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 -10px 30px;
+}
+
+.metric-card {
+    flex: 1;
+    min-width: 200px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 8px;
+    padding: 20px;
+    margin: 10px;
+    text-align: center;
+   
+}
+
+.metric-value {
+    font-size: 32px;
+    font-weight: 700;
+    margin: 10px 0;
+}
+
+.metric-label {
+    font-size: 14px;
+    opacity: 0.9;
+    text-transform: uppercase;
+}
+
+.metric-change {
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+.metric-change.positive {
+    color: #2ecc71;
+}
+
+.metric-change.negative {
+    color: #e74c3c;
+}
+
+.table-data {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.table-data th,
+.table-data td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    font-size: 11pt;
+    font-weight: normal;
+}
+
+.table-data th {
+    background-color: #667eea;
+    color: white;
+    text-align: left;
+}
+
+.table-data tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+.report-footer {
+    font-size: 10pt;
+    color: #555;
+    padding: 10px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: auto;          
+    flex-shrink: 0;
+    page-break-inside: avoid;    
+}
+.footer-line {
+    height: 1px;
+    background-color: #ccc;
+    width: 100%;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.footer-left,
+.footer-center,
+.footer-right {
+    flex: 1;
+    text-align: center;
+}
+
+.footer-left {
+    text-align: left;
+}
+
+.footer-right {
+    text-align: right;
+}

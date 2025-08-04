@@ -70,11 +70,23 @@ class User(AbstractBaseUser, PermissionsMixin, BaseModel):
         verbose_name="User Permissions"
     )
 
-    class Meta:
-        verbose_name = "User"
-        verbose_name_plural = "Users"
+    def get_full_name(self):
+        return self.full_name or self.email  
+
+    def get_short_name(self):
+        return self.full_name.split()[0] if self.full_name else self.email
+
+    def get_display_address(self):
+        parts = [self.address, self.city, self.state, self.country, self.zip_code]
+        return ", ".join([p for p in parts if p])
+
+    def get_display_contact(self):
+        return f"{self.full_name} ({self.phone})" if self.phone else self.full_name
     @property
     def status(self):
         return 'active' if self.is_verified else 'pending'
     def __str__(self):
         return self.email
+    class Meta:
+        verbose_name = "User"
+        verbose_name_plural = "Users"

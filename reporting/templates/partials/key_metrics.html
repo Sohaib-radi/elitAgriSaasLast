@@ -1,0 +1,13 @@
+<section class="section">
+    <h2>Key Metrics</h2>
+    <div class="key-metrics" id="keyMetrics">
+      {% for metric in metrics %}
+        <div class="metric-card">
+          <div class="metric-label">{{ metric.label }}</div>
+          <div class="metric-value">{{ metric.value }}</div>
+          <div class="metric-change {{ metric.change_class }}">{{ metric.change }}</div>
+        </div>
+      {% endfor %}
+    </div>
+  </section>
+  

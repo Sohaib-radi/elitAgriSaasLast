@@ -1,6 +1,6 @@
 from django.template.loader import render_to_string
-import requests
-from collections.abc import Iterable
+from weasyprint import HTML
+from django.utils.encoding import force_str
 from django.db.models.query import QuerySet
 
 
@@ -19,16 +19,16 @@ def make_serializable(value):
     return value
 
 
-def render_to_pdf(template_str: str, context: dict) -> bytes:
+def render_to_pdf(template_name: str, context: dict) -> bytes:
+    """
+    Render a Django template into PDF bytes using WeasyPrint.
+    """
     serializable_context = make_serializable(context)
 
-    response = requests.post(
-        "http://localhost:5000/pdf",
-        json={
-            "template": template_str,
-            "context": serializable_context,
-        },
-    )
-    if response.status_code == 200:
-        return response.content
-    raise Exception(f"PDF generation failed: {response.text}")
+    # Render HTML string
+    html_string = render_to_string(template_name, serializable_context)
+
+    # Generate PDF from HTML
+    pdf_bytes = HTML(string=force_str(html_string)).write_pdf()
+
+    return pdf_bytes

@@ -22,7 +22,7 @@ class MyFarmSettingsView(AutoPermissionAPIView):
     """
     Get or update settings for the current farm of the authenticated user
     """
-    permission_module = "farm"
+    permission_module = "farm_settings"
     parser_classes = [MultiPartParser, FormParser]
 
     def get_farm_settings(self, request):
@@ -64,7 +64,7 @@ class FarmSettingsListView(AutoPermissionAPIView):
     """
     Get settings of a specific farm (admin only)
     """
-    permission_module = "farm"
+    permission_module = "farm_settings"
 
     def get(self, request, farm_id=None):
         if not farm_id:

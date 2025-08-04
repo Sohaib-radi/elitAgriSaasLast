@@ -1,0 +1,13 @@
+{% if summary_cards %}
+<section class="section">
+    <h2>Summary Overview</h2>
+    <div class="summary-cards" id="summaryCards">
+        {% for card in summary_cards %}
+        <div class="summary-card">
+            <h4>{{ card.title }}</h4>
+            <p>{{ card.description }}</p>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
