@@ -297,3 +297,277 @@ p {
 .footer-right {
     text-align: right;
 }
+
+
+/* RECEIPT && PAYEMNET STYLE */
+
+.receipt-copy-label {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: #007bff;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 3px;
+    font-size: 12px;
+    font-weight: 600;
+    display: none;
+}
+
+.header-section-receipt {
+    background: transparent;
+    color: #000;
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 80px;
+}
+
+.company-logo-receipt{
+    width: 80px;
+    height: 60px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px dashed rgba(255, 255, 255, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    font-size: 12px;
+    text-align: center;
+}
+.company-logo-receipt img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    display: block;
+  }
+.receipt-title-center {
+    text-align: center;
+    flex: 1;
+}
+
+.receipt-title {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.receipt-title-ar {
+    font-family: 'Cairo', sans-serif;
+    font-size: 18px;
+    direction: rtl;
+}
+
+.qr-code {
+    width: 80px;
+    height: 60px;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    font-size: 10px;
+    color: #333;
+    text-align: center;
+}
+
+.receipt-info {
+    background: #f8f9fa;
+    padding: 15px 20px;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.receipt-number {
+    font-size: 16px;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.content-section {
+    padding: 20px;
+}
+
+.field-group-receipt {
+    margin-bottom: 15px;
+    border: 1px solid #e9ecef;
+    border-radius: 5px;
+    padding: 12px;
+    background: #fafbfc;
+}
+
+.field-label-receipt {
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 5px;
+    font-size: 13px;
+}
+
+.field-label-receipt-ar {
+    font-family: 'Cairo', sans-serif;
+    direction: rtl;
+    text-align: right;
+}
+
+.field-value-receipt {
+    font-size: 15px;
+    color: #212529;
+    border-bottom: 1px dotted #dee2e6;
+    padding-bottom: 3px;
+    min-height: 20px;
+}
+
+.field-value-receipt-ar {
+    font-family: 'Cairo', sans-serif;
+    direction: rtl;
+    text-align: right;
+}
+
+.customer-info {
+    display: grid;
+    gap: 10px;
+}
+
+.amount-section {
+    background: #e8f5e8;
+    border: 2px solid #28a745;
+    border-radius: 8px;
+    padding: 10px;
+    margin: 15px 0;
+}
+
+.amount-value {
+    font-size: 20px;
+    font-weight: 700;
+    color: #155724;
+    text-align: center;
+}
+
+.signature-section {
+    
+    padding-top: 10px;
+}
+
+.signature-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+    padding: 10px 0;
+    font-size: 14px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.signature-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.signature-label .label-ar {
+    font-family: 'Cairo', sans-serif;
+    direction: rtl;
+}
+
+.signature-note {
+    margin-top: 6px;
+    text-align: center;
+    font-size: 12px;
+    color: #555;
+}
+
+.signature-box {
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+    padding: 15px;
+    text-align: center;
+    background: #fafbfc;
+    min-height: 70px;
+}
+
+.signature-title {
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 8px;
+    font-size: 13px;
+}
+
+.signature-title-ar {
+    font-family: 'Cairo', sans-serif;
+    direction: rtl;
+}
+
+.signature-line {
+    border-bottom: 1px solid #6c757d;
+    margin: 10px auto 8px;
+    width: 150px;
+}
+
+.footer-section-receipt {
+    background: #f8f9fa;
+    padding: 15px 20px;
+    text-align: center;
+    border-top: 1px solid #dee2e6;
+    font-size: 11px;
+    color: #6c757d;
+}
+
+.print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.bilingual-field {
+    display: flex;
+    gap: 10px;
+}
+
+.field-inline-bilingual {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.field-inline-bilingual .label-en,
+.field-inline-bilingual .label-ar {
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.field-inline-bilingual .label-ar {
+    font-family: 'Cairo', sans-serif;
+    direction: rtl;
+    text-align: right;
+}
+
+.field-inline-bilingual .field-center {
+    flex: 1;
+    text-align: center;
+    border-bottom: 1px dotted #dee2e6;
+    padding-bottom: 3px;
+    min-height: 20px;
+    color: #212529;
+}
+
+.bilingual-field>div {
+    flex: 1;
+}
+
+@media (max-width: 768px) {
+    .bilingual-field {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .header-section-receipt {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+}

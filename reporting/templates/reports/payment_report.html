@@ -1,0 +1,198 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Elite Agri Report</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&family=Inter:wght@300;400;500;600&display=swap"
+    rel="stylesheet">
+</head>
+
+<body>
+  <div class="report-container">
+    <!-- First Copy - Client Copy -->
+    <div class="receipt-container">
+
+      <!-- Header Section -->
+      <div class="header-section-receipt">
+        <div class="company-logo-receipt">
+          <img src="{{ farm_info.logo_absolute_path }}" alt="{{ farm_info.farm_name }}">
+        </div>
+
+        <div class="receipt-title-center">
+          <div class="receipt-title">PAYMENT VOUCHER</div>
+          <div class="receipt-title-ar">سند صرف</div>
+        </div>
+
+        <div class="qr-code">
+          <img src="{{ qr_code_url }}" alt="{{ qr_code_url }}" width="80" height="80">
+        </div>
+      </div>
+
+      <!-- Content Section -->
+      <div class="content-section">
+        <!-- Recipient Information -->
+        <div class="customer-info">
+          <div class="field-group-receipt">
+            <div class="field-inline-bilingual">
+              <div class="label-en">Payment No:</div>
+              <div class="field-value-receipt field-center">{{ payment_number }}</div>
+              <div class="label-ar">رقم السند:</div>
+            </div>
+
+            <div class="field-inline-bilingual">
+              <div class="label-en">Date:</div>
+              <div class="field-value-receipt field-center">{{ date }}</div>
+              <div class="label-ar">التاريخ:</div>
+            </div>
+
+            <div class="field-inline-bilingual">
+              <div class="label-en">Recipient Number:</div>
+              <div class="field-value-receipt field-center">{{ recipient_number }}</div>
+              <div class="label-ar">رقم المستلم:</div>
+            </div>
+
+            <div class="field-inline-bilingual">
+              <div class="label-en">Recipient Name:</div>
+              <div class="field-value-receipt field-center">{{ recipient_name }}</div>
+              <div class="label-ar">اسم المستلم:</div>
+            </div>
+
+            <div class="field-inline-bilingual">
+              <div class="label-en">Description:</div>
+              <div class="field-value-receipt field-center">{{ description }}</div>
+              <div class="label-ar">الوصف:</div>
+            </div>
+
+            <div class="field-inline-bilingual">
+              <div class="label-en">Amount Paid:</div>
+              <div class="field-value-receipt field-center"><b>{{ amount }}</b></div>
+              <div class="label-ar">المبلغ المصروف:</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Signatures Section -->
+        <div class="signature-section">
+          <div class="signature-row">
+            <div class="signature-label">
+              <span class="label-en">Accountant</span>
+              <span class="dots">....................</span>
+              <span class="label-ar">المحاسب</span>
+            </div>
+            <div class="signature-label">
+              <span class="label-en">Receiver</span>
+              <span class="dots">....................</span>
+              <span class="label-ar">المستلم</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="footer-section-receipt">
+        <div class="row">
+          <div class="col-md-12">
+            <strong>Company Address:</strong> {{ farm_info.address }}<br>
+            <strong>Phone:</strong> {{ farm_info.phone }} | <strong>Email:</strong> {{ farm_info.email }}
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div style="border-bottom: 2px dotted; margin-bottom: 15px; margin-top: 15px; width: 100%;"></div>
+    <div class="receipt-container">
+
+        <!-- Header Section -->
+        <div class="header-section-receipt">
+          <div class="company-logo-receipt">
+            <img src="{{ farm_info.logo_absolute_path }}" alt="{{ farm_info.farm_name }}">
+          </div>
+  
+          <div class="receipt-title-center">
+            <div class="receipt-title">PAYMENT VOUCHER</div>
+            <div class="receipt-title-ar">سند صرف</div>
+          </div>
+  
+          <div class="qr-code">
+            <img src="{{ qr_code_url }}" alt="{{ qr_code_url }}" width="80" height="80">
+          </div>
+        </div>
+  
+        <!-- Content Section -->
+        <div class="content-section">
+          <!-- Recipient Information -->
+          <div class="customer-info">
+            <div class="field-group-receipt">
+              <div class="field-inline-bilingual">
+                <div class="label-en">Payment No:</div>
+                <div class="field-value-receipt field-center">{{ payment_number }}</div>
+                <div class="label-ar">رقم السند:</div>
+              </div>
+  
+              <div class="field-inline-bilingual">
+                <div class="label-en">Date:</div>
+                <div class="field-value-receipt field-center">{{ date }}</div>
+                <div class="label-ar">التاريخ:</div>
+              </div>
+  
+              <div class="field-inline-bilingual">
+                <div class="label-en">Recipient Number:</div>
+                <div class="field-value-receipt field-center">{{ recipient_number }}</div>
+                <div class="label-ar">رقم المستلم:</div>
+              </div>
+  
+              <div class="field-inline-bilingual">
+                <div class="label-en">Recipient Name:</div>
+                <div class="field-value-receipt field-center">{{ recipient_name }}</div>
+                <div class="label-ar">اسم المستلم:</div>
+              </div>
+  
+              <div class="field-inline-bilingual">
+                <div class="label-en">Description:</div>
+                <div class="field-value-receipt field-center">{{ description }}</div>
+                <div class="label-ar">الوصف:</div>
+              </div>
+  
+              <div class="field-inline-bilingual">
+                <div class="label-en">Amount Paid:</div>
+                <div class="field-value-receipt field-center"><b>{{ amount }}</b></div>
+                <div class="label-ar">المبلغ المصروف:</div>
+              </div>
+            </div>
+          </div>
+  
+          <!-- Signatures Section -->
+          <div class="signature-section">
+            <div class="signature-row">
+              <div class="signature-label">
+                <span class="label-en">Accountant</span>
+                <span class="dots">....................</span>
+                <span class="label-ar">المحاسب</span>
+              </div>
+              <div class="signature-label">
+                <span class="label-en">Receiver</span>
+                <span class="dots">....................</span>
+                <span class="label-ar">المستلم</span>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Footer -->
+        <div class="footer-section-receipt">
+          <div class="row">
+            <div class="col-md-12">
+              <strong>Company Address:</strong> {{ farm_info.address }}<br>
+              <strong>Phone:</strong> {{ farm_info.phone }} | <strong>Email:</strong> {{ farm_info.email }}
+            </div>
+          </div>
+        </div>
+  
+      </div>  
+</div>
+</body>
+</html>

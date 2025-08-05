@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Income Summary Comparison Report</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Cairo:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @page {
+            size: A4;
+            margin: 20mm;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            font-size: 12px;
+            line-height: 1.4;
+            color: #1f2937;
+            background: white;
+        }
+
+        .arabic {
+            font-family: 'Cairo', sans-serif;
+            direction: rtl;
+            text-align: right;
+        }
+
+        .report-container {
+            max-width: 210mm;
+            margin: 0 auto;
+            background: white;
+            min-height: 297mm;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header Styles */
+        .header {
+            border-bottom: 3px solid #059669;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .logo-section {
+            width: 80px;
+            height: 80px;
+            background: #f3f4f6;
+            border: 2px solid #d1d5db;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: #6b7280;
+        }
+
+        .title-section {
+            flex: 1;
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        .main-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #059669;
+            margin-bottom: 8px;
+        }
+
+        .arabic-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #059669;
+        }
+
+        .header-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: #6b7280;
+        }
+
+        /* Section Styles */
+        .content-section {
+            flex: 1;
+        }
+
+        .periods-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .period-section {
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 20px;
+            background: #fafafa;
+        }
+
+        .period-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #d1d5db;
+        }
+
+        .period-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .period-date {
+            font-size: 11px;
+            color: #6b7280;
+            background: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            border: 1px solid #d1d5db;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .metric-card {
+            background: white;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+            text-align: center;
+        }
+
+        .metric-label {
+            font-size: 10px;
+            color: #6b7280;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .metric-value {
+            font-size: 16px;
+            font-weight: 600;
+            color: #059669;
+        }
+
+        .top-payers {
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+            overflow: hidden;
+        }
+
+        .top-payers-header {
+            background: #f9fafb;
+            padding: 10px 15px;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .top-payers-title {
+            font-weight: 600;
+            font-size: 11px;
+            color: #374151;
+        }
+
+        .payers-table {
+            width: 100%;
+        }
+
+        .payers-table tr {
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        .payers-table tr:last-child {
+            border-bottom: none;
+        }
+
+        .payers-table td {
+            padding: 8px 15px;
+            font-size: 10px;
+        }
+
+        .payer-name {
+            color: #374151;
+        }
+
+        .payer-amount {
+            text-align: right;
+            font-weight: 500;
+            color: #059669;
+        }
+
+        /* Comparison Table */
+        .comparison-section {
+            margin-bottom: 30px;
+        }
+
+        .comparison-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 15px;
+            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .comparison-table th {
+            background: #059669;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 12px;
+        }
+
+        .comparison-table td {
+            padding: 12px 15px;
+            text-align: center;
+            border-bottom: 1px solid #f3f4f6;
+            font-size: 11px;
+        }
+
+        .comparison-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background: #f9fafb;
+        }
+
+        .metric-name {
+            text-align: left;
+            font-weight: 500;
+            color: #374151;
+        }
+
+        .change-positive {
+            color: #059669;
+            font-weight: 600;
+        }
+
+        .change-negative {
+            color: #dc2626;
+            font-weight: 600;
+        }
+
+        .change-neutral {
+            color: #6b7280;
+            font-weight: 500;
+        }
+
+        .arrow-up::after {
+            content: " ↗";
+            color: #059669;
+        }
+
+        .arrow-down::after {
+            content: " ↘";
+            color: #dc2626;
+        }
+
+        .arrow-neutral::after {
+            content: " →";
+            color: #6b7280;
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: auto;
+            border-top: 2px solid #e5e7eb;
+            padding-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .contact-info {
+            font-size: 10px;
+            color: #6b7280;
+            line-height: 1.5;
+        }
+
+        .contact-info strong {
+            color: #374151;
+        }
+
+        .system-info {
+            font-size: 10px;
+            color: #9ca3af;
+            text-align: right;
+            border-top: 1px dotted #d1d5db;
+            padding-top: 8px;
+        }
+
+        /* Print Optimizations */
+        @media print {
+            body {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            
+            .report-container {
+                box-shadow: none;
+                margin: 0;
+                max-width: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="report-container">
+        <!-- Main Content -->
+        <main class="content-section">
+            <!-- Periods Comparison -->
+            <div class="periods-container">
+                <!-- Period 1 -->
+                <div class="period-section">
+                    <div class="period-header">
+                        <h3 class="period-title">Period 1 | الفترة الأولى</h3>
+                        <div class="period-date">July 1 - July 31, 2025</div>
+                    </div>
+                    
+                    <div class="metrics-grid" style="grid-template-columns: 1fr 1fr 1fr 1fr;">
+                        <div class="metric-card">
+                            <div class="metric-label">Total Income | إجمالي الدخل</div>
+                            <div class="metric-value">$45,250</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-label">Total Expenses | إجمالي المصروفات</div>
+                            <div class="metric-value" style="color: #dc2626;">$28,400</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-label">Net Profit | صافي الربح</div>
+                            <div class="metric-value" style="color: #7c3aed;">$16,850</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-label">Profit Margin | هامش الربح</div>
+                            <div class="metric-value" style="color: #7c3aed;">37.2%</div>
+                        </div>
+                    </div>
+
+                    <div class="top-payers">
+                        <div class="top-payers-header">
+                            <span class="top-payers-title">Top 5 Payers</span>
+                            <span class="top-payers-title arabic">أعلى 5 دافعين</span>
+                        </div>
+                        <table class="payers-table">
+                            <tr>
+                                <td class="payer-name">Green Valley Farms</td>
+                                <td class="payer-amount">$8,500</td>
+                            </tr>
+                            <tr>
+                                <td class="payer-name">Sunrise Agriculture Co.</td>
+                                <td class="payer-amount">$7,200</td>
+                            </tr>
+                            <tr>
+                                <td class="payer-name">Mountain View Ranch</td>
+                                <td class="payer-amount">$6,800</td>
+                            </tr>
+                            <tr>
+                                <td class="payer-name">Golden Harvest Ltd.</td>
+                                <td class="payer-amount">$5,900</td>
+                            </tr>
+                            <tr>
+                                <td class="payer-name">Prairie Fields Corp.</td>
+                                <td class="payer-amount">$4,750</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="top-payers" style="margin-top: 15px;">
+                        <div class="top-payers-header">
+                            <span class="top-payers-title">Top 5 Expenses</span>
+                            <span class="top-payers-title arabic">أعلى 5 مصروفات</span>
+                        </div>
+                        <table class="payers-table">
+                            <tr>
+                                <td class="payer-name">Equipment Maintenance</td>
+                                <td class="payer-amount" style="color: #dc2626;">$8,200</td>
+                            </tr>
+                            <tr>
+                                <td class="payer-name">Fuel & Transportation</td>
+                                <td class="payer-amount" style="color: #dc2626;">$6,500</td>
+                            </tr>
+                            <tr>
+                                <td class="payer-name">Seeds & Fertilizers</td>
+                                <td class="payer-amount" style="color: #dc2626;">$5,800</td>
+                            </tr>
+                            <tr>
+                                <td class="payer-name">Labor Costs</td>
+                                <td class="payer-amount" style="color: #dc2626;">$4,200</td>
+                            </tr>
+                            <tr>
+                                <td class="payer-name">Utilities</td>
+                                <td class="payer-amount" style="color: #dc2626;">$3,700</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Period 2 -->
+                <div class="period-section">
+                    <div class="period-header">
+                        <h3 class="period-title">Period 2 | الفترة الثانية</h3>
+                        <div class="period-date">August 1 - August 31, 2025</div>
+                    </div>
+                    
+                    <div class="metrics-grid" style="grid-template-columns: 1fr 1fr 1fr 1fr;">
+                        <div class="metric-card">
+                            <div class="metric-label">Total Income | إجمالي الدخل</div>
+                            <div class="metric-value">$52,800</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-label">Total Expenses | إجمالي المصروفات</div>
+                            <div class="metric-value" style="color: #dc2626;">$31,200</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-label">Net Profit | صافي الربح</div>
+                            <div class="metric-value" style="color: #7c3aed;">$21,600</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-label">Profit Margin | هامش الربح</div>
+                            <div class="metric-value" style="color: #7c3aed;">40.9%</div>
+                        </div>
+                    </div>
+
+                    <div class="top-payers">
+                        <div class="top-payers-header">
+                            <span class="top-payers-title">Top 5 Payers</span>
+                            <span class="top-payers-title arabic">أعلى 5 دافعين</span>
+                        </div>
+                        <table class="payers-table">
+                            <tr>
+                                <td class="payer-name">Sunrise Agriculture Co.</td>
+                                <td class="payer-amount">$9,200</td>
+                            </tr>
+                            <tr>
+                                <td class="payer-name">Green Valley Farms</td>
+                                <td class="payer-amount">$8,900</td>
+                            </tr>
+                            <tr>
+                                <td class="payer-name">Mountain View Ranch</td>
+                                <td class="payer-amount">$7,500</td>
+                            </tr>
+                            <tr>
+                                <td class="payer-name">Golden Harvest Ltd.</td>
+                                <td class="payer-amount">$6,800</td>
+                            </tr>
+                            <tr>
+                                <td class="payer-name">Riverside Agri Solutions</td>
+                                <td class="payer-amount">$5,400</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="top-payers" style="margin-top: 15px;">
+                        <div class="top-payers-header">
+                            <span class="top-payers-title">Top 5 Expenses</span>
+                            <span class="top-payers-title arabic">أعلى 5 مصروفات</span>
+                        </div>
+                        <table class="payers-table">
+                            <tr>
+                                <td class="payer-name">Equipment Maintenance</td>
+                                <td class="payer-amount" style="color: #dc2626;">$9,100</td>
+                            </tr>
+                            <tr>
+                                <td class="payer-name">Fuel & Transportation</td>
+                                <td class="payer-amount" style="color: #dc2626;">$7,200</td>
+                            </tr>
+                            <tr>
+                                <td class="payer-name">Seeds & Fertilizers</td>
+                                <td class="payer-amount" style="color: #dc2626;">$6,400</td>
+                            </tr>
+                            <tr>
+                                <td class="payer-name">Labor Costs</td>
+                                <td class="payer-amount" style="color: #dc2626;">$4,800</td>
+                            </tr>
+                            <tr>
+                                <td class="payer-name">Utilities</td>
+                                <td class="payer-amount" style="color: #dc2626;">$3,700</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Comparison Table -->
+            <section class="comparison-section">
+                <div class="comparison-title">
+                    <span>📊 Comparison Analysis</span>
+                    <span class="arabic">📊 تحليل المقارنة</span>
+                </div>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Metric | المقياس</th>
+                            <th>Period 1 | الفترة الأولى</th>
+                            <th>Period 2 | الفترة الثانية</th>
+                            <th>Change | التغيير</th>
+                            <th>% Change | نسبة التغيير</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="metric-name">Total Income | إجمالي الدخل</td>
+                            <td>$45,250</td>
+                            <td>$52,800</td>
+                            <td class="change-positive arrow-up">+$7,550</td>
+                            <td class="change-positive">+16.7%</td>
+                        </tr>
+                        <tr>
+                            <td class="metric-name">Total Expenses | إجمالي المصروفات</td>
+                            <td>$28,400</td>
+                            <td>$31,200</td>
+                            <td class="change-negative arrow-up">+$2,800</td>
+                            <td class="change-negative">+9.9%</td>
+                        </tr>
+                        <tr>
+                            <td class="metric-name">Net Profit | صافي الربح</td>
+                            <td>$16,850</td>
+                            <td>$21,600</td>
+                            <td class="change-positive arrow-up">+$4,750</td>
+                            <td class="change-positive">+28.2%</td>
+                        </tr>
+                        <tr>
+                            <td class="metric-name">Profit Margin | هامش الربح</td>
+                            <td>37.2%</td>
+                            <td>40.9%</td>
+                            <td class="change-positive arrow-up">+3.7%</td>
+                            <td class="change-positive">+9.9%</td>
+                        </tr>
+                        <tr>
+                            <td class="metric-name">Top Expense | أعلى مصروف</td>
+                            <td>Equipment Maintenance<br>$8,200</td>
+                            <td>Equipment Maintenance<br>$9,100</td>
+                            <td class="change-negative arrow-up">+$900</td>
+                            <td class="change-negative">+11.0%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+            <!-- Business Insights Section -->
+            <section class="insights-section" style="margin-bottom: 30px; background: #f8fafc; border-radius: 12px; padding: 25px; border: 2px solid #e2e8f0;">
+                <div class="insights-title" style="font-size: 18px; font-weight: 600; color: #1f2937; margin-bottom: 20px; text-align: center; display: flex; justify-content: space-between; align-items: center;">
+                    <span>💡 Business Insights</span>
+                    <span class="arabic">💡 رؤى الأعمال</span>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div class="insight-card" style="background: white; padding: 15px; border-radius: 8px; border-left: 4px solid #059669;">
+                        <h4 style="color: #059669; font-weight: 600; margin-bottom: 8px; font-size: 12px;">📈 POSITIVE TRENDS | الاتجاهات الإيجابية</h4>
+                        <ul style="font-size: 10px; color: #374151; line-height: 1.6; margin: 0; padding-left: 15px;">
+                            <li>Income increased by 16.7% ($7,550) from Period 1 to Period 2</li>
+                            <li>Net profit improved significantly by 28.2% ($4,750)</li>
+                            <li>Profit margin increased from 37.2% to 40.9%</li>
+                            <li>Number of active payers grew by 14.3% (4 new clients)</li>
+                            <li>Sunrise Agriculture Co. became the top payer with $9,200</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="insight-card" style="background: white; padding: 15px; border-radius: 8px; border-left: 4px solid #dc2626;">
+                        <h4 style="color: #dc2626; font-weight: 600; margin-bottom: 8px; font-size: 12px;">⚠️ AREAS OF CONCERN | مجالات القلق</h4>
+                        <ul style="font-size: 10px; color: #374151; line-height: 1.6; margin: 0; padding-left: 15px;">
+                            <li>Equipment maintenance costs increased by 11% ($900)</li>
+                            <li>Fuel & transportation expenses rose by $700 (10.8%)</li>
+                            <li>Overall expenses grew by 9.9%, though slower than income</li>
+                            <li>Seeds & fertilizers costs increased by $600 (10.3%)</li>
+                            <li>Labor costs increased by $600 (14.3%)</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 20px; padding: 15px; background: #fffbeb; border-radius: 8px; border: 1px solid #fbbf24;">
+                    <h4 style="color: #92400e; font-weight: 600; margin-bottom: 8px; font-size: 12px; display: flex; justify-content: space-between;">
+                        <span>🎯 RECOMMENDATIONS | التوصيات</span>
+                    </h4>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; font-size: 10px; color: #374151;">
+                        <div>
+                            <strong>Short-term Actions:</strong>
+                            <ul style="margin: 5px 0 0 15px; line-height: 1.5;">
+                                <li>Review equipment maintenance contracts for cost optimization</li>
+                                <li>Explore fuel-efficient transportation alternatives</li>
+                                <li>Negotiate better rates with top suppliers</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <strong>Long-term Strategy:</strong>
+                            <ul style="margin: 5px 0 0 15px; line-height: 1.5;">
+                                <li>Invest in preventive maintenance to reduce future costs</li>
+                                <li>Diversify client base to reduce dependency risk</li>
+                                <li>Consider bulk purchasing for seeds & fertilizers</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+</body>
+</html>

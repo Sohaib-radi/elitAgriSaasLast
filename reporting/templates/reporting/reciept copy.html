@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Receipt - إيصال احترافي</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&family=Inter:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+    <style>
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+
+            body {
+                margin: 0;
+                padding: 0;
+            }
+
+            .page-container {
+                height: 297mm;
+                width: 210mm;
+                margin: 0;
+                padding: 10mm;
+                box-sizing: border-box;
+            }
+
+            .receipt-container {
+                box-shadow: none !important;
+                border: 2px solid #000 !important;
+                margin-bottom: 10mm !important;
+                height: calc(50% - 5mm);
+                page-break-inside: avoid;
+            }
+
+            .receipt-copy-label {
+                display: block !important;
+            }
+        }
+
+        @media screen {
+            .page-container {
+                max-width: 210mm;
+                margin: 0 auto;
+                padding: 20px;
+                background: #f8f9fa;
+            }
+        }
+
+        body {
+            font-family: 'Inter', 'Cairo', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .receipt-container {
+            background: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border: 1px solid #dee2e6;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .receipt-copy-label {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: #007bff;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 3px;
+            font-size: 12px;
+            font-weight: 600;
+            display: none;
+        }
+
+        .header-section {
+            background: transparent;
+            color: #000;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 80px;
+        }
+
+        .company-logo {
+            width: 80px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px dashed rgba(255, 255, 255, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 5px;
+            font-size: 12px;
+            text-align: center;
+        }
+
+        .receipt-title-center {
+            text-align: center;
+            flex: 1;
+        }
+
+        .receipt-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .receipt-title-ar {
+            font-family: 'Cairo', sans-serif;
+            font-size: 18px;
+            direction: rtl;
+        }
+
+        .qr-code {
+            width: 80px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 5px;
+            font-size: 10px;
+            color: #333;
+            text-align: center;
+        }
+
+        .receipt-info {
+            background: #f8f9fa;
+            padding: 15px 20px;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .receipt-number {
+            font-size: 16px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .content-section {
+            padding: 20px;
+        }
+
+        .field-group {
+            margin-bottom: 15px;
+            border: 1px solid #e9ecef;
+            border-radius: 5px;
+            padding: 12px;
+            background: #fafbfc;
+        }
+
+        .field-label {
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 5px;
+            font-size: 13px;
+        }
+
+        .field-label-ar {
+            font-family: 'Cairo', sans-serif;
+            direction: rtl;
+            text-align: right;
+        }
+
+        .field-value {
+            font-size: 15px;
+            color: #212529;
+            border-bottom: 1px dotted #dee2e6;
+            padding-bottom: 3px;
+            min-height: 20px;
+        }
+
+        .field-value-ar {
+            font-family: 'Cairo', sans-serif;
+            direction: rtl;
+            text-align: right;
+        }
+
+        .customer-info {
+            display: grid;
+            gap: 10px;
+        }
+
+        .amount-section {
+            background: #e8f5e8;
+            border: 2px solid #28a745;
+            border-radius: 8px;
+            padding: 10px;
+            margin: 15px 0;
+        }
+
+        .amount-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: #155724;
+            text-align: center;
+        }
+
+        .signature-section {
+            
+            padding-top: 20px;
+        }
+
+        .signature-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 30px;
+            padding: 10px 0;
+            font-size: 14px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .signature-label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .signature-label .label-ar {
+            font-family: 'Cairo', sans-serif;
+            direction: rtl;
+        }
+
+        .signature-note {
+            margin-top: 6px;
+            text-align: center;
+            font-size: 12px;
+            color: #555;
+        }
+
+        .signature-box {
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 15px;
+            text-align: center;
+            background: #fafbfc;
+            min-height: 70px;
+        }
+
+        .signature-title {
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 8px;
+            font-size: 13px;
+        }
+
+        .signature-title-ar {
+            font-family: 'Cairo', sans-serif;
+            direction: rtl;
+        }
+
+        .signature-line {
+            border-bottom: 1px solid #6c757d;
+            margin: 10px auto 8px;
+            width: 150px;
+        }
+
+        .footer-section {
+            background: #f8f9fa;
+            padding: 15px 20px;
+            text-align: center;
+            border-top: 1px solid #dee2e6;
+            font-size: 11px;
+            color: #6c757d;
+        }
+
+        .print-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .bilingual-field {
+            display: flex;
+            gap: 10px;
+        }
+
+        .field-inline-bilingual {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .field-inline-bilingual .label-en,
+        .field-inline-bilingual .label-ar {
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .field-inline-bilingual .label-ar {
+            font-family: 'Cairo', sans-serif;
+            direction: rtl;
+            text-align: right;
+        }
+
+        .field-inline-bilingual .field-center {
+            flex: 1;
+            text-align: center;
+            border-bottom: 1px dotted #dee2e6;
+            padding-bottom: 3px;
+            min-height: 20px;
+            color: #212529;
+        }
+
+        .bilingual-field>div {
+            flex: 1;
+        }
+
+        @media (max-width: 768px) {
+            .bilingual-field {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .header-section {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <button class="btn btn-primary print-btn no-print" onclick="window.print()">
+        <i class="fas fa-print"></i> Print Receipt
+    </button>
+
+    <div class="page-container">
+        <!-- First Copy - Client Copy -->
+        <div class="receipt-container">
+            <div class="receipt-copy-label">CLIENT COPY - نسخة العميل</div>
+
+            <!-- Header Section -->
+            <div class="header-section">
+                <div class="company-logo">
+                    <div>COMPANY<br>LOGO</div>
+                </div>
+
+                <div class="receipt-title-center">
+                    <div class="receipt-title">PAYEMENT VOUCHER</div>
+                    <div class="receipt-title-ar">سند صرف</div>
+                </div>
+
+                <div class="qr-code">
+                    <div>QR<br>CODE</div>
+                </div>
+            </div>
+            <!-- Content Section -->
+            <div class="content-section">
+                <!-- Customer Information -->
+                <div class="customer-info">
+                    <div class="field-group">
+                        <div class="field-inline-bilingual">
+                            <div class="label-en"> Receipt No:</div>
+                            <div class="field-value field-center" id="customerNumber1">RCP-2024-001</div>
+                            <div class="label-ar">  رقم الإيصال:</div>
+                            
+                        </div>
+                        <div class="field-inline-bilingual">
+                            <div class="label-en"> Date:</div>
+                            <div class="field-value field-center" id="customerNumber1">11/09/2025 16:35</div>
+                            <div class="label-ar"> التاريخ:</div>
+                        </div>
+                        <div class="field-inline-bilingual">
+                            <div class="label-en">Customer Number:</div>
+                            <div class="field-value field-center" id="customerNumber1">CUST-001</div>
+                            <div class="label-ar">رقم العميل:</div>
+                        </div>
+                        <div class="field-inline-bilingual">
+                            <div class="label-en">Customer Name:</div>
+                            <div class="field-value field-center" id="customerNumber1">CUST-001</div>
+                            <div class="label-ar">اسم العميل:</div>
+                        </div>
+                        <!-- Description -->
+                        <div class="field-inline-bilingual">
+                            <div class="label-en">Description:</div>
+                            <div class="field-value field-center" id="customerNumber1">Payment for services rendered
+                            </div>
+                            <div class="label-ar">الوصف:</div>
+                        </div>
+                        <!-- Amount Section -->
+                       
+                            <div class="field-inline-bilingual">
+                                <div class="label-en">Amount Received:</div>
+                                <div class="field-value field-center " id="customerNumber1">
+                                    <b>$1,250.00</b>
+                                </div>
+                                <div class="label-ar">المبلغ المستلم:</div>
+                            </div>
+                        
+
+                    </div>
+                </div>
+
+
+
+
+
+
+                <!-- Signatures Section -->
+                <div class="signature-section">
+                    <div class="signature-row">
+                        <div class="signature-label">
+                            <span class="label-en">Accountant</span>
+                            <span class="dots">....................</span>
+                            <span class="label-ar">المحاسب</span>
+                        </div>
+                        <div class="signature-label">
+                            <span class="label-en">Receiver</span>
+                            <span class="dots">....................</span>
+                            <span class="label-ar">المستلم</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Footer -->
+            <div class="footer-section">
+                <div class="row">
+                    <div class="col-md-6">
+                        <strong>Company Address:</strong> 123 Business St, City, Country<br>
+                        <strong>Phone:</strong> +1 (555) 123-4567 | <strong>Email:</strong> info@company.com
+                    </div>
+                    <div class="col-md-6" style="font-family: 'Cairo', sans-serif; direction: rtl;">
+                        <strong>عنوان الشركة:</strong> 123 شارع الأعمال، المدينة، البلد<br>
+                        <strong>الهاتف:</strong> +1 (555) 123-4567 | <strong>البريد الإلكتروني:</strong> info@company.com
+                    </div>
+                </div>
+             
+                
+            </div>
+        </div>
+        <div class="receipt-container">
+            <div class="receipt-copy-label">CLIENT COPY - نسخة العميل</div>
+
+            <!-- Header Section -->
+            <div class="header-section">
+                <div class="company-logo">
+                    <div>COMPANY<br>LOGO</div>
+                </div>
+
+                <div class="receipt-title-center">
+                    <div class="receipt-title">PAYEMENT VOUCHER</div>
+                    <div class="receipt-title-ar">سند صرف</div>
+                </div>
+
+                <div class="qr-code">
+                    <div>QR<br>CODE</div>
+                </div>
+            </div>
+            <!-- Content Section -->
+            <div class="content-section">
+                <!-- Customer Information -->
+                <div class="customer-info">
+                    <div class="field-group">
+                        <div class="field-inline-bilingual">
+                            <div class="label-en"> Receipt No:</div>
+                            <div class="field-value field-center" id="customerNumber1">RCP-2024-001</div>
+                            <div class="label-ar">  رقم الإيصال:</div>
+                            
+                        </div>
+                        <div class="field-inline-bilingual">
+                            <div class="label-en"> Date:</div>
+                            <div class="field-value field-center" id="customerNumber1">11/09/2025 16:35</div>
+                            <div class="label-ar"> التاريخ:</div>
+                        </div>
+                        <div class="field-inline-bilingual">
+                            <div class="label-en">Customer Number:</div>
+                            <div class="field-value field-center" id="customerNumber1">CUST-001</div>
+                            <div class="label-ar">رقم العميل:</div>
+                        </div>
+                        <div class="field-inline-bilingual">
+                            <div class="label-en">Customer Name:</div>
+                            <div class="field-value field-center" id="customerNumber1">CUST-001</div>
+                            <div class="label-ar">اسم العميل:</div>
+                        </div>
+                        <!-- Description -->
+                        <div class="field-inline-bilingual">
+                            <div class="label-en">Description:</div>
+                            <div class="field-value field-center" id="customerNumber1">Payment for services rendered
+                            </div>
+                            <div class="label-ar">الوصف:</div>
+                        </div>
+                        <!-- Amount Section -->
+                       
+                            <div class="field-inline-bilingual">
+                                <div class="label-en">Amount Received:</div>
+                                <div class="field-value field-center " id="customerNumber1">
+                                    <b>$1,250.00</b>
+                                </div>
+                                <div class="label-ar">المبلغ المستلم:</div>
+                            </div>
+                        
+
+                    </div>
+                </div>
+
+
+
+
+
+
+                <!-- Signatures Section -->
+                <div class="signature-section">
+                    <div class="signature-row">
+                        <div class="signature-label">
+                            <span class="label-en">Accountant</span>
+                            <span class="dots">....................</span>
+                            <span class="label-ar">المحاسب</span>
+                        </div>
+                        <div class="signature-label">
+                            <span class="label-en">Receiver</span>
+                            <span class="dots">....................</span>
+                            <span class="label-ar">المستلم</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Footer -->
+            <div class="footer-section">
+                <div class="row">
+                    <div class="col-md-6">
+                        <strong>Company Address:</strong> 123 Business St, City, Country<br>
+                        <strong>Phone:</strong> +1 (555) 123-4567 | <strong>Email:</strong> info@company.com
+                    </div>
+                    <div class="col-md-6" style="font-family: 'Cairo', sans-serif; direction: rtl;">
+                        <strong>عنوان الشركة:</strong> 123 شارع الأعمال، المدينة، البلد<br>
+                        <strong>الهاتف:</strong> +1 (555) 123-4567 | <strong>البريد الإلكتروني:</strong> info@company.com
+                    </div>
+                </div>
+             
+                
+            </div>
+        </div>
+
+       
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Function to populate both receipt copies with data from database
+        function populateReceipt(data) {
+            // Populate both copies with the same data
+            for (let i = 1; i <= 2; i++) {
+                // English fields
+                document.getElementById(`receiptNumber${i}`).textContent = data.receiptNumber || 'RCP-2024-001';
+                document.getElementById(`receiptDate${i}`).textContent = data.date || new Date().toISOString().split('T')[0];
+                document.getElementById(`customerNumber${i}`).textContent = data.customerNumber || 'CUST-001';
+                document.getElementById(`customerName${i}`).textContent = data.customerName || 'Customer Name';
+                document.getElementById(`description${i}`).textContent = data.description || 'Payment description';
+                document.getElementById(`amount${i}`).textContent = `$${data.amount || '0.00'}`;
+
+                // Arabic fields
+                document.getElementById(`receiptNumberAr${i}`).textContent = data.receiptNumber || 'RCP-2024-001';
+                document.getElementById(`receiptDateAr${i}`).textContent = data.date || new Date().toISOString().split('T')[0];
+                document.getElementById(`customerNumberAr${i}`).textContent = data.customerNumber || 'CUST-001';
+                document.getElementById(`customerNameAr${i}`).textContent = data.customerNameAr || 'اسم العميل';
+                document.getElementById(`descriptionAr${i}`).textContent = data.descriptionAr || 'وصف الدفعة';
+                document.getElementById(`amountAr${i}`).textContent = `${data.amount || '0.00'} ${data.currency || 'دولار'}`;
+            }
+        }
+
+        // Example usage - replace with actual database call
+        // populateReceipt({
+        //     receiptNumber: 'RCP-2024-001',
+        //     date: '2024-01-15',
+        //     customerNumber: 'CUST-001',
+        //     customerName: 'John Doe',
+        //     customerNameAr: 'جون دو',
+        //     description: 'Payment for consulting services',
+        //     descriptionAr: 'دفعة مقابل خدمات استشارية',
+        //     amount: '1250.00',
+        //     currency: 'دولار'
+        // });
+
+        // Format currency for different locales
+        function formatCurrency(amount, locale = 'en-US', currency = 'USD') {
+            return new Intl.NumberFormat(locale, {
+                style: 'currency',
+                currency: currency
+            }).format(amount);
+        }
+
+        // Generate QR code data (you can integrate with a QR code library)
+        function generateQRData(receiptData) {
+            return `Receipt: ${receiptData.receiptNumber}, Amount: ${receiptData.amount}, Date: ${receiptData.date}`;
+        }
+    </script>
+</body>
+
+</html>

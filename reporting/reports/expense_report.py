@@ -140,14 +140,6 @@ class ExpenseReport(BaseReport):
                  {"title": "Top Expense", "description": top_expense_display},
              ]
         })
-       
-        # ✅ Debug filters output
-        try:
-            print("[DEBUG] Clean filters JSON preview:")
-            print(json.dumps(serialized_filters, indent=2))
-        except Exception as e:
-            print(f"[WARN] Failed to debug print filters: {e}")
-
         # 📦 Render and generate PDF
         pdf = self.render_pdf("reports/expense_report.html", context)
 

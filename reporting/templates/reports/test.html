@@ -1,32 +1,376 @@
-{% extends "shared/base_report.html" %}
-{% block content %}
-  {% include "partials/summary_cards.html" with cards=summary_cards %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Receipt - إيصال احترافي</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        @media print {
+            .no-print { display: none !important; }
+            body { margin: 0; }
+            .receipt-container { 
+                box-shadow: none !important; 
+                border: 2px solid #000 !important;
+                margin: 0 !important;
+            }
+        }
 
-  <section class="section">
-    <h2>Expense Details</h2>
-    <table class="table-data">
-      <thead>
-        <tr>
-          <th>Date</th>
-          <th>Label</th>
-          <th>Amount</th>
-          <th>Category</th>
-          <th>Type</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for expense in expenses %}
-          <tr>
-            <td>{{ expense.date }}</td>
-            <td>{{ expense.label }}</td>
-            <td>{{ expense.amount }}</td>
-            <td>{{ expense.category }}</td>
-            <td>{{ expense.type }}</td>
-            <td>{{ expense.status }}</td>
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </section>
-{% endblock %}
+        body {
+            font-family: 'Inter', 'Cairo', sans-serif;
+            background-color: #f8f9fa;
+            padding: 20px;
+        }
+
+        .receipt-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            border: 1px solid #dee2e6;
+        }
+
+        .header-section {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .company-name {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .company-name-ar {
+            font-family: 'Cairo', sans-serif;
+            font-size: 24px;
+            direction: rtl;
+        }
+
+        .receipt-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 5px;
+            display: inline-block;
+        }
+
+        .receipt-info {
+            background: #f8f9fa;
+            padding: 20px;
+            border-bottom: 2px solid #dee2e6;
+        }
+
+        .receipt-number {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .content-section {
+            padding: 30px;
+        }
+
+        .field-group {
+            margin-bottom: 25px;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 15px;
+            background: #fafbfc;
+        }
+
+        .field-label {
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .field-label-ar {
+            font-family: 'Cairo', sans-serif;
+            direction: rtl;
+            text-align: right;
+        }
+
+        .field-value {
+            font-size: 16px;
+            color: #212529;
+            border-bottom: 2px dotted #dee2e6;
+            padding-bottom: 5px;
+            min-height: 25px;
+        }
+
+        .field-value-ar {
+            font-family: 'Cairo', sans-serif;
+            direction: rtl;
+            text-align: right;
+        }
+
+        .amount-section {
+            background: #e8f5e8;
+            border: 2px solid #28a745;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 25px 0;
+        }
+
+        .amount-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #155724;
+            text-align: center;
+        }
+
+        .signature-section {
+            margin-top: 40px;
+            border-top: 2px solid #dee2e6;
+            padding-top: 30px;
+        }
+
+        .signature-box {
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            background: #fafbfc;
+            min-height: 80px;
+        }
+
+        .signature-title {
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .signature-title-ar {
+            font-family: 'Cairo', sans-serif;
+            direction: rtl;
+        }
+
+        .signature-line {
+            border-bottom: 2px solid #6c757d;
+            margin: 15px auto 10px;
+            width: 200px;
+        }
+
+        .footer-section {
+            background: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            border-top: 1px solid #dee2e6;
+            font-size: 12px;
+            color: #6c757d;
+        }
+
+        .print-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .bilingual-field {
+            display: flex;
+            gap: 15px;
+        }
+
+        .bilingual-field > div {
+            flex: 1;
+        }
+
+        @media (max-width: 768px) {
+            .bilingual-field {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="btn btn-primary print-btn no-print" onclick="window.print()">
+        <i class="fas fa-print"></i> Print Receipt
+    </button>
+
+    <div class="receipt-container">
+        <!-- Header Section -->
+        <div class="header-section">
+            <div class="company-name">Your Company Name</div>
+            <div class="company-name-ar">اسم شركتك</div>
+            <div class="receipt-title">
+                OFFICIAL RECEIPT / إيصال رسمي
+            </div>
+        </div>
+
+        <!-- Receipt Info -->
+        <div class="receipt-info">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="receipt-number">
+                        Receipt No: <span id="receiptNumber">RCP-2024-001</span>
+                    </div>
+                    <div class="receipt-number" style="font-family: 'Cairo', sans-serif; direction: rtl;">
+                        رقم الإيصال: <span id="receiptNumberAr">RCP-2024-001</span>
+                    </div>
+                </div>
+                <div class="col-md-6 text-end">
+                    <div class="receipt-number">
+                        Date: <span id="receiptDate">2024-01-15</span>
+                    </div>
+                    <div class="receipt-number" style="font-family: 'Cairo', sans-serif; direction: rtl;">
+                        التاريخ: <span id="receiptDateAr">2024-01-15</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content Section -->
+        <div class="content-section">
+            <!-- Customer Information -->
+            <div class="field-group">
+                <div class="bilingual-field">
+                    <div>
+                        <div class="field-label">Customer Name / Customer Number:</div>
+                        <div class="field-value" id="customerName">John Doe / CUST-001</div>
+                    </div>
+                    <div>
+                        <div class="field-label field-label-ar">اسم العميل / رقم العميل:</div>
+                        <div class="field-value field-value-ar" id="customerNameAr">جون دو / CUST-001</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Description -->
+            <div class="field-group">
+                <div class="bilingual-field">
+                    <div>
+                        <div class="field-label">Description:</div>
+                        <div class="field-value" id="description">Payment for services rendered - Invoice #INV-2024-001</div>
+                    </div>
+                    <div>
+                        <div class="field-label field-label-ar">الوصف:</div>
+                        <div class="field-value field-value-ar" id="descriptionAr">دفعة مقابل الخدمات المقدمة - فاتورة رقم INV-2024-001</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Amount Section -->
+            <div class="amount-section">
+                <div class="bilingual-field">
+                    <div>
+                        <div class="field-label text-center">Amount Received:</div>
+                        <div class="amount-value" id="amount">$1,250.00</div>
+                    </div>
+                    <div>
+                        <div class="field-label field-label-ar text-center">المبلغ المستلم:</div>
+                        <div class="amount-value field-value-ar" id="amountAr">1,250.00 دولار</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Signatures Section -->
+            <div class="signature-section">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="signature-box">
+                            <div class="signature-title">Accountant</div>
+                            <div class="signature-title-ar">المحاسب</div>
+                            <div class="signature-line"></div>
+                            <small>Signature & Date</small><br>
+                            <small style="font-family: 'Cairo', sans-serif;">التوقيع والتاريخ</small>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="signature-box">
+                            <div class="signature-title">Manager</div>
+                            <div class="signature-title-ar">المدير</div>
+                            <div class="signature-line"></div>
+                            <small>Signature & Date</small><br>
+                            <small style="font-family: 'Cairo', sans-serif;">التوقيع والتاريخ</small>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="signature-box">
+                            <div class="signature-title">Receiver</div>
+                            <div class="signature-title-ar">المستلم</div>
+                            <div class="signature-line"></div>
+                            <small>Signature & Date</small><br>
+                            <small style="font-family: 'Cairo', sans-serif;">التوقيع والتاريخ</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer-section">
+            <div class="row">
+                <div class="col-md-6">
+                    <strong>Company Address:</strong> 123 Business St, City, Country<br>
+                    <strong>Phone:</strong> +1 (555) 123-4567 | <strong>Email:</strong> info@company.com
+                </div>
+                <div class="col-md-6" style="font-family: 'Cairo', sans-serif; direction: rtl;">
+                    <strong>عنوان الشركة:</strong> 123 شارع الأعمال، المدينة، البلد<br>
+                    <strong>الهاتف:</strong> +1 (555) 123-4567 | <strong>البريد الإلكتروني:</strong> info@company.com
+                </div>
+            </div>
+            <hr>
+            <p class="mb-0">
+                This is an official receipt. Please keep for your records. | 
+                <span style="font-family: 'Cairo', sans-serif;">هذا إيصال رسمي. يرجى الاحتفاظ به في سجلاتك.</span>
+            </p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Function to populate receipt with data from database
+        function populateReceipt(data) {
+            // English fields
+            document.getElementById('receiptNumber').textContent = data.receiptNumber || 'RCP-2024-001';
+            document.getElementById('receiptDate').textContent = data.date || new Date().toISOString().split('T')[0];
+            document.getElementById('customerName').textContent = `${data.customerName || 'Customer Name'} / ${data.customerNumber || 'CUST-001'}`;
+            document.getElementById('description').textContent = data.description || 'Payment description';
+            document.getElementById('amount').textContent = `$${data.amount || '0.00'}`;
+
+            // Arabic fields
+            document.getElementById('receiptNumberAr').textContent = data.receiptNumber || 'RCP-2024-001';
+            document.getElementById('receiptDateAr').textContent = data.date || new Date().toISOString().split('T')[0];
+            document.getElementById('customerNameAr').textContent = `${data.customerNameAr || 'اسم العميل'} / ${data.customerNumber || 'CUST-001'}`;
+            document.getElementById('descriptionAr').textContent = data.descriptionAr || 'وصف الدفعة';
+            document.getElementById('amountAr').textContent = `${data.amount || '0.00'} ${data.currency || 'دولار'}`;
+        }
+
+        // Example usage - replace with actual database call
+        // populateReceipt({
+        //     receiptNumber: 'RCP-2024-001',
+        //     date: '2024-01-15',
+        //     customerName: 'John Doe',
+        //     customerNameAr: 'جون دو',
+        //     customerNumber: 'CUST-001',
+        //     description: 'Payment for consulting services',
+        //     descriptionAr: 'دفعة مقابل خدمات استشارية',
+        //     amount: '1250.00',
+        //     currency: 'دولار'
+        // });
+
+        // Auto-print functionality (optional)
+        function autoPrint() {
+            window.print();
+        }
+
+        // Format currency for different locales
+        function formatCurrency(amount, locale = 'en-US', currency = 'USD') {
+            return new Intl.NumberFormat(locale, {
+                style: 'currency',
+                currency: currency
+            }).format(amount);
+        }
+    </script>
+</body>
+</html>

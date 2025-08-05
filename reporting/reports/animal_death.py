@@ -1,3 +1,4 @@
+from reporting.base.base import BaseReport
 from reporting.base.base_report import AbstractReport
 from animal.models.death import AnimalDeath
 from django.template.loader import render_to_string
@@ -6,7 +7,7 @@ from reporting.utils.save_report_record import save_report_record
 from django.utils.timezone import localtime
 
 
-class AnimalDeathReport(AbstractReport):
+class AnimalDeathReport(BaseReport):
     """
     Concrete report for listing animal deaths with filters.
     """

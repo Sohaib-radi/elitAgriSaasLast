@@ -49,3 +49,12 @@ def test_expense_report_view(request):
         response["Content-Disposition"] = 'inline; filename="test_expense_report.pdf"'
 
     return response
+
+
+
+def my_html_view(request):
+    context = {
+        "title": "Welcome",
+        "message": "This is a rendered HTML page from a Django view.",
+    }
+    return render(request, "reporting/reciept.html", context)
