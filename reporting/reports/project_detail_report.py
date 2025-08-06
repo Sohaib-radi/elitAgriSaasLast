@@ -1,4 +1,9 @@
-from reporting.base.base_report import AbstractReport
+import io
+import base64
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+from reporting.base.base import BaseReport
 from assets_projects.models.project import Project
 from assets_projects.models.asset import Asset
 from assets_projects.models.cost import ProjectCost
@@ -7,12 +12,11 @@ from reporting.utils.save_report_record import save_report_record
 from django.template.loader import render_to_string
 from django.db.models import Sum, Count
 from django.utils.html import strip_tags
-import base64
-import io
-import matplotlib.pyplot as plt
 
 
-class ProjectDetailReport(AbstractReport):
+
+
+class ProjectDetailReport(BaseReport):
     """
     Detailed report for a specific project: overview, assets, costs, optional chart
     """
@@ -85,7 +89,8 @@ class ProjectDetailReport(AbstractReport):
 
         chart_base64 = self._generate_cost_chart(costs)
 
-        context = {
+        context = self.get_context()
+        context.update({
             "project": project,
             "asset_data": asset_data,
             "cost_data": cost_data,
@@ -98,11 +103,9 @@ class ProjectDetailReport(AbstractReport):
             "cost_chart": chart_base64,
             "farm": self.user.active_farm,
             "user": self.user,
-        }
+        })
 
-        html = render_to_string("reports/project_detail_report.html", context)
-        pdf = render_to_pdf(html, context)
-
+        pdf = self.render_pdf("reports/project_detail_report.html", context)
         save_report_record(
             user=self.user,
             report_type="project_detail",

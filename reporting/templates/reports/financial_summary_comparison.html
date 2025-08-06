@@ -1,0 +1,156 @@
+{% extends "shared/base_report.html" %}
+{% block content %}
+
+<div class="periods-container">
+    <div class="period-section">
+        <div class="period-header">
+            <h3 class="period-title">Period 1 | الفترة الأولى</h3>
+            <div class="period-date">
+                {{ period_1.start_str }} - {{ period_1.end_str }}
+            </div>
+        </div>
+
+        <div class="metrics-grid" style="grid-template-columns: 1fr 1fr; height: 70px;">
+            <div class="metric-card-summary">
+                <div class="metric-label-summary">Total Income | إجمالي الدخل</div>
+                <div class="metric-value-summary">${{ period_1.total_income|floatformat:2 }}</div>
+            </div>
+            <div class="metric-card-summary">
+                <div class="metric-label-summary">Total Expenses | إجمالي المصروفات</div>
+                <div class="metric-value-summary" style="color: #dc2626;">
+                    ${{ period_1.total_expenses|floatformat:2 }}
+                </div>
+            </div>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+            <div class="top-payers">
+                <div class="top-payers-header">
+                    <span class="top-payers-title">Top 5 Payers</span>
+                    <span class="top-payers-title arabic">أعلى 5 دافعين</span>
+                </div>
+                <table class="payers-table" style="width: 100%;">
+                    {% for name, amount in period_1.top_payers %}
+                    <tr>
+                        <td class="payer-name">{{ name }}</td>
+                        <td class="payer-amount">{{ amount }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="2" class="payer-name">No data</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+
+            <div class="top-payers">
+                <div class="top-payers-header">
+                    <span class="top-payers-title">Top 5 Expenses</span>
+                    <span class="top-payers-title arabic">أعلى 5 مصروفات</span>
+                </div>
+                <table class="payers-table" style="width: 100%;">
+                    {% for name, amount in period_1.top_expenses %}
+                    <tr>
+                        <td class="payer-name">{{ name }}</td>
+                        <td class="payer-amount" style="color: #dc2626;">{{ amount }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="2" class="payer-name">No data</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="period-section">
+        <div class="period-header">
+            <h3 class="period-title">Period 2 | الفترة الثانية</h3>
+            <div class="period-date">
+                {{ period_2.start_str }} - {{ period_2.end_str }}
+            </div>
+        </div>
+
+        <div class="metrics-grid" style="grid-template-columns: 1fr 1fr; height: 70px;">
+            <div class="metric-card-summary">
+                <div class="metric-label-summary">Total Income | إجمالي الدخل</div>
+                <div class="metric-value-summary">${{ period_2.total_income|floatformat:2 }}</div>
+            </div>
+            <div class="metric-card-summary">
+                <div class="metric-label-summary">Total Expenses | إجمالي المصروفات</div>
+                <div class="metric-value-summary" style="color: #dc2626;">
+                    ${{ period_2.total_expenses|floatformat:2 }}
+                </div>
+            </div>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+            <div class="top-payers">
+                <div class="top-payers-header">
+                    <span class="top-payers-title">Top 5 Payers</span>
+                    <span class="top-payers-title arabic">أعلى 5 دافعين</span>
+                </div>
+                <table class="payers-table" style="width: 100%;">
+                    {% for name, amount in period_2.top_payers %}
+                    <tr>
+                        <td class="payer-name">{{ name }}</td>
+                        <td class="payer-amount">{{ amount }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="2" class="payer-name">No data</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+
+            <div class="top-payers">
+                <div class="top-payers-header">
+                    <span class="top-payers-title">Top 5 Expenses</span>
+                    <span class="top-payers-title arabic">أعلى 5 مصروفات</span>
+                </div>
+                <table class="payers-table" style="width: 100%;">
+                    {% for name, amount in period_2.top_expenses %}
+                    <tr>
+                        <td class="payer-name">{{ name }}</td>
+                        <td class="payer-amount" style="color: #dc2626;">{{ amount }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="2" class="payer-name">No data</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- <section class="comparison-section" style="margin-top: 150px;">
+    <div class="comparison-title">
+        <span>📊 Comparison Analysis</span>
+        <span class="arabic">📊 تحليل المقارنة</span>
+    </div>
+
+    <table class="comparison-table">
+        <thead>
+            <tr>
+                <th>Metric | المقياس</th>
+                <th>Period 1 | الفترة الأولى</th>
+                <th>Period 2 | الفترة الثانية</th>
+                <th>Change | التغيير</th>
+                <th>% Change | نسبة التغيير</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in comparison %}
+            <tr>
+                <td class="metric-name">{{ row.metric }}</td>
+                <td>{{ row.period_1 }}</td>
+                <td>{{ row.period_2 }}</td>
+                <td class="change-{{ row.change_type }} arrow-up">{{ row.change }}</td>
+                <td class="change-{{ row.change_type }}">{{ row.percent_change }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section> -->
+
+{% endblock %}

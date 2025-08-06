@@ -1,5 +1,6 @@
 # reports/animal_report.py
 
+from reporting.base.base import BaseReport
 from reporting.base.base_report import AbstractReport
 from animal.models.animal import Animal
 from django.template.loader import render_to_string
@@ -7,7 +8,7 @@ from django.utils.timezone import localtime
 from reporting.utils.render_pdf import render_to_pdf
 from reporting.utils.save_report_record import save_report_record
 
-class AnimalReport(AbstractReport):
+class AnimalReport(BaseReport):
     """
     General animal list report (filters: species, status, date added)
     """
@@ -60,15 +61,14 @@ class AnimalReport(AbstractReport):
                 })
             except Exception as e:
                 print(f"[ERROR] Failed to format animal record: {e}")
-
-        context = {
+        context = self.get_context()
+        context.update({
             "animals": animals,
             "filters": self.filters,
             "farm": self.user.active_farm,
-        }
+        })
 
-        html = render_to_string("reports/animal_list.html", context)
-        pdf = render_to_pdf(html, context)
+        pdf = self.render_pdf("reports/animal_list.html", context)
 
         save_report_record(
             user=self.user,

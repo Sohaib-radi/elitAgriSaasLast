@@ -54,28 +54,25 @@ class AnimalDeathReport(BaseReport):
             except Exception as e:
                 print(f"[ERROR] Failed to process death ID {death.id if death else 'unknown'}: {e}")
 
-        context = {
+        context = self.get_context()
+        context.update({
             "deaths": deaths,
             "filters": self.make_serializable_filters(),
             "farm": self.user.active_farm,
-        }
+        })
 
-        print("[DEBUG] Context prepared for rendering:", context)
-
-        html = render_to_string("reports/animal_death.html", context)
-        pdf_content = render_to_pdf(html, context)
-
-        print(f"[DEBUG] PDF content size: {len(pdf_content)} bytes")
+        pdf = self.render_pdf("reports/animal_death.html", context)
+        print(f"[DEBUG] PDF content size: {len(pdf)} bytes")
 
         save_report_record(
             user=self.user,
             report_type="animal_death",
             report_name="Animal Death Report",
-            pdf_content=pdf_content,
+            pdf_content=pdf,
             filters=context["filters"]
         )
 
-        return pdf_content
+        return pdf
 
     def make_serializable_filters(self):
         cleaned = {}

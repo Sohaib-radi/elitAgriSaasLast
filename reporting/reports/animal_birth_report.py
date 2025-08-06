@@ -1,5 +1,6 @@
 # reports/animal_birth_report.py
 
+from reporting.base.base import BaseReport
 from reporting.base.base_report import AbstractReport
 from django.template.loader import render_to_string
 from django.utils.timezone import localtime
@@ -7,7 +8,7 @@ from animal.models.birth import AnimalBirth
 from reporting.utils.render_pdf import render_to_pdf
 from reporting.utils.save_report_record import save_report_record
 
-class AnimalBirthReport(AbstractReport):
+class AnimalBirthReport(BaseReport):
     """
     Report for animal births, filtered by date range and species.
     """
@@ -61,21 +62,21 @@ class AnimalBirthReport(AbstractReport):
             except Exception as e:
                 print(f"[ERROR] Birth record failed: {e}")
 
-        context = {
+   
+        context = self.get_context()
+        context.update({
             "births": births,
             "filters": self.filters,
             "farm": self.user.active_farm,
-        }
+        })
 
-        html = render_to_string("reports/animal_birth.html", context)
-        pdf_content = render_to_pdf(html, context)
-
+        pdf = self.render_pdf("reports/animal_birth.html", context)
         save_report_record(
             user=self.user,
             report_type="animal_birth",
             report_name="Animal Birth Report",
-            pdf_content=pdf_content,
+            pdf_content=pdf,
             filters=self.filters
         )
 
-        return pdf_content
+        return pdf

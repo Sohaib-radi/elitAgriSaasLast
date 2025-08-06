@@ -37,7 +37,7 @@ def test_expense_report_view(request):
     context = report.get_test_context()
    
     # Render PDF using your working BaseReport.render_pdf method
-    pdf = report.render_pdf("reports/expense_report.html", context)
+    pdf = report.render_pdf("reports/test.html", context)
 
     # Return PDF in browser
     response = HttpResponse(pdf, content_type="application/pdf")

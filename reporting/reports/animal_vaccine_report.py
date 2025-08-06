@@ -1,5 +1,6 @@
 # reporting/reports/animal_vaccine_report.py
 
+from reporting.base.base import BaseReport
 from reporting.base.base_report import AbstractReport
 from animal.models.vaccine import AnimalVaccine
 from django.template.loader import render_to_string
@@ -7,7 +8,7 @@ from django.utils.timezone import localtime
 from reporting.utils.render_pdf import render_to_pdf
 from reporting.utils.save_report_record import save_report_record
 
-class AnimalVaccineReport(AbstractReport):
+class AnimalVaccineReport(BaseReport):
     def fetch(self):
         queryset = AnimalVaccine.objects.filter(farm=self.user.active_farm)
 
@@ -38,15 +39,15 @@ class AnimalVaccineReport(AbstractReport):
             except Exception as e:
                 print(f"[ERROR] Failed to format vaccine record: {e}")
 
-        context = {
+        context = self.get_context()
+        context.update({
             "vaccines": vaccines,
             "filters": self.filters,
             "farm": self.user.active_farm,
-        }
+        })
 
-        html = render_to_string("reports/animal_vaccine.html", context)
-        pdf = render_to_pdf(html, context)
-
+        pdf = self.render_pdf("reports/animal_vaccine.html", context)
+        
         save_report_record(
             user=self.user,
             report_type="animal_vaccine",

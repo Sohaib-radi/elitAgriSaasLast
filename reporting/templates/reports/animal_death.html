@@ -1,73 +1,35 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "shared/base_report.html" %}
+{% block content %}
+<section class="section">
+<h1 style="padding-top: 20px; ">Animal Death Report</h1>
+<table class="table-data">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Animal</th>
+      <th>Species</th>
+      <th>Status</th>
+      <th>Date</th>
+      <th>Reason</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for death in deaths %}
+    <tr>
+      <td></td>
+      <td>{{ death.animal_number }}</td>
+      <td>{{ death.species }}</td>
+      <td>{{ death.status }}</td>
+      <td>{{ death.death_datetime }}</td>
+      <td>{{ death.reason|default:"—" }}</td>
 
-<head>
-  <meta charset="utf-8">
-  <title>Animal Death Report</title>
-  <style>
-    body {
-      font-family: "Arial", sans-serif;
-      font-size: 12px;
-      color: #000;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-    }
-
-    th,
-    td {
-      border: 1px solid #444;
-      padding: 6px;
-      text-align: left;
-    }
-
-    th {
-      background-color: #f5f5f5;
-    }
-  </style>
-</head>
-
-<body>
-  <h1>Animal Death Report</h1>
-  <p>Farm: {{ farm.name }}</p>
-  <p>Filters:
-    {% if filters.start %} Start Date: {{ filters.start }} {% endif %}
-    {% if filters.end %} – End Date: {{ filters.end}} {% endif %}
-    {% if filters.status %} – Species: {{ filters.status }} {% endif %}
-  </p>
-
-  <table>
-    <thead>
-      <tr>
-        <th>#</th>
-        <th>Animal</th>
-        <th>Species</th>
-        <th>Status</th>
-        <th>Date</th>
-        <th>Reason</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for death in deaths %}
-      <tr>
-        <td></td>
-        <td>{{ death.animal_number }}</td>
-        <td>{{ death.species }}</td>
-        <td>{{ death.status }}</td>
-        <td>{{ death.death_datetime }}</td>
-        <td>{{ death.reason|default:"—" }}</td>
-
-      </tr>
-      {% empty %}
-      <tr>
-        <td colspan="5">No data found.</td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-</body>
-
-</html>
+    </tr>
+    {% empty %}
+    <tr>
+      <td colspan="5">No data found.</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+</section>
+{% endblock %}

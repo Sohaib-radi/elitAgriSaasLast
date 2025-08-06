@@ -1,3 +1,4 @@
+from reporting.base.base import BaseReport
 from reporting.base.base_report import AbstractReport
 from assets_projects.models.project import Project
 from django.template.loader import render_to_string
@@ -5,7 +6,7 @@ from reporting.utils.render_pdf import render_to_pdf
 from reporting.utils.save_report_record import save_report_record
 from django.db.models import Count, Sum
 
-class ProjectReport(AbstractReport):
+class ProjectReport(BaseReport):
     """
     General Project report (filters: active, date range)
     """
@@ -51,8 +52,8 @@ class ProjectReport(AbstractReport):
                 "address": project.address or "—",
                 "description": project.description or "—"
             })
-
-        context = {
+        context = self.get_context()
+        context.update({
             "projects": formatted,
             "filters": self.filters,
             "farm": self.user.active_farm,
@@ -61,10 +62,9 @@ class ProjectReport(AbstractReport):
                 "total_cost": f"{total_cost:,.2f}",
             },
             "user": self.user, 
-        }
-
-        html = render_to_string("reports/project_report.html", context)
-        pdf = render_to_pdf(html, context)
+        })
+        
+        pdf = self.render_pdf("reports/project_report.html", context)
 
         save_report_record(
             user=self.user,

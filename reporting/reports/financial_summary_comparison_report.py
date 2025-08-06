@@ -1,6 +1,6 @@
 from collections import defaultdict
 from decimal import Decimal, InvalidOperation
-from datetime import timedelta
+import datetime
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from reporting.base.base import BaseReport
@@ -8,7 +8,6 @@ from reporting.utils.save_report_record import save_report_record
 from finance.models.receipt import Receipt
 from finance.models.payment import Payment
 from django.utils.functional import Promise
-import datetime
 
 class FinancialSummaryComparisonReport(BaseReport):
     """
@@ -44,20 +43,20 @@ class FinancialSummaryComparisonReport(BaseReport):
         # Default: compare last 30 days vs previous 30 days
         if not any([start1, end1, start2, end2]):
             end1 = today
-            start1 = end1 - timedelta(days=30)
-            end2 = start1 - timedelta(days=1)
-            start2 = end2 - timedelta(days=30)
+            start1 = end1 - datetime.timedelta(days=30)
+            end2 = start1 - datetime.timedelta(days=1)
+            start2 = end2 - datetime.timedelta(days=30)
 
         # Fill missing pairs
         if start1 and not end1:
             end1 = today
         if end1 and not start1:
-            start1 = end1 - timedelta(days=30)
+            start1 = end1 - datetime.timedelta(days=30)
 
         if start2 and not end2:
             end2 = today
         if end2 and not start2:
-            start2 = end2 - timedelta(days=30)
+            start2 = end2 - datetime.timedelta(days=30)
 
         # Load receipts/payments for both periods
         data = {}
@@ -133,11 +132,20 @@ class FinancialSummaryComparisonReport(BaseReport):
         if "period_1" in data:
             p1 = data["period_1"]
             period_1 = summarize(p1["receipts"], p1["payments"], "Period 1", p1["start"], p1["end"])
+            
+            # 💡 Add these two lines to include formatted strings
+            period_1["start_str"] = datetime.datetime.strptime(p1["start"], "%Y-%m-%d").strftime("%B %d, %Y")
+            period_1["end_str"] = datetime.datetime.strptime(p1["end"], "%Y-%m-%d").strftime("%B %d, %Y")
+
             context["period_1"] = period_1
 
         if "period_2" in data:
             p2 = data["period_2"]
             period_2 = summarize(p2["receipts"], p2["payments"], "Period 2", p2["start"], p2["end"])
+            
+            period_2["start_str"] = datetime.datetime.strptime(p2["start"], "%Y-%m-%d").strftime("%B %d, %Y")
+            period_2["end_str"] = datetime.datetime.strptime(p2["end"], "%Y-%m-%d").strftime("%B %d, %Y")
+
             context["period_2"] = period_2
 
         # Build comparison analysis

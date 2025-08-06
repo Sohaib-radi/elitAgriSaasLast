@@ -37,7 +37,7 @@ main {
 }
 
 body {
-    font-family: 'Segoe UI', sans-serif;
+    font-family:  'Cairo', sans-serif;
     font-size: 12pt;
     line-height: 1.5;
     color: #333;
@@ -107,6 +107,30 @@ p {
     border-bottom: 1px solid #ccc;
 }
 
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+table th {
+    background: #059669;
+    color: white;
+    padding: 15px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 12px;
+}
+
+table td {
+    padding: 12px 15px;
+    text-align: center;
+    border-bottom: 1px solid #f3f4f6;
+    font-size: 11px;
+}
 
 
 .report-header .subtitle {
@@ -570,4 +594,208 @@ p {
         gap: 10px;
         text-align: center;
     }
+}
+
+ /* Section Styles */
+ .content-section {
+    flex: 1;
+}
+
+.periods-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+.period-section {
+  
+    border-radius: 12px;
+   
+}
+
+.period-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #d1d5db;
+}
+
+.period-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1f2937;
+}
+
+.period-date {
+    font-size: 11px;
+    color: #6b7280;
+    background: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    border: 1px solid #d1d5db;
+}
+
+.metrics-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.metric-card-summary {
+    background: white;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+    text-align: center;
+}
+
+.metric-label-summary {
+    font-size: 10px;
+    color: #6b7280;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.metric-value-summary  {
+    font-size: 16px;
+    font-weight: 600;
+    color: #059669;
+}
+
+.top-payers {
+    background: white;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+    overflow: hidden;
+}
+
+.top-payers-header {
+    background: #f9fafb;
+    padding: 10px 15px;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    justify-content: space-between;
+}
+
+.top-payers-title {
+    font-weight: 600;
+    font-size: 11px;
+    color: #374151;
+}
+
+.payers-table {
+    width: 50%;
+}
+
+.payers-table tr {
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.payers-table tr:last-child {
+    border-bottom: none;
+}
+
+.payers-table td {
+    padding: 8px 15px;
+    font-size: 10px;
+}
+
+.payer-name {
+    color: #374151;
+}
+
+.payer-amount {
+    text-align: right;
+    font-weight: 500;
+    color: #059669;
+}
+
+ /* Comparison Table */
+ .comparison-section {
+    margin-bottom: 30px;
+}
+
+.comparison-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1f2937;
+    margin-bottom: 15px;
+    text-align: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.comparison-table th {
+    background: #059669;
+    color: white;
+    padding: 15px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 12px;
+}
+
+.comparison-table td {
+    padding: 12px 15px;
+    text-align: center;
+    border-bottom: 1px solid #f3f4f6;
+    font-size: 11px;
+}
+
+.comparison-table tr:last-child td {
+    border-bottom: none;
+}
+
+.comparison-table tr:nth-child(even) {
+    background: #f9fafb;
+}
+
+.metric-name {
+    text-align: left;
+    font-weight: 500;
+    color: #374151;
+}
+
+.change-positive {
+    color: #059669;
+    font-weight: 600;
+}
+
+.change-negative {
+    color: #dc2626;
+    font-weight: 600;
+}
+
+.change-neutral {
+    color: #6b7280;
+    font-weight: 500;
+}
+
+.arrow-up::after {
+    content: " ↗";
+    color: #059669;
+}
+
+.arrow-down::after {
+    content: " ↘";
+    color: #dc2626;
+}
+
+.arrow-neutral::after {
+    content: " →";
+    color: #6b7280;
 }
